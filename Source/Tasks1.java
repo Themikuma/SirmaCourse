@@ -7,7 +7,6 @@ import java.util.Random;
 
 /**
  * @author gdimitrov
- * 
  */
 public class Tasks1 {
 	/**
@@ -104,14 +103,12 @@ public class Tasks1 {
 	}
 
 	/**
-	 * Finds the center of gravity of an array. The sum of elements before the
-	 * center of gravity is the closest possible to the sum of the elements
-	 * after it
+	 * Finds the center of gravity of an array. The sum of elements before the center of gravity is
+	 * the closest possible to the sum of the elements after it
 	 * 
 	 * @param array
 	 *            - The input array
-	 * @return Returns a single integer which is the index of the center of
-	 *         gravity
+	 * @return Returns a single integer which is the index of the center of gravity
 	 */
 	public int centerOfGravity(int[] array) {
 		if ((array == null) || (array.length == 0)) {
@@ -148,10 +145,9 @@ public class Tasks1 {
 	}
 
 	/**
-	 * This is the recursive overload of the function that splits the array in
-	 * two and sorts it. It is used only internally, so the call to the function
-	 * can be made using an array only, without pointing to it's end and
-	 * beginning
+	 * This is the recursive overload of the function that splits the array in two and sorts it. It
+	 * is used only internally, so the call to the function can be made using an array only, without
+	 * pointing to it's end and beginning
 	 * 
 	 * @param arr
 	 *            - the array to be sorted
@@ -205,8 +201,7 @@ public class Tasks1 {
 	}
 
 	/**
-	 * This method generates a random string of lower and upper case letters and
-	 * digits 0-9
+	 * This method generates a random string of lower and upper case letters and digits 0-9
 	 * 
 	 * @param length
 	 *            - the length of the generated string
@@ -227,6 +222,13 @@ public class Tasks1 {
 		return result.toString();
 	}
 
+	/**
+	 * Checks if the symbol that is going to be appended is valid
+	 * 
+	 * @param next
+	 *            - the symbol to be checked
+	 * @return true if the symbol is valid, false if it isn't
+	 */
 	private boolean validSymbol(int next) {
 		if ((next > 47) && (next < 58)) {
 			return true;

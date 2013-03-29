@@ -4,8 +4,9 @@
 package com.sirmaitt.tasks1;
 
 /**
- * @author gdimitrov
+ * This class implements the Hangman game with a console input/output.
  * 
+ * @author gdimitrov
  */
 public class Hangman {
 
@@ -13,26 +14,28 @@ public class Hangman {
 	private String word;
 	private String guessed;
 	private boolean newGame;
+	private HangmanReader hangmanReader;
+
+	public Hangman(HangmanReader hangmanReader) {
+		this.hangmanReader = hangmanReader;
+	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Hangman game = new Hangman();
+		Hangman game = new Hangman(new HangmanReaderImpl());
 		game.newGame = true;
 		while (game.newGame) {
-			game.playGame(new HangmanReader());
+			game.playGame();
 		}
 
 	}
 
 	/**
-	 * This method initializes a new game, by asking for a new word to be
-	 * entered and setting the wrong guesses to 0
+	 * This method initializes a new game
 	 */
-	private void initGame(HangmanReader hangmanReader) {
-		// TODO Auto-generated method stub
+	private void initGame() {
 		word = hangmanReader.startGame();
 		wrongGuesses = 0;
 		guessed = word.replaceAll("[a-zA-Z]", "*");
@@ -40,21 +43,26 @@ public class Hangman {
 		System.out.println(guessed);
 	}
 
-	public boolean playGame(HangmanReader hangmanReader) {
-		int rightGuesses = 0;
+	/**
+	 * This method is the one that starts the game.
+	 * 
+	 * @return Returns if the player has won or lost the game
+	 */
+	public boolean playGame() {
 		char cbuf = 0;
+		int moves = 0;
 		boolean win = false;
 		boolean found = false;
 		StringBuilder builder = new StringBuilder();
-		initGame(hangmanReader);
+		initGame();
 		builder.append(guessed);
 		int i;
 		while ((wrongGuesses < 7) && guessed.contains("*")) {
 			i = 0;
-			cbuf = hangmanReader.move(wrongGuesses, rightGuesses);
+			cbuf = hangmanReader.move();
+			moves++;
 			while (word.substring(i).indexOf(cbuf) >= 0) {
 				found = true;
-				rightGuesses++;
 				i += word.substring(i).indexOf(cbuf);
 				builder.setCharAt(i, cbuf);
 				i++;
@@ -64,8 +72,8 @@ public class Hangman {
 			}
 			if (!found) {
 				wrongGuesses++;
-				System.out.println("You made a mistake, you have "
-						+ (7 - wrongGuesses) + " mistakes remaining");
+				System.out.println("You made a mistake, you have " + (7 - wrongGuesses)
+						+ " mistakes remaining");
 			} else {
 				guessed = builder.toString();
 				found = false;
@@ -73,13 +81,13 @@ public class Hangman {
 			}
 		}
 		if (wrongGuesses == 7) {
-			System.out.println("You died!");
+			System.out.println("You died in " + moves + " moves!");
 			win = false;
 		} else {
-			System.out.println("You won!");
+			System.out.println("You won in " + moves + " moves!");
 			win = true;
 		}
-		if (hangmanReader.endGame(wrongGuesses)) {
+		if (hangmanReader.endGame()) {
 			this.newGame = true;
 		} else {
 			this.newGame = false;
