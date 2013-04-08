@@ -1,7 +1,11 @@
 package com.sirma.itt.javacourse.objects;
 
-import com.sirma.itt.javacourse.objects.BinaryTree;
 
+/**
+ * Runs a main method that uses the binary tree
+ * 
+ * @author gdimitrov
+ */
 public class RunBinaryTree {
 	public static void main(String[] args) {
 		String printSorted = new String();

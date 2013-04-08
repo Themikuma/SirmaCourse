@@ -6,25 +6,27 @@ package com.sirma.itt.javacourse.intro;
 import java.util.Random;
 
 /**
+ * This class has utility methods for arrays and numbers.
+ * 
  * @author gdimitrov
  */
 public class FirstTask {
 	/**
 	 * Finds the greatest common divisor of two numbers
 	 * 
-	 * @param a
+	 * @param firstNumber
 	 *            - the first number
-	 * @param b
+	 * @param secondNumber
 	 *            - the second number
 	 * @return Returns a single integer
 	 */
-	public int gcd(int a, int b) {
-		if (a == b) {
-			return b;
-		} else if (a > b)
-			return gcd(a - b, b);
+	public static int gcd(int firstNumber, int secondNumber) {
+		if (firstNumber == secondNumber) {
+			return secondNumber;
+		} else if (firstNumber > secondNumber)
+			return gcd(firstNumber - secondNumber, secondNumber);
 		else {
-			return gcd(a, b - a);
+			return gcd(firstNumber, secondNumber - firstNumber);
 		}
 
 	}
@@ -32,15 +34,15 @@ public class FirstTask {
 	/**
 	 * Finds the least common multiple of two numbers
 	 * 
-	 * @param a
+	 * @param firstNumber
 	 *            - the first number
-	 * @param b
+	 * @param secondNumber
 	 *            - the second number
 	 * @return Returns a single integer
 	 */
 
-	public int lcm(int a, int b) {
-		return (a * b) / gcd(a, b);
+	public static int lcm(int firstNumber, int secondNumber) {
+		return (firstNumber * secondNumber) / gcd(firstNumber, secondNumber);
 	}
 
 	/**
@@ -50,7 +52,7 @@ public class FirstTask {
 	 *            - The input array
 	 * @return Returns a single integer
 	 */
-	public int getMinElement(int[] array) {
+	public static int getMinElement(int[] array) {
 		if ((array == null) || (array.length == 0)) {
 			return 0;
 		}
@@ -69,7 +71,7 @@ public class FirstTask {
 	 *            - The input array
 	 * @return Returns a single integer
 	 */
-	public int getSum(int[] array) {
+	public static int getSum(int[] array) {
 		if ((array == null) || (array.length == 0)) {
 			return 0;
 		}
@@ -86,12 +88,11 @@ public class FirstTask {
 	 * @param array
 	 *            - The input array
 	 */
-	public String printArray(int[] array) {
+	public static String printArray(int[] array) {
 		if ((array == null) || (array.length == 0)) {
 			return "[]";
 		}
-		StringBuilder result = new StringBuilder();
-		result.append("[");
+		StringBuilder result = new StringBuilder("[");
 		int i = 0;
 		for (; i < (array.length - 1); i++) {
 			result.append(array[i]);
@@ -110,7 +111,7 @@ public class FirstTask {
 	 *            - The input array
 	 * @return Returns a single integer which is the index of the center of gravity
 	 */
-	public int centerOfGravity(int[] array) {
+	public static int centerOfGravity(int[] array) {
 		if ((array == null) || (array.length == 0)) {
 			return 0;
 		}
@@ -136,7 +137,7 @@ public class FirstTask {
 	 * @param arr
 	 *            - the array to be sorted
 	 */
-	public void quickSort(int[] arr) {
+	public static void quickSort(int[] arr) {
 		if ((arr == null) || (arr.length == 0)) {
 			return;
 		}
@@ -156,7 +157,7 @@ public class FirstTask {
 	 * @param right
 	 *            - the index that points to the end of the current array
 	 */
-	private void quickSort(int[] arr, int left, int right) {
+	private static void quickSort(int[] arr, int left, int right) {
 		int i = left;
 		int tmp;
 		int j = right;
@@ -188,7 +189,7 @@ public class FirstTask {
 	 * @param arr
 	 *            - The array that is going to be reversed
 	 */
-	public void reverse(int[] arr) {
+	public static void reverse(int[] arr) {
 		if ((arr == null) || (arr.length == 0)) {
 			return;
 		}
@@ -207,14 +208,14 @@ public class FirstTask {
 	 *            - the length of the generated string
 	 * @return Return a string that is the generated string
 	 */
-	public String stringGenerator(int length) {
+	public static String stringGenerator(int length) {
 		Random generator = new Random();
 		int next;
 		StringBuilder result = new StringBuilder();
 		int valid = 0;
 		while (valid < length) {
 			next = generator.nextInt(124);
-			if (validSymbol(next)) {
+			if (isSymbolValid(next)) {
 				result.append((char) next);
 				valid++;
 			}
@@ -229,14 +230,8 @@ public class FirstTask {
 	 *            - the symbol to be checked
 	 * @return true if the symbol is valid, false if it isn't
 	 */
-	private boolean validSymbol(int next) {
-		if ((next > 47) && (next < 58)) {
-			return true;
-		}
-		if ((next > 64) && (next < 91)) {
-			return true;
-		}
-		if ((next > 96) && (next < 123)) {
+	private static boolean isSymbolValid(int next) {
+		if ((next > 47) && (next < 58) || (next > 64) && (next < 91) || (next > 96) && (next < 123)) {
 			return true;
 		}
 

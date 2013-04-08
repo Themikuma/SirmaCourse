@@ -5,7 +5,7 @@ import java.math.BigInteger;
 
 public class Sumator {
 
-	public int sum(int a, int b) {
+	public static int sum(int a, int b) {
 		return a + b;
 	}
 
@@ -13,17 +13,17 @@ public class Sumator {
 		return a + b;
 	}
 
-	public int sum(String a, String b) {
+	public static int sum(String a, String b) {
 		int first = Integer.parseInt(a);
 		int second = Integer.parseInt(b);
 		return first + second;
 	}
 
-	public BigInteger sum(BigInteger a, BigInteger b) {
+	public static BigInteger sum(BigInteger a, BigInteger b) {
 		return a.add(b);
 	}
 
-	public BigDecimal sum(BigDecimal a, BigDecimal b) {
+	public static BigDecimal sum(BigDecimal a, BigDecimal b) {
 		return a.add(b);
 	}
 

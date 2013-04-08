@@ -23,10 +23,10 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testGCD() {
-		FirstTask provider = new FirstTask();
-		assertEquals(3, provider.gcd(3, 6));
-		assertEquals(121, provider.gcd(121, 121));
-		assertEquals(6, provider.gcd(24, 6));
+		new FirstTask();
+		assertEquals(3, FirstTask.gcd(3, 6));
+		assertEquals(121, FirstTask.gcd(121, 121));
+		assertEquals(6, FirstTask.gcd(24, 6));
 	}
 
 	/**
@@ -34,10 +34,10 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testLCM() {
-		FirstTask provider = new FirstTask();
-		assertEquals(6, provider.lcm(3, 6));
-		assertEquals(121, provider.lcm(121, 121));
-		assertEquals(24, provider.lcm(24, 6));
+		new FirstTask();
+		assertEquals(6, FirstTask.lcm(3, 6));
+		assertEquals(121, FirstTask.lcm(121, 121));
+		assertEquals(24, FirstTask.lcm(24, 6));
 	}
 
 	/**
@@ -46,15 +46,15 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testGetMinElement() {
-		FirstTask provider = new FirstTask();
+		new FirstTask();
 		int[] testarr = { 4, 5, 2, 1, 89, -2 };
-		assertEquals(-2, provider.getMinElement(testarr));
+		assertEquals(-2, FirstTask.getMinElement(testarr));
 		int[] testarr2 = { 3 };
-		assertEquals(3, provider.getMinElement(testarr2));
+		assertEquals(3, FirstTask.getMinElement(testarr2));
 		int[] testarr3 = null;
-		assertEquals(0, provider.getMinElement(testarr3));
+		assertEquals(0, FirstTask.getMinElement(testarr3));
 		int[] testarr4 = {};
-		assertEquals(0, provider.getMinElement(testarr4));
+		assertEquals(0, FirstTask.getMinElement(testarr4));
 	}
 
 	/**
@@ -62,15 +62,15 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testGetSum() {
-		FirstTask provider = new FirstTask();
+		new FirstTask();
 		int[] testarr = { 1, 2, 3, 4, 5 };
-		assertEquals(15, provider.getSum(testarr));
+		assertEquals(15, FirstTask.getSum(testarr));
 		int[] testarr2 = { 3 };
-		assertEquals(3, provider.getSum(testarr2));
+		assertEquals(3, FirstTask.getSum(testarr2));
 		int[] testarr3 = null;
-		assertEquals(0, provider.getSum(testarr3));
+		assertEquals(0, FirstTask.getSum(testarr3));
 		int[] testarr4 = {};
-		assertEquals(0, provider.getSum(testarr4));
+		assertEquals(0, FirstTask.getSum(testarr4));
 
 	}
 
@@ -79,15 +79,15 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testPrintArray() {
-		FirstTask provider = new FirstTask();
+		new FirstTask();
 		int[] testarr = { 1, 2, 3, 4, 5 };
-		assertEquals("[1,2,3,4,5]", provider.printArray(testarr));
+		assertEquals("[1,2,3,4,5]", FirstTask.printArray(testarr));
 		int[] testarr2 = { 3 };
-		assertEquals("[3]", provider.printArray(testarr2));
+		assertEquals("[3]", FirstTask.printArray(testarr2));
 		int[] testarr3 = null;
-		assertEquals("[]", provider.printArray(testarr3));
+		assertEquals("[]", FirstTask.printArray(testarr3));
 		int[] testarr4 = {};
-		assertEquals("[]", provider.printArray(testarr4));
+		assertEquals("[]", FirstTask.printArray(testarr4));
 
 	}
 
@@ -97,15 +97,15 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testCenterOfGravity() {
-		FirstTask provider = new FirstTask();
+		new FirstTask();
 		int[] testarr = { 1, 2, 3, 4, 5 };
-		assertEquals(3, provider.centerOfGravity(testarr));
+		assertEquals(3, FirstTask.centerOfGravity(testarr));
 		int[] testarr2 = { 3, 2, 2, 3, 2154 };
-		assertEquals(3, provider.centerOfGravity(testarr2));
+		assertEquals(3, FirstTask.centerOfGravity(testarr2));
 		int[] testarr3 = null;
-		assertEquals(0, provider.centerOfGravity(testarr3));
+		assertEquals(0, FirstTask.centerOfGravity(testarr3));
 		int[] testarr4 = {};
-		assertEquals(0, provider.centerOfGravity(testarr4));
+		assertEquals(0, FirstTask.centerOfGravity(testarr4));
 
 	}
 
@@ -114,8 +114,8 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testQuickSortEmpty() {
-		FirstTask provider = new FirstTask();
-		provider.quickSort(new int[0]);
+		new FirstTask();
+		FirstTask.quickSort(new int[0]);
 	}
 
 	/**
@@ -124,10 +124,10 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testQuickSortSingle() {
-		FirstTask provider = new FirstTask();
+		new FirstTask();
 		int[] tmp = new int[1];
 		tmp[0] = 20;
-		provider.quickSort(tmp);
+		FirstTask.quickSort(tmp);
 		assertTrue(isSorted(tmp));
 	}
 
@@ -141,8 +141,8 @@ public class FirstTaskTest {
 		for (int i = 0; i < array.length; i++) {
 			array[i] = generator.nextInt(MAX);
 		}
-		FirstTask provider = new FirstTask();
-		provider.quickSort(array);
+		new FirstTask();
+		FirstTask.quickSort(array);
 		assertTrue(isSorted(array));
 	}
 
@@ -167,8 +167,8 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testReverseEmpty() {
-		FirstTask provider = new FirstTask();
-		provider.reverse(new int[0]);
+		new FirstTask();
+		FirstTask.reverse(new int[0]);
 	}
 
 	/**
@@ -176,10 +176,10 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testReverseSingle() {
-		FirstTask provider = new FirstTask();
+		new FirstTask();
 		int[] tmp = new int[1];
 		tmp[0] = 20;
-		provider.reverse(tmp);
+		FirstTask.reverse(tmp);
 	}
 
 	/**
@@ -187,12 +187,12 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testReverse() {
-		FirstTask provider = new FirstTask();
+		new FirstTask();
 		int[] array = new int[SIZE];
 		for (int i = 0; i < array.length; i++) {
 			array[i] = i;
 		}
-		provider.reverse(array);
+		FirstTask.reverse(array);
 		assertTrue(isReversed(array));
 	}
 
@@ -213,9 +213,9 @@ public class FirstTaskTest {
 	@Test
 	public void testGenerator() {
 		String result;
-		FirstTask provider = new FirstTask();
+		new FirstTask();
 		for (int i = 1; i <= 5000; i++) {
-			result = provider.stringGenerator((i % 500) + 1);
+			result = FirstTask.stringGenerator((i % 500) + 1);
 			assertEquals((i % 500) + 1, result.length());
 			assertTrue(validString(result));
 		}

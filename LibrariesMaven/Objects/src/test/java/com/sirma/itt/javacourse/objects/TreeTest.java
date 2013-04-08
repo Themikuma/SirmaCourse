@@ -4,10 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.sirma.itt.javacourse.objects.Tree;
-import com.sirma.itt.javacourse.objects.TreeNode;
-
 /**
+ * Unit tests on the heterogeneous tree
+ * 
  * @author gdimitrov
  */
 public class TreeTest {

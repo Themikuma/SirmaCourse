@@ -8,8 +8,6 @@ import java.math.BigInteger;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sirma.itt.javacourse.objects.Sumator;
-
 /**
  * The tests on the custom sumator
  * 
@@ -30,7 +28,7 @@ public class SumatorTest {
 	public void testInt() {
 		int a = 4;
 		int b = 7;
-		assertEquals(11, sumator.sum(a, b));
+		assertEquals(11, Sumator.sum(a, b));
 	}
 
 	/**
@@ -48,9 +46,9 @@ public class SumatorTest {
 	 */
 	@Test
 	public void testString() {
-		String a = "The test";
-		String b = " has passed";
-		assertEquals("The test has passed", sumator.sum(a, b));
+		String a = "111";
+		String b = "111";
+		assertEquals(222, Sumator.sum(a, b));
 	}
 
 	/**
@@ -61,7 +59,7 @@ public class SumatorTest {
 		BigInteger a = new BigInteger("1111111111");
 		BigInteger b = new BigInteger("1111111111");
 		BigInteger expectedSum = new BigInteger("2222222222");
-		assertEquals(expectedSum, sumator.sum(a, b));
+		assertEquals(expectedSum, Sumator.sum(a, b));
 	}
 
 	/**
@@ -72,6 +70,6 @@ public class SumatorTest {
 		BigDecimal a = new BigDecimal("1111111111");
 		BigDecimal b = new BigDecimal("1111111111");
 		BigDecimal expectedSum = new BigDecimal("2222222222");
-		assertEquals(expectedSum, sumator.sum(a, b));
+		assertEquals(expectedSum, Sumator.sum(a, b));
 	}
 }

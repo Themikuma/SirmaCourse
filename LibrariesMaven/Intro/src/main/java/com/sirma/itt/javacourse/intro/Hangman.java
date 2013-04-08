@@ -11,13 +11,22 @@ public class Hangman {
 	private String word;
 	private String guessed;
 	private boolean newGame;
+	private HangmanReader hangmanReader;
 
+	/**
+	 * Getter for the newGame property
+	 * 
+	 * @return
+	 */
 	public boolean isNewGame() {
 		return newGame;
 	}
 
-	private HangmanReader hangmanReader;
-
+	/**
+	 * Constructs the hangman game using a class that implements the HangmanReader interface
+	 * 
+	 * @param hangmanReader
+	 */
 	public Hangman(HangmanReader hangmanReader) {
 		newGame = true;
 		this.hangmanReader = hangmanReader;
@@ -44,9 +53,8 @@ public class Hangman {
 		int moves = 0;
 		boolean win = false;
 		boolean found = false;
-		StringBuilder builder = new StringBuilder();
 		initGame();
-		builder.append(guessed);
+		StringBuilder builder = new StringBuilder(guessed);
 		int i;
 		while ((wrongGuesses < 7) && guessed.contains("*")) {
 			i = 0;

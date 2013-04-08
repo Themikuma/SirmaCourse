@@ -13,14 +13,14 @@ public class Tree<T> {
 	/**
 	 * Print the entire tree using the depth first search algorithm
 	 */
-	private void DFS(TreeNode<T> node) {
+	private void printDFS(TreeNode<T> node) {
 		if (this.root == null) {
 			return;
 		}
 		TreeNode<T> child = null;
 		for (int i = 0; i < node.childrenCount(); i++) {
 			child = node.getChild(i);
-			DFS(child);
+			printDFS(child);
 		}
 		System.out.println(node.getValue());
 	}
@@ -28,10 +28,13 @@ public class Tree<T> {
 	/**
 	 * The call to the recursive function, for easier user access;
 	 */
-	public void DFS() {
-		this.DFS(this.root);
+	public void printDFS() {
+		this.printDFS(this.root);
 	}
 
+	/**
+	 * @return the root of the tree
+	 */
 	public TreeNode<T> getRoot() {
 		return root;
 	}

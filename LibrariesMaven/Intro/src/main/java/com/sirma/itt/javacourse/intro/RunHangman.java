@@ -1,8 +1,11 @@
 package com.sirma.itt.javacourse.intro;
 
-import com.sirma.itt.javacourse.intro.Hangman;
-import com.sirma.itt.javacourse.intro.HangmanReaderImpl;
 
+/**
+ * Runs the hangman game
+ * 
+ * @author gdimitrov
+ */
 public class RunHangman {
 
 	public static void main(String[] args) {

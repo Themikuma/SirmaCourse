@@ -47,18 +47,18 @@ public class HangmanReaderImpl implements HangmanReader {
 		boolean newGame = false;
 		InputStream in = System.in;
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		char[] cbuf = new char[1];
+		char cbuf = 0;
 
 		while (true) {
 			System.out.println("New game y/n");
 			try {
-				cbuf[0] = br.readLine().charAt(0);
+				cbuf = br.readLine().charAt(0);
 			} catch (Exception e) {
 			}
-			if (cbuf[0] == 'n') {
+			if (cbuf == 'n') {
 				newGame = false;
 				break;
-			} else if (cbuf[0] == 'y') {
+			} else if (cbuf == 'y') {
 				newGame = true;
 				break;
 			}

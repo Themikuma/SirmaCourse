@@ -9,17 +9,17 @@ import org.junit.Test;
 import com.sirma.itt.javacourse.objects.BinaryTree;
 
 public class BinaryTreeTest {
-	private BinaryTree Btree;
+	private BinaryTree binarytree;
 
 	@Before
 	public void setup() {
-		Btree = new BinaryTree();
-		Btree.insert(5);
-		Btree.insert(3);
-		Btree.insert(4);
-		Btree.insert(13);
-		Btree.insert(15);
-		Btree.insert(1);
+		binarytree = new BinaryTree();
+		binarytree.insert(5);
+		binarytree.insert(3);
+		binarytree.insert(4);
+		binarytree.insert(13);
+		binarytree.insert(15);
+		binarytree.insert(1);
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class BinaryTreeTest {
 	public void testAddDuplicateElement() {
 		Throwable caught = null;
 		try {
-			Btree.insert(5);
+			binarytree.insert(5);
 		} catch (Exception e) {
 			caught = e;
 		}
@@ -42,7 +42,7 @@ public class BinaryTreeTest {
 	@Test
 	public void testSortTree() {
 		String printSorted = new String();
-		printSorted = Btree.sortTree();
+		printSorted = binarytree.sortTree();
 		assertEquals("1 3 4 5 13 15 ", printSorted);
 	}
 
@@ -51,7 +51,7 @@ public class BinaryTreeTest {
 	 */
 	@Test
 	public void testFound() {
-		assertTrue(Btree.search(3));
+		assertTrue(binarytree.search(3));
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class BinaryTreeTest {
 	 */
 	@Test
 	public void testNotFound() {
-		assertTrue(!Btree.search(2));
+		assertTrue(!binarytree.search(2));
 	}
 
 }

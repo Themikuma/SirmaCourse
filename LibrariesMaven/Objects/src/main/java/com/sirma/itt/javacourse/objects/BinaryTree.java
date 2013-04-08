@@ -24,6 +24,10 @@ public class BinaryTree {
 		}
 	}
 
+	/**
+	 * Constructor that sets the root to null
+	 */
+
 	public BinaryTree() {
 		this.root = null;
 	}

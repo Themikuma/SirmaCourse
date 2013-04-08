@@ -1,7 +1,10 @@
 package com.sirma.itt.javacourse.objects;
 
-import com.sirma.itt.javacourse.objects.TreeNode;
-
+/**
+ * This class runs the heterogeneous tree
+ * 
+ * @author gdimitrov
+ */
 public class RunTree {
 	public static void main(String[] args) {
 		Tree<Integer> tree = new Tree<>(5);
@@ -10,6 +13,6 @@ public class RunTree {
 		tree.getRoot().getChild(0).addChild(new TreeNode<Integer>(12));
 		tree.getRoot().addChild(new TreeNode<Integer>(7));
 		tree.getRoot().getChild(1).addChild(new TreeNode<Integer>(9));
-		tree.DFS();
+		tree.printDFS();
 	}
 }

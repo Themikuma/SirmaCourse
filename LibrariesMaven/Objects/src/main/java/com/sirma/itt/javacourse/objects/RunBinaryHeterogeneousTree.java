@@ -2,8 +2,11 @@ package com.sirma.itt.javacourse.objects;
 
 import java.util.ArrayList;
 
-import com.sirma.itt.javacourse.objects.BinaryHeterogeneousTree;
-
+/**
+ * Runs a main method that uses a BinaryHeterogeneousTree
+ * 
+ * @author gdimitrov
+ */
 public class RunBinaryHeterogeneousTree {
 
 	/**
