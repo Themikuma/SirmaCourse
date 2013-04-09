@@ -14,7 +14,7 @@ public class Hangman {
 	private HangmanReader hangmanReader;
 
 	/**
-	 * Getter for the newGame property
+	 * Gets the newGame property
 	 * 
 	 * @return
 	 */

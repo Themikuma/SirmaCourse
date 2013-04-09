@@ -1,7 +1,6 @@
 package com.sirma.itt.javacourse.intro;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
@@ -13,9 +12,8 @@ public class HangmanReaderImpl implements HangmanReader {
 
 	public String startGame() {
 		boolean incorrectWord = true;
-		InputStream in = System.in;
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String word = new String();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String word = null;
 		while (incorrectWord) {
 			System.out.println("Enter the word to guess");
 			try {
@@ -33,8 +31,7 @@ public class HangmanReaderImpl implements HangmanReader {
 
 	public char move() {
 		char cbuf = 0;
-		InputStream in = System.in;
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Enter a letter from the word");
 		try {
 			cbuf = br.readLine().toLowerCase().charAt(0);
@@ -45,14 +42,13 @@ public class HangmanReaderImpl implements HangmanReader {
 
 	public boolean endGame() {
 		boolean newGame = false;
-		InputStream in = System.in;
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		char cbuf = 0;
 
 		while (true) {
 			System.out.println("New game y/n");
 			try {
-				cbuf = br.readLine().charAt(0);
+				cbuf = br.readLine().toLowerCase().charAt(0);
 			} catch (Exception e) {
 			}
 			if (cbuf == 'n') {

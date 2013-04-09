@@ -196,6 +196,13 @@ public class FirstTaskTest {
 		assertTrue(isReversed(array));
 	}
 
+	/**
+	 * Checks if the input array has been reversed
+	 * 
+	 * @param array
+	 *            the input array
+	 * @return true if the array is reversed, false otherwise.
+	 */
 	private boolean isReversed(int[] array) {
 		for (int i : array) {
 			if (array[i] != (SIZE - i - 1)) {
