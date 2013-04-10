@@ -28,7 +28,7 @@ public class SumatorTest {
 	 * Test the integer sumator.
 	 */
 	@Test
-	public void testInt() {
+	public void testSumInt() {
 		int a = 4;
 		int b = 7;
 		assertEquals(11, Sumator.sum(a, b));
@@ -38,7 +38,7 @@ public class SumatorTest {
 	 * Test the real numbers sumator.
 	 */
 	@Test
-	public void testReal() {
+	public void testSumReal() {
 		double a = 4.3;
 		double b = 5.6;
 		assertEquals(9.9, sumator.sum(a, b), 0.0000000001);
@@ -48,7 +48,7 @@ public class SumatorTest {
 	 * Test the strings sumator.
 	 */
 	@Test
-	public void testString() {
+	public void testSumString() {
 		String a = "111";
 		String b = "111";
 		assertEquals(222, Sumator.sum(a, b));
@@ -58,7 +58,7 @@ public class SumatorTest {
 	 * Test the BigInteger sumator.
 	 */
 	@Test
-	public void testBigInteger() {
+	public void testSumBigInteger() {
 		BigInteger a = new BigInteger("1111111111");
 		BigInteger b = new BigInteger("1111111111");
 		BigInteger expectedSum = new BigInteger("2222222222");
@@ -69,7 +69,7 @@ public class SumatorTest {
 	 * Test the BigDecimal sumator.
 	 */
 	@Test
-	public void testBigDecimal() {
+	public void testSumBigDecimal() {
 		BigDecimal a = new BigDecimal("1111111111");
 		BigDecimal b = new BigDecimal("1111111111");
 		BigDecimal expectedSum = new BigDecimal("2222222222");

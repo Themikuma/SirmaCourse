@@ -41,7 +41,7 @@ public class BinaryHeterogeneousTreeTest {
 	 * a message "Duplicate items"
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testAddDuplicateElement() {
+	public void testAddWithDuplicateElements() {
 		tree.insert("two");
 	}
 
@@ -50,7 +50,7 @@ public class BinaryHeterogeneousTreeTest {
 	 * object. Should not find the object
 	 */
 	@Test
-	public void testSearchFail() {
+	public void testSearchWithMissingValue() {
 		ArrayList<Integer> arrayList = new ArrayList<>();
 		arrayList.add(2);
 		arrayList.add(34);
@@ -65,7 +65,7 @@ public class BinaryHeterogeneousTreeTest {
 	 * Searching for an object that has been added previously to the tree. Should find it.
 	 */
 	@Test
-	public void testSearchSuccess() {
+	public void testSearchWithExistingValue() {
 		assertTrue(tree.search("two"));
 
 	}

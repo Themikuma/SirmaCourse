@@ -28,7 +28,6 @@ public class BinaryHeterogeneousTree {
 	 * @param currentNode
 	 *            - the current node that is being checked
 	 * @return the configured node
-	 * @throws IllegalArgumentException
 	 */
 	private BinaryHeterogeneousTreeNode insert(Object value, BinaryHeterogeneousTreeNode currentNode) {
 		BinaryHeterogeneousTreeNode binaryHeterogeneousTreeNode = currentNode;

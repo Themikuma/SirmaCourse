@@ -26,7 +26,7 @@ public class TreeTest {
 	 * This test adds an element and then asserts if the element is added in the right position.
 	 */
 	@Test
-	public void testAddElement() {
+	public void testAddChild() {
 		tree.getRoot().addChild(new TreeNode<String>("leaf2"));
 		String value = tree.getRoot().getChild(1).getValue();
 		assertEquals(value, "leaf2");
@@ -36,7 +36,7 @@ public class TreeTest {
 	 * This test tries to add the same node twice which causes an exception.
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testAddElementFail() {
+	public void testAddChildWithDuplicateValue() {
 		TreeNode<String> node = new TreeNode<String>("leaf");
 		tree.getRoot().addChild(node);
 		tree.getRoot().addChild(node);
@@ -46,7 +46,7 @@ public class TreeTest {
 	 * This test tries to add a null element which causes an exception.
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testAddElementNull() {
+	public void testAddChildWithNull() {
 		tree.getRoot().addChild(new TreeNode<String>(null));
 	}
 }

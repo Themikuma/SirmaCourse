@@ -32,7 +32,7 @@ public class BinaryTreeTest {
 	 * This test tries to add an element for the second time. It should get an exception
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testAddDuplicateElement() {
+	public void testInsertWithDuplicateValue() {
 		binarytree.insert(5);
 	}
 
@@ -40,7 +40,7 @@ public class BinaryTreeTest {
 	 * This test prints out the sorted items from the tree.
 	 */
 	@Test
-	public void testSortTree() {
+	public void testPrintSorted() {
 		String printSorted = new String();
 		printSorted = binarytree.printTree();
 		assertEquals("1 3 4 5 13 15 ", printSorted);
@@ -50,7 +50,7 @@ public class BinaryTreeTest {
 	 * This test searches for an element that exists in the tree.
 	 */
 	@Test
-	public void testFound() {
+	public void testSearchWithExistingValue() {
 		assertTrue(binarytree.search(3));
 	}
 
@@ -58,7 +58,7 @@ public class BinaryTreeTest {
 	 * This test searches for an element that doesn't exist in the tree.
 	 */
 	@Test
-	public void testNotFound() {
+	public void testWithNonexistingValue() {
 		assertTrue(!binarytree.search(2));
 	}
 

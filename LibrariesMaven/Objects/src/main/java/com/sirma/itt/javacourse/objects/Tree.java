@@ -20,7 +20,7 @@ public class Tree<T> {
 		if (value == null) {
 			throw new IllegalArgumentException("Cannot insert null");
 		}
-		this.root = new TreeNode<T>(value);
+		root = new TreeNode<T>(value);
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class Tree<T> {
 	 *            the current node that is being searched.
 	 */
 	private void printDFS(TreeNode<T> node) {
-		if (this.root == null) {
+		if (root == null) {
 			return;
 		}
 		TreeNode<T> child = null;
@@ -45,7 +45,7 @@ public class Tree<T> {
 	 * The call to the recursive function, for easier user access.
 	 */
 	public void printDFS() {
-		this.printDFS(this.root);
+		this.printDFS(root);
 	}
 
 	/**

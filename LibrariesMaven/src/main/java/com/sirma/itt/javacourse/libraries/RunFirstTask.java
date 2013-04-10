@@ -1,6 +1,6 @@
 package com.sirma.itt.javacourse.libraries;
 
-import main.java.FirstTask;
+import com.sirma.itt.javacourse.intro.FirstTask;
 
 /**
  * This class runs some of the methods from the imported JAR that contains all of the solutions to
@@ -22,8 +22,7 @@ public final class RunFirstTask {
 	 *            array of command-line arguments passed to this method
 	 */
 	public static void main(String[] args) {
-		FirstTask firstTask = new FirstTask();
-		System.out.println(firstTask.gcd(100, 44));
-		System.out.println(firstTask.lcm(254, 566));
+		System.out.println(FirstTask.gcd(100, 44));
+		System.out.println(FirstTask.lcm(254, 566));
 	}
 }
