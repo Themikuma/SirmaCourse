@@ -14,18 +14,19 @@ public class Hangman {
 	private HangmanReader hangmanReader;
 
 	/**
-	 * Gets the newGame property
+	 * Getter method for newGame.
 	 * 
-	 * @return
+	 * @return the newGame
 	 */
 	public boolean isNewGame() {
 		return newGame;
 	}
 
 	/**
-	 * Constructs the hangman game using a class that implements the HangmanReader interface
+	 * Constructs the hangman game using a class that implements the HangmanReader interface.
 	 * 
 	 * @param hangmanReader
+	 *            the kind of input the game will be using.
 	 */
 	public Hangman(HangmanReader hangmanReader) {
 		newGame = true;
@@ -33,7 +34,7 @@ public class Hangman {
 	}
 
 	/**
-	 * This method initializes a new game
+	 * This method initializes a new game.
 	 */
 	private void initGame() {
 		word = hangmanReader.startGame();
@@ -90,10 +91,11 @@ public class Hangman {
 			win = true;
 		}
 		if (hangmanReader.endGame()) {
-			this.newGame = true;
+			newGame = true;
 		} else {
-			this.newGame = false;
+			newGame = false;
 		}
 		return win;
 	}
+
 }

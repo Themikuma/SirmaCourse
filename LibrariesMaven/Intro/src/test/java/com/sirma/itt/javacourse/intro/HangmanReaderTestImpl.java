@@ -13,6 +13,7 @@ public class HangmanReaderTestImpl implements HangmanReader {
 	private String[] words = { "guess", "troll", "wrong" };
 	private int nextWord = 0;
 
+	@Override
 	public String startGame() {
 		String result = words[nextWord];
 		nextWord++;
@@ -20,12 +21,14 @@ public class HangmanReaderTestImpl implements HangmanReader {
 		return result;
 	}
 
+	@Override
 	public char move() {
 		char result = guesses[nextItem];
 		nextItem++;
 		return result;
 	}
 
+	@Override
 	public boolean endGame() {
 		return true;
 	}

@@ -15,15 +15,14 @@ import org.junit.Test;
  */
 public class FirstTaskTest {
 
-	private final static int SIZE = 99;
-	private final static int MAX = 100;
+	private static final int SIZE = 99;
+	private static final int MAX = 100;
 
 	/**
 	 * Testing the greatest common divisor function. The three asserts test all code paths.
 	 */
 	@Test
 	public void testGCD() {
-		new FirstTask();
 		assertEquals(3, FirstTask.gcd(3, 6));
 		assertEquals(121, FirstTask.gcd(121, 121));
 		assertEquals(6, FirstTask.gcd(24, 6));
@@ -34,7 +33,6 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testLCM() {
-		new FirstTask();
 		assertEquals(6, FirstTask.lcm(3, 6));
 		assertEquals(121, FirstTask.lcm(121, 121));
 		assertEquals(24, FirstTask.lcm(24, 6));
@@ -46,7 +44,6 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testGetMinElement() {
-		new FirstTask();
 		int[] testarr = { 4, 5, 2, 1, 89, -2 };
 		assertEquals(-2, FirstTask.getMinElement(testarr));
 		int[] testarr2 = { 3 };
@@ -62,7 +59,6 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testGetSum() {
-		new FirstTask();
 		int[] testarr = { 1, 2, 3, 4, 5 };
 		assertEquals(15, FirstTask.getSum(testarr));
 		int[] testarr2 = { 3 };
@@ -79,7 +75,6 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testPrintArray() {
-		new FirstTask();
 		int[] testarr = { 1, 2, 3, 4, 5 };
 		assertEquals("[1,2,3,4,5]", FirstTask.printArray(testarr));
 		int[] testarr2 = { 3 };
@@ -97,7 +92,6 @@ public class FirstTaskTest {
 	 */
 	@Test
 	public void testCenterOfGravity() {
-		new FirstTask();
 		int[] testarr = { 1, 2, 3, 4, 5 };
 		assertEquals(3, FirstTask.centerOfGravity(testarr));
 		int[] testarr2 = { 3, 2, 2, 3, 2154 };
@@ -110,21 +104,19 @@ public class FirstTaskTest {
 	}
 
 	/**
-	 * This tests the quicksort function's behavior when it's called using an empty array
+	 * This tests the quick sort function's behavior when it's called using an empty array.
 	 */
 	@Test
 	public void testQuickSortEmpty() {
-		new FirstTask();
 		FirstTask.quickSort(new int[0]);
 	}
 
 	/**
-	 * This tests the quicksort function's behavior when it's called using a single value in an
-	 * array
+	 * This tests the quick sort function's behavior when it's called using a single value in an
+	 * array.
 	 */
 	@Test
 	public void testQuickSortSingle() {
-		new FirstTask();
 		int[] tmp = new int[1];
 		tmp[0] = 20;
 		FirstTask.quickSort(tmp);
@@ -132,7 +124,7 @@ public class FirstTaskTest {
 	}
 
 	/**
-	 * This tests the quicksort function's behavior when it's called using a random array
+	 * This tests the quick sort function's behavior when it's called using a random array.
 	 */
 	@Test
 	public void testQuickSort() {
@@ -141,13 +133,12 @@ public class FirstTaskTest {
 		for (int i = 0; i < array.length; i++) {
 			array[i] = generator.nextInt(MAX);
 		}
-		new FirstTask();
 		FirstTask.quickSort(array);
 		assertTrue(isSorted(array));
 	}
 
 	/**
-	 * Checks whether the array is sorted
+	 * Checks whether the array is sorted.
 	 * 
 	 * @param arr
 	 *            - the array to be checked
@@ -163,31 +154,28 @@ public class FirstTaskTest {
 	}
 
 	/**
-	 * This tests the reverse function's behavior when it's called using an empty array
+	 * This tests the reverse function's behavior when it's called using an empty array.
 	 */
 	@Test
 	public void testReverseEmpty() {
-		new FirstTask();
 		FirstTask.reverse(new int[0]);
 	}
 
 	/**
-	 * This tests the reverse function's behavior when it's called using a single value in an array
+	 * This tests the reverse function's behavior when it's called using a single value in an array.
 	 */
 	@Test
 	public void testReverseSingle() {
-		new FirstTask();
 		int[] tmp = new int[1];
 		tmp[0] = 20;
 		FirstTask.reverse(tmp);
 	}
 
 	/**
-	 * This tests the reverse function's behavior when it's called using the array [1,2...SIZE]
+	 * This tests the reverse function's behavior when it's called using the array [1,2...SIZE].
 	 */
 	@Test
 	public void testReverse() {
-		new FirstTask();
 		int[] array = new int[SIZE];
 		for (int i = 0; i < array.length; i++) {
 			array[i] = i;
@@ -197,7 +185,7 @@ public class FirstTaskTest {
 	}
 
 	/**
-	 * Checks if the input array has been reversed
+	 * Checks if the input array has been reversed.
 	 * 
 	 * @param array
 	 *            the input array
@@ -220,7 +208,6 @@ public class FirstTaskTest {
 	@Test
 	public void testGenerator() {
 		String result;
-		new FirstTask();
 		for (int i = 1; i <= 5000; i++) {
 			result = FirstTask.stringGenerator((i % 500) + 1);
 			assertEquals((i % 500) + 1, result.length());
@@ -229,7 +216,7 @@ public class FirstTaskTest {
 	}
 
 	/**
-	 * Validates if the input string is a valid string
+	 * Validates if the input string is a valid string.
 	 * 
 	 * @param generated
 	 *            - the string to be validated

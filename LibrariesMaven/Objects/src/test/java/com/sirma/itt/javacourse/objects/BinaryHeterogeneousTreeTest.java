@@ -1,6 +1,5 @@
 package com.sirma.itt.javacourse.objects;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -8,13 +7,17 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sirma.itt.javacourse.objects.BinaryHeterogeneousTree;
-
+/**
+ * Tests for the binary heterogeneous tree.
+ * 
+ * @author gdimitrov
+ */
 public class BinaryHeterogeneousTreeTest {
+
 	private BinaryHeterogeneousTree tree;
 
 	/**
-	 * Initialize the tree structure before each test
+	 * Initialize the tree structure before each test.
 	 */
 	@Before
 	public void testSetup() {
@@ -37,15 +40,9 @@ public class BinaryHeterogeneousTreeTest {
 	 * Trying to add "two" to the tree again. Should fail throwing an IllegalArgumentException with
 	 * a message "Duplicate items"
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testAddDuplicateElement() {
-		Throwable caught = null;
-		try {
-			tree.insert("two");
-		} catch (Exception e) {
-			caught = e;
-		}
-		assertEquals("Duplicate items", caught.getMessage());
+		tree.insert("two");
 	}
 
 	/**

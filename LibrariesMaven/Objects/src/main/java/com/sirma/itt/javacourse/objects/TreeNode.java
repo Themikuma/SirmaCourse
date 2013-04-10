@@ -2,11 +2,24 @@ package com.sirma.itt.javacourse.objects;
 
 import java.util.ArrayList;
 
+/**
+ * A single node from the tree.
+ * 
+ * @param <T>
+ *            the type of the node.
+ * @author gdimitrov
+ */
 public class TreeNode<T> {
 	private T value;
 	private ArrayList<TreeNode<T>> children;
 	private boolean hasParent;
 
+	/**
+	 * Constructor for a node of the tree.
+	 * 
+	 * @param value
+	 *            the value of the node
+	 */
 	public TreeNode(T value) {
 		if (value == null) {
 			throw new IllegalArgumentException("Cannot insert null");
@@ -17,7 +30,7 @@ public class TreeNode<T> {
 	}
 
 	/**
-	 * adds the given TreeNode<T> to the tree structure
+	 * adds the given TreeNode<T> to the tree structure.
 	 * 
 	 * @param child
 	 *            - TreeNode<T> to be added
@@ -49,7 +62,7 @@ public class TreeNode<T> {
 	}
 
 	/**
-	 * Get the children count
+	 * Get the children count.
 	 * 
 	 * @return children count
 	 */
@@ -58,7 +71,7 @@ public class TreeNode<T> {
 	}
 
 	/**
-	 * Get the child at index
+	 * Get the child at index.
 	 * 
 	 * @param index
 	 *            the index of the child

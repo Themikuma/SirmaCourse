@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
  */
 public class HangmanReaderImpl implements HangmanReader {
 
+	@Override
 	public String startGame() {
 		boolean incorrectWord = true;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,6 +30,7 @@ public class HangmanReaderImpl implements HangmanReader {
 		return word.toLowerCase();
 	}
 
+	@Override
 	public char move() {
 		char cbuf = 0;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -40,6 +42,7 @@ public class HangmanReaderImpl implements HangmanReader {
 		return cbuf;
 	}
 
+	@Override
 	public boolean endGame() {
 		boolean newGame = false;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

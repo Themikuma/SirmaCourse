@@ -11,43 +11,13 @@ public class BinaryHeterogeneousTree {
 	private BinaryHeterogeneousTreeNode root;
 
 	/**
-	 * This class implements a single node in the tree
-	 */
-	private class BinaryHeterogeneousTreeNode implements Comparable<Object> {
-		private Object value;
-		private BinaryHeterogeneousTreeNode leftChild;
-		private BinaryHeterogeneousTreeNode rightChild;
-
-		public BinaryHeterogeneousTreeNode(Object value) {
-			this.value = value;
-			leftChild = null;
-			rightChild = null;
-		}
-
-		@Override
-		public int compareTo(Object o) {
-			if (System.identityHashCode(this.value) > System.identityHashCode(o)) {
-				return 1;
-			}
-			if (System.identityHashCode(this.value) < System.identityHashCode(o)) {
-				return -1;
-			}
-			return 0;
-		}
-	}
-
-	public BinaryHeterogeneousTree() {
-		this.root = null;
-	}
-
-	/**
-	 * Inserts a value in the tree
+	 * Inserts a value in the tree.
 	 * 
 	 * @param value
 	 *            - value to be inserted
 	 */
 	public void insert(Object value) {
-		this.root = insert(value, root);
+		root = insert(value, root);
 	}
 
 	/**
@@ -58,20 +28,22 @@ public class BinaryHeterogeneousTree {
 	 * @param currentNode
 	 *            - the current node that is being checked
 	 * @return the configured node
+	 * @throws IllegalArgumentException
 	 */
 	private BinaryHeterogeneousTreeNode insert(Object value, BinaryHeterogeneousTreeNode currentNode) {
+		BinaryHeterogeneousTreeNode binaryHeterogeneousTreeNode = currentNode;
 		if (currentNode == null) {
-			currentNode = new BinaryHeterogeneousTreeNode(value);
+			binaryHeterogeneousTreeNode = new BinaryHeterogeneousTreeNode(value);
 		} else {
-			if (currentNode.compareTo(value) == -1) {
+			if (currentNode.compareTo(value) <= -1) {
 				currentNode.rightChild = insert(value, currentNode.rightChild);
-			} else if (currentNode.compareTo(value) == 1) {
+			} else if (currentNode.compareTo(value) >= 1) {
 				currentNode.leftChild = insert(value, currentNode.leftChild);
 			} else {
 				throw new IllegalArgumentException("Duplicate items");
 			}
 		}
-		return currentNode;
+		return binaryHeterogeneousTreeNode;
 	}
 
 	/**
@@ -80,11 +52,11 @@ public class BinaryHeterogeneousTree {
 	 * @return the tree as a sorted string
 	 */
 	public String printTree() {
-		return printTree(this.root);
+		return printTree(root);
 	}
 
 	/**
-	 * The actual implementation of the printTree function
+	 * The actual implementation of the printTree function.
 	 * 
 	 * @param currentNode
 	 *            - the current node that is being checked
@@ -102,8 +74,13 @@ public class BinaryHeterogeneousTree {
 		return builder.toString();
 	}
 
+	/**
+	 * @param value
+	 *            the search value
+	 * @return true if the element was found
+	 */
 	public boolean search(Object value) {
-		return search(this.root, value);
+		return search(root, value);
 	}
 
 	/**
@@ -117,12 +94,39 @@ public class BinaryHeterogeneousTree {
 		if (currentNode.compareTo(value) == 0) {
 			return true;
 		}
-		if ((currentNode.compareTo(value) == 1) && (currentNode.leftChild != null)) {
+		if ((currentNode.compareTo(value) >= 1) && (currentNode.leftChild != null)) {
 			return search(currentNode.leftChild, value);
-		} else if ((currentNode.compareTo(value) == -1) && (currentNode.rightChild != null)) {
+		} else if ((currentNode.compareTo(value) <= -1) && (currentNode.rightChild != null)) {
 			return search(currentNode.rightChild, value);
 		}
 		return false;
+	}
+
+	/**
+	 * This class implements a single node in the tree.
+	 */
+	private static class BinaryHeterogeneousTreeNode implements Comparable<Object> {
+		private Object value;
+		private BinaryHeterogeneousTreeNode leftChild;
+		private BinaryHeterogeneousTreeNode rightChild;
+
+		/**
+		 * The tree node constructor. It constructs a node with no child elements and the given
+		 * value.
+		 * 
+		 * @param value
+		 *            the value of the item to be inserted
+		 */
+		public BinaryHeterogeneousTreeNode(Object value) {
+			this.value = value;
+			leftChild = null;
+			rightChild = null;
+		}
+
+		@Override
+		public int compareTo(Object o) {
+			return System.identityHashCode(value) - System.identityHashCode(o);
+		}
 	}
 
 }

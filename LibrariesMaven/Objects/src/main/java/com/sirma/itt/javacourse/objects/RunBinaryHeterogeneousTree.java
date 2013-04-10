@@ -3,14 +3,24 @@ package com.sirma.itt.javacourse.objects;
 import java.util.ArrayList;
 
 /**
- * Runs a main method that uses a BinaryHeterogeneousTree
+ * Runs a program that uses a binary heterogeneous tree.
  * 
  * @author gdimitrov
  */
-public class RunBinaryHeterogeneousTree {
+public final class RunBinaryHeterogeneousTree {
+	/**
+	 * Private constructor for an utility class.
+	 */
+	private RunBinaryHeterogeneousTree() {
+
+	}
 
 	/**
+	 * A program that uses a binary heterogeneous tree, to insert elements of a different type in
+	 * the same tree.
+	 * 
 	 * @param args
+	 *            array of command-line arguments passed to this method
 	 */
 	public static void main(String[] args) {
 		BinaryHeterogeneousTree tree = new BinaryHeterogeneousTree();
@@ -42,5 +52,4 @@ public class RunBinaryHeterogeneousTree {
 			System.out.println("Not found");
 		}
 	}
-
 }

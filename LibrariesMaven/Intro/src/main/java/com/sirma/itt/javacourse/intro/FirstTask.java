@@ -10,9 +10,16 @@ import java.util.Random;
  * 
  * @author gdimitrov
  */
-public class FirstTask {
+public final class FirstTask {
 	/**
-	 * Finds the greatest common divisor of two numbers
+	 * Private constructor for a utility class.
+	 */
+	private FirstTask() {
+
+	}
+
+	/**
+	 * Finds the greatest common divisor of two numbers.
 	 * 
 	 * @param firstNumber
 	 *            - the first number
@@ -32,7 +39,7 @@ public class FirstTask {
 	}
 
 	/**
-	 * Finds the least common multiple of two numbers
+	 * Finds the least common multiple of two numbers.
 	 * 
 	 * @param firstNumber
 	 *            - the first number
@@ -46,7 +53,7 @@ public class FirstTask {
 	}
 
 	/**
-	 * Finds the smallest number in an array of integers
+	 * Finds the smallest number in an array of integers.
 	 * 
 	 * @param array
 	 *            - The input array
@@ -65,7 +72,7 @@ public class FirstTask {
 	}
 
 	/**
-	 * Finds the sum of all the numbers in an array of integers
+	 * Finds the sum of all the numbers in an array of integers.
 	 * 
 	 * @param array
 	 *            - The input array
@@ -83,10 +90,11 @@ public class FirstTask {
 	}
 
 	/**
-	 * Prints the entire array in the form [element1,element2,element3]
+	 * Prints the entire array in the form [element1,element2,element3].
 	 * 
 	 * @param array
 	 *            - The input array
+	 * @return the string to be printed
 	 */
 	public static String printArray(int[] array) {
 		if ((array == null) || (array.length == 0)) {
@@ -105,7 +113,7 @@ public class FirstTask {
 
 	/**
 	 * Finds the center of gravity of an array. The sum of elements before the center of gravity is
-	 * the closest possible to the sum of the elements after it
+	 * the closest possible to the sum of the elements after it.
 	 * 
 	 * @param array
 	 *            - The input array
@@ -132,7 +140,7 @@ public class FirstTask {
 	}
 
 	/**
-	 * This method sorts an array using the quicksort method
+	 * This method sorts an array using the quick sort method.
 	 * 
 	 * @param arr
 	 *            - the array to be sorted
@@ -148,7 +156,7 @@ public class FirstTask {
 	/**
 	 * This is the recursive overload of the function that splits the array in two and sorts it. It
 	 * is used only internally, so the call to the function can be made using an array only, without
-	 * pointing to it's end and beginning
+	 * pointing to it's end and beginning.
 	 * 
 	 * @param arr
 	 *            - the array to be sorted
@@ -184,7 +192,7 @@ public class FirstTask {
 	}
 
 	/**
-	 * This method reverses a given array without using additional arrays
+	 * This method reverses a given array without using additional arrays.
 	 * 
 	 * @param arr
 	 *            - The array that is going to be reversed
@@ -202,7 +210,7 @@ public class FirstTask {
 	}
 
 	/**
-	 * This method generates a random string of lower and upper case letters and digits 0-9
+	 * This method generates a random string of lower and upper case letters and digits 0-9.
 	 * 
 	 * @param length
 	 *            - the length of the generated string
@@ -224,7 +232,7 @@ public class FirstTask {
 	}
 
 	/**
-	 * Checks if the symbol that is going to be appended is valid
+	 * Checks if the symbol that is going to be appended is valid.
 	 * 
 	 * @param next
 	 *            - the symbol to be checked

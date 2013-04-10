@@ -10,36 +10,13 @@ public class BinaryTree {
 	private BinaryTreeNode root;
 
 	/**
-	 * This class implements a single node in the tree
-	 */
-	private class BinaryTreeNode {
-		private int value;
-		private BinaryTreeNode leftChild;
-		private BinaryTreeNode rightChild;
-
-		public BinaryTreeNode(int value) {
-			this.value = value;
-			leftChild = null;
-			rightChild = null;
-		}
-	}
-
-	/**
-	 * Constructor that sets the root to null
-	 */
-
-	public BinaryTree() {
-		this.root = null;
-	}
-
-	/**
-	 * Inserts a value in the tree
+	 * Inserts a value in the tree.
 	 * 
 	 * @param value
 	 *            - value to be inserted
 	 */
 	public void insert(int value) {
-		this.root = insert(value, root);
+		root = insert(value, root);
 	}
 
 	/**
@@ -52,8 +29,9 @@ public class BinaryTree {
 	 * @return the configured node
 	 */
 	private BinaryTreeNode insert(int value, BinaryTreeNode currentNode) {
+		BinaryTreeNode binaryTreeNode = currentNode;
 		if (currentNode == null) {
-			currentNode = new BinaryTreeNode(value);
+			binaryTreeNode = new BinaryTreeNode(value);
 		} else {
 			if (value > currentNode.value) {
 				currentNode.rightChild = insert(value, currentNode.rightChild);
@@ -63,7 +41,7 @@ public class BinaryTree {
 				throw new IllegalArgumentException("Duplicate items");
 			}
 		}
-		return currentNode;
+		return binaryTreeNode;
 	}
 
 	/**
@@ -71,38 +49,38 @@ public class BinaryTree {
 	 * 
 	 * @return the tree as a sorted string
 	 */
-	public String sortTree() {
-		return sortTree(this.root);
+	public String printTree() {
+		return printTree(root);
 	}
 
 	/**
-	 * The actual implementation of the sortTree function
+	 * The actual implementation of the sortTree function.
 	 * 
 	 * @param currentNode
 	 *            - the current node that is being checked
 	 * @return the sorted string so far.
 	 */
-	private String sortTree(BinaryTreeNode currentNode) {
+	private String printTree(BinaryTreeNode currentNode) {
 		StringBuilder builder = new StringBuilder();
 		if (currentNode.leftChild != null) {
-			builder.append(sortTree(currentNode.leftChild));
+			builder.append(printTree(currentNode.leftChild));
 		}
 		builder.append(currentNode.value + " ");
 		if (currentNode.rightChild != null) {
-			builder.append(sortTree(currentNode.rightChild));
+			builder.append(printTree(currentNode.rightChild));
 		}
 		return builder.toString();
 	}
 
 	/**
-	 * Determines whether or not a given value is found in the tree
+	 * Determines whether or not a given value is found in the tree.
 	 * 
 	 * @param value
 	 *            - the value that's being searched for
 	 * @return True if the value was found.
 	 */
 	public boolean search(int value) {
-		return search(this.root, value);
+		return search(root, value);
 	}
 
 	/**
@@ -123,4 +101,26 @@ public class BinaryTree {
 		}
 		return false;
 	}
+
+	/**
+	 * This class implements a single node in the tree.
+	 */
+	private static class BinaryTreeNode {
+		private int value;
+		private BinaryTreeNode leftChild;
+		private BinaryTreeNode rightChild;
+
+		/**
+		 * The default constructor of a tree node.
+		 * 
+		 * @param value
+		 *            the value of the node
+		 */
+		public BinaryTreeNode(int value) {
+			this.value = value;
+			leftChild = null;
+			rightChild = null;
+		}
+	}
+
 }

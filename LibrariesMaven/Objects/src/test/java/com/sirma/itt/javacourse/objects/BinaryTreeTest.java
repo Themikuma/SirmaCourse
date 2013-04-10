@@ -6,11 +6,17 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sirma.itt.javacourse.objects.BinaryTree;
-
+/**
+ * Tests on the binary tree class.
+ * 
+ * @author gdimitrov
+ */
 public class BinaryTreeTest {
 	private BinaryTree binarytree;
 
+	/**
+	 * Setup for the tests.
+	 */
 	@Before
 	public void setup() {
 		binarytree = new BinaryTree();
@@ -25,15 +31,9 @@ public class BinaryTreeTest {
 	/**
 	 * This test tries to add an element for the second time. It should get an exception
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testAddDuplicateElement() {
-		Throwable caught = null;
-		try {
-			binarytree.insert(5);
-		} catch (Exception e) {
-			caught = e;
-		}
-		assertEquals("Duplicate items", caught.getMessage());
+		binarytree.insert(5);
 	}
 
 	/**
@@ -42,12 +42,12 @@ public class BinaryTreeTest {
 	@Test
 	public void testSortTree() {
 		String printSorted = new String();
-		printSorted = binarytree.sortTree();
+		printSorted = binarytree.printTree();
 		assertEquals("1 3 4 5 13 15 ", printSorted);
 	}
 
 	/**
-	 * This test searches for an element that exists in the tree
+	 * This test searches for an element that exists in the tree.
 	 */
 	@Test
 	public void testFound() {
@@ -55,7 +55,7 @@ public class BinaryTreeTest {
 	}
 
 	/**
-	 * This test searches for an element that doesn't exist in the tree
+	 * This test searches for an element that doesn't exist in the tree.
 	 */
 	@Test
 	public void testNotFound() {

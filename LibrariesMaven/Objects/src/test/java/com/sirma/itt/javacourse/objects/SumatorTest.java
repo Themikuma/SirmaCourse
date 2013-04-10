@@ -9,20 +9,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * The tests on the custom sumator
+ * The tests on the custom sumator.
  * 
  * @author gdimitrov
  */
 public class SumatorTest {
 	private Sumator sumator;
 
+	/**
+	 * Setup for the tests.
+	 */
 	@Before
 	public void setup() {
 		sumator = new Sumator();
 	}
 
 	/**
-	 * Test the integer sumator
+	 * Test the integer sumator.
 	 */
 	@Test
 	public void testInt() {
@@ -32,7 +35,7 @@ public class SumatorTest {
 	}
 
 	/**
-	 * Test the real numbers sumator
+	 * Test the real numbers sumator.
 	 */
 	@Test
 	public void testReal() {
@@ -42,7 +45,7 @@ public class SumatorTest {
 	}
 
 	/**
-	 * Test the strings sumator
+	 * Test the strings sumator.
 	 */
 	@Test
 	public void testString() {
@@ -52,7 +55,7 @@ public class SumatorTest {
 	}
 
 	/**
-	 * Test the BigInteger sumator
+	 * Test the BigInteger sumator.
 	 */
 	@Test
 	public void testBigInteger() {
@@ -63,7 +66,7 @@ public class SumatorTest {
 	}
 
 	/**
-	 * Test the BigDecimal sumator
+	 * Test the BigDecimal sumator.
 	 */
 	@Test
 	public void testBigDecimal() {
