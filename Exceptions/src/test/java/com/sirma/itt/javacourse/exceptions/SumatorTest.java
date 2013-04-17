@@ -7,8 +7,6 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-import com.sirma.itt.javacourse.exceptions.Sumator;
-
 /**
  * The tests on the custom sumator.
  * 

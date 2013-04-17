@@ -29,6 +29,14 @@ public class ConsoleReadException extends Exception {
 		super(message);
 	}
 
+	/**
+	 * Used for chaining exceptions.
+	 * 
+	 * @param message
+	 *            the message of the exception.
+	 * @param cause
+	 *            the exception that caused the exception.
+	 */
 	public ConsoleReadException(String message, Throwable cause) {
 		super(message, cause);
 	}

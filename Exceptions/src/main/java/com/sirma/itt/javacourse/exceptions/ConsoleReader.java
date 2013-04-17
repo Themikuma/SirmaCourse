@@ -19,10 +19,11 @@ public final class ConsoleReader {
 	/**
 	 * Reads the console input.
 	 * 
+	 * @return The user input.
 	 * @throws ConsoleReadException
 	 *             {@link ConsoleReadException}
 	 */
-	public static void read() throws ConsoleReadException {
+	public static String read() throws ConsoleReadException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String line = null;
 		int number = 0;
@@ -39,5 +40,6 @@ public final class ConsoleReader {
 		if (number > 100 || number < 0) {
 			throw new ConsoleReadException("Number out of bounds");
 		}
+		return line;
 	}
 }

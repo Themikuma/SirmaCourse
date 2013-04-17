@@ -29,6 +29,14 @@ public class EmptyListException extends RuntimeException {
 		super(message);
 	}
 
+	/**
+	 * Used for chaining exceptions.
+	 * 
+	 * @param message
+	 *            the message of the exception.
+	 * @param cause
+	 *            the exception that caused the exception.
+	 */
 	public EmptyListException(String message, Throwable cause) {
 		super(message, cause);
 	}

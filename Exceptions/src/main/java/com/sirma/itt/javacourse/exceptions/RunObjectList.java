@@ -13,7 +13,6 @@ public final class RunObjectList {
 	 * Private constructor for a utility class.
 	 */
 	private RunObjectList() {
-
 	}
 
 	/**
