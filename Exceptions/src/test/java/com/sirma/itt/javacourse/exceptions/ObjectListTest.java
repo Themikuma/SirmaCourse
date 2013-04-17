@@ -26,7 +26,7 @@ public class ObjectListTest {
 	 * Test successfully adding an element to the list.
 	 */
 	@Test
-	public void testAddElementSuccess() {
+	public void testAddWithCorrectData() {
 		ArrayList<Integer> integers = new ArrayList<>();
 		assertTrue(list.addElement(integers));
 	}
@@ -35,7 +35,7 @@ public class ObjectListTest {
 	 * This test tries to add more elements than the list can take and expects an exception.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testAddElementFail() {
+	public void testAddWithFullList() {
 		for (int i = 0; i <= SIZE; i++) {
 			list.addElement(i);
 		}
@@ -45,7 +45,7 @@ public class ObjectListTest {
 	 * This test successfully removes an element.
 	 */
 	@Test
-	public void removeSuccess() {
+	public void testRemoveWithCorrectData() {
 		boolean success = false;
 		list.addElement(10);
 		success = list.remove();
@@ -57,7 +57,7 @@ public class ObjectListTest {
 	 * This test fails to remove an element, because there are no elements in the list.
 	 */
 	@Test(expected = EmptyListException.class)
-	public void removeFail() {
+	public void testRemoveWithEmptyList() {
 		list.remove();
 	}
 }

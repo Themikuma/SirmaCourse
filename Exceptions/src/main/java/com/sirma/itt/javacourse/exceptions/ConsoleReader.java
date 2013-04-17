@@ -22,7 +22,7 @@ public final class ConsoleReader {
 	 * @throws ConsoleReadException
 	 *             {@link ConsoleReadException}
 	 */
-	public static void consoleRead() throws ConsoleReadException {
+	public static void read() throws ConsoleReadException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String line = null;
 		int number = 0;
@@ -34,7 +34,7 @@ public final class ConsoleReader {
 		try {
 			number = Integer.parseInt(line);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new ConsoleReadException("The input is not a valid number", e);
 		}
 		if (number > 100 || number < 0) {
 			throw new ConsoleReadException("Number out of bounds");

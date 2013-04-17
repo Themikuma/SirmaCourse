@@ -19,7 +19,12 @@ public final class RunConsoleReader {
 	 *             {@link ConsoleReadException}
 	 */
 	public static void main(String[] args) throws ConsoleReadException {
-		ConsoleReader.consoleRead();
+		try {
+			ConsoleReader.read();
+			System.out.println("Reading successful");
+		} catch (ConsoleReadException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }
