@@ -25,11 +25,11 @@ public final class SortCustomHierarchy {
 			for (int j = i + 1; j < args.length; j++) {
 				Class<? extends CustomParent> class1 = args[i].getClass();
 				Hierarchy hierarchy = class1.getAnnotation(Hierarchy.class);
-				int val1 = hierarchy.value();
+				int hierarchyValue1 = hierarchy.value();
 				Class<? extends CustomParent> class2 = args[j].getClass();
 				Hierarchy hierarchy2 = class2.getAnnotation(Hierarchy.class);
-				int val2 = hierarchy2.value();
-				if (val2 < val1) {
+				int hierarchyValue2 = hierarchy2.value();
+				if (hierarchyValue2 < hierarchyValue1) {
 					buffer = args[j];
 					args[j] = args[i];
 					args[i] = buffer;
