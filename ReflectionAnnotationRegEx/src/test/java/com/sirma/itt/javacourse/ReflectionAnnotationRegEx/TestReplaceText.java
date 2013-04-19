@@ -1,4 +1,4 @@
-package com.sirma.itt.javacourse.ReflectionAnnotationRegEx;
+package com.sirma.itt.javacourse.reflectionAnnotationRegEx;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,10 +23,9 @@ public class TestReplaceText {
 	 */
 	@Test
 	public void testReplaceTextPartOfText() {
-		assertEquals(
-				"<x><b></b><x/><b>sdfsdf</b><x/><x/><x/></x>",
-				ReplaceText
-						.replace("<x><b></b><x>Hello world</x><b>sdfsdf</b><x>Goodmorning</x><x>69</x><x>sdfsdfsdf</x></x>"));
+		assertEquals("<x><b></b><x/><b>sdfsdf</b><x/><x/><x/></x>",
+				ReplaceText.replace("<x><b></b><x>Hello world</x><b>sdfsdf</b><x>Goodmorning"
+						+ "</x><x>69</x><x>sdfsdfsdf</x></x>"));
 	}
 
 	/**

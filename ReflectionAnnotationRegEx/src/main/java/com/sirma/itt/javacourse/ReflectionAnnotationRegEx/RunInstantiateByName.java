@@ -1,4 +1,4 @@
-package com.sirma.itt.javacourse.ReflectionAnnotationRegEx;
+package com.sirma.itt.javacourse.reflectionAnnotationRegEx;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,7 +31,8 @@ public final class RunInstantiateByName {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		InstantiateByName.getInstanceByName(line);
+		Object obj = InstantiateByName.getInstanceByName(line);
+		ClassInfo.getInfo(obj);
 	}
 
 }

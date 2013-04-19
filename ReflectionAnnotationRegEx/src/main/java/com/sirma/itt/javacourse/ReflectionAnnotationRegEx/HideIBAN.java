@@ -1,4 +1,6 @@
-package com.sirma.itt.javacourse.ReflectionAnnotationRegEx;
+package com.sirma.itt.javacourse.reflectionAnnotationRegEx;
+
+import java.util.regex.Pattern;
 
 /**
  * Hides the numbers of valid Bulgarian IBANs.
@@ -6,6 +8,9 @@ package com.sirma.itt.javacourse.ReflectionAnnotationRegEx;
  * @author gdimitrov
  */
 public final class HideIBAN {
+	private static final Pattern VALID_PATTERN = Pattern
+			.compile("<iban>BG[0-9]{2} [a-zA-Z]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}</iban>");
+
 	/**
 	 * Private constructor for utility classes.
 	 */
@@ -20,10 +25,7 @@ public final class HideIBAN {
 	 * @return true if the IBAN is valid.
 	 */
 	public static boolean isValid(String iban) {
-		if (iban.matches("<iban>BG[0-9]{2} [a-zA-Z]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}</iban>")) {
-			return true;
-		}
-		return false;
+		return VALID_PATTERN.matcher(iban).matches();
 	}
 
 	/**

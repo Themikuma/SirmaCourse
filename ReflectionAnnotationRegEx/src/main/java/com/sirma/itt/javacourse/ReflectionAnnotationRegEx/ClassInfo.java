@@ -1,4 +1,4 @@
-package com.sirma.itt.javacourse.ReflectionAnnotationRegEx;
+package com.sirma.itt.javacourse.reflectionAnnotationRegEx;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -16,20 +16,22 @@ public final class ClassInfo {
 	}
 
 	/**
+	 * Gets information about a class's methods and fields.
+	 * 
 	 * @param obj
 	 *            the instance of a class whose information is being obtained.
 	 */
 	public static void getInfo(Object obj) {
-		Class<?> c = obj.getClass();
-		Field[] field = c.getDeclaredFields();
-		Method[] method = c.getDeclaredMethods();
+		Class<?> clazz = obj.getClass();
+		Field[] fields = clazz.getDeclaredFields();
+		Method[] methods = clazz.getDeclaredMethods();
 		System.out.println("Methods:");
-		for (Method m : method) {
-			System.out.println(m);
+		for (Method method : methods) {
+			System.out.println(method);
 		}
 		System.out.println("Fields:");
-		for (Field f : field) {
-			System.out.println(f);
+		for (Field field : fields) {
+			System.out.println(field);
 		}
 	}
 }
