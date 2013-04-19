@@ -1,4 +1,4 @@
-package com.sirma.itt.javacourse.ReflectionAnnotationRegEx;
+package com.sirma.itt.javacourse.reflectionAnnotationRegEx;
 
 import static org.junit.Assert.assertEquals;
 

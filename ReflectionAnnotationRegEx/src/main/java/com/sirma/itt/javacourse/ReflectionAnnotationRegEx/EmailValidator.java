@@ -1,4 +1,4 @@
-package com.sirma.itt.javacourse.ReflectionAnnotationRegEx;
+package com.sirma.itt.javacourse.reflectionAnnotationRegEx;
 
 /**
  * This class is used to validate emails.

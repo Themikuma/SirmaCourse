@@ -1,4 +1,4 @@
-package com.sirma.itt.javacourse.ReflectionAnnotationRegEx;
+package com.sirma.itt.javacourse.reflectionAnnotationRegEx;
 
 /**
  * Contains a method that allows the user to instantiate a class by its name.
@@ -40,9 +40,9 @@ public final class InstantiateByName {
 		System.out.println(c.getSuperclass());
 
 		System.out.println("Interfaces:");
-		Class<?>[] classes = c.getInterfaces();
-		for (Class<?> class1 : classes) {
-			System.out.println(class1);
+		Class<?>[] clazzes = c.getInterfaces();
+		for (Class<?> clazz : clazzes) {
+			System.out.println(clazz);
 		}
 		return instance;
 	}
