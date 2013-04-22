@@ -11,7 +11,7 @@ import org.junit.Test;
  * 
  * @author gdimitrov
  */
-public class TestHideIBAN {
+public class HideIBANTest {
 	/**
 	 * Test the isValid function with a valid IBAN.
 	 */

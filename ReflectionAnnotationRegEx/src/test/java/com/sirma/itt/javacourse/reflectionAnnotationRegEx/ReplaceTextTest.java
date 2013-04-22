@@ -9,7 +9,7 @@ import org.junit.Test;
  * 
  * @author gdimitrov
  */
-public class TestReplaceText {
+public class ReplaceTextTest {
 	/**
 	 * Tests the replace function by replacing the entire text.
 	 */

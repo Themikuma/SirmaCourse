@@ -10,7 +10,7 @@ import org.junit.Test;
  * 
  * @author gdimitrov
  */
-public class TestEmailValidator {
+public class EmailValidatorTest {
 	/**
 	 * Tests the isValid function with valid email.
 	 */

@@ -9,7 +9,7 @@ import org.junit.Test;
  * 
  * @author gdimitrov
  */
-public class TestInstantiateByName {
+public class InstantiateByNameTest {
 	/**
 	 * Tests the getInstanceByName method using correct data.
 	 * 
