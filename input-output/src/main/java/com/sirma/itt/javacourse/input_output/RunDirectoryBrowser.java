@@ -1,34 +1,33 @@
 package com.sirma.itt.javacourse.input_output;
 
-import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Contains an entry point method which executes the ReverseFile class.
+ * Contains an entry point method for the RunDirectoryBrowser.
  * 
  * @author gdimitrov
  */
-public final class RunReverseFile {
+public final class RunDirectoryBrowser {
 	/**
 	 * Private constructor for utility classes.
 	 */
-	private RunReverseFile() {
+	private RunDirectoryBrowser() {
+
 	}
 
 	/**
-	 * Runs the ReverseFile class.
-	 * 
 	 * @param args
 	 *            array of command-line arguments passed to this method
 	 */
 	public static void main(String[] args) {
-		Path path = Paths.get(System.getProperty("user.home"), "My Documents");
+		Path path = Paths.get(System.getProperty("user.home"), "gameplay.txt");
 		try {
-			ReverseFile.reverseFile(path, ConsoleReader.readString());
-		} catch (IOException e) {
+			DirectoryBrowser.listContent(path.toString());
+		} catch (NoSuchFileException e) {
 			e.printStackTrace();
 		}
-	}
 
+	}
 }

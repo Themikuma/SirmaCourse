@@ -22,12 +22,14 @@ public final class SirmaFileWriter {
 	/**
 	 * Writes console input to a file.
 	 * 
+	 * @param path
+	 *            the path to the file.
 	 * @param fileName
 	 *            the name of the file to be written to.
 	 * @throws IOException
 	 *             if there is an I/O exception
 	 */
-	public static void writeFile(String fileName) throws IOException {
+	public static void writeFile(Path path, String fileName) throws IOException {
 		StringBuilder userInput = new StringBuilder();
 		String line = null;
 		while (!".".equals(line)) {
@@ -35,7 +37,7 @@ public final class SirmaFileWriter {
 			userInput.append(line);
 			userInput.append("\n");
 		}
-		writeFile(fileName, userInput.toString());
+		writeFile(path, fileName, userInput.toString());
 	}
 
 	/**
@@ -43,17 +45,18 @@ public final class SirmaFileWriter {
 	 * 
 	 * @throws IOException
 	 *             if there is an I/O exception
+	 * @param path
+	 *            the path to the file
 	 * @param fileName
 	 *            the name of the file to be written to.
 	 * @param input
 	 *            the user input
 	 */
-	public static void writeFile(String fileName, String input) throws IOException {
-		Path path = Paths.get(System.getProperty("user.home"), "My Documents", fileName);
-		try (BufferedOutputStream out = new BufferedOutputStream(Files.newOutputStream(path,
+	public static void writeFile(Path path, String fileName, String input) throws IOException {
+		Path filePath = Paths.get(path.toString(), fileName);
+		try (BufferedOutputStream out = new BufferedOutputStream(Files.newOutputStream(filePath,
 				StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
 			out.write(input.getBytes());
 		}
-
 	}
 }
