@@ -51,7 +51,7 @@ public final class ReverseFile {
 		try {
 			SirmaFileWriter.writeFile(reversed, path);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Failed to save the file", e);
 		}
 		return reversed;
 	}

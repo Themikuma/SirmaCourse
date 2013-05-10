@@ -54,7 +54,7 @@ public final class SerializedMethods {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new RuntimeException("The contents of the file were not serializable", e);
 		}
 		return object;
 	}

@@ -25,8 +25,7 @@ public final class ConsoleReader {
 	 */
 	public static String readString() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String line = null;
-		line = br.readLine();
+		String line = br.readLine();
 		return line;
 	}
 
@@ -39,8 +38,7 @@ public final class ConsoleReader {
 	 */
 	public static int readInt() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String line = null;
-		line = br.readLine();
+		String line = br.readLine();
 		line = line.split(" ")[0];
 		int result = 0;
 		try {
@@ -61,8 +59,7 @@ public final class ConsoleReader {
 	 */
 	public static double readFloat() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String line = null;
-		line = br.readLine();
+		String line = br.readLine();
 		line = line.split(" ")[0];
 		double result = 0;
 		try {

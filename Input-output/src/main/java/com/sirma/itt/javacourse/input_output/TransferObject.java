@@ -49,9 +49,7 @@ public class TransferObject {
 			} else {
 				transferred -= offset;
 				writeBytes = new byte[transferred];
-				for (int i = 0; i < writeBytes.length; i++) {
-					writeBytes[i] = readBytes[i + offset];
-				}
+				System.arraycopy(readBytes, offset, writeBytes, 0, writeBytes.length);
 			}
 			output.write(writeBytes);
 		} catch (IOException e) {
