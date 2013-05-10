@@ -41,8 +41,11 @@ public class TransferObjectTest {
 	 */
 	@Test
 	public void testTransferWithEqualInputAndOffset() {
-		objectTransfer.transfer(120, 50);
+		int numberOfBytes = 120;
+		int offset = 50;
+		objectTransfer.transfer(numberOfBytes, offset);
 		assertEquals(outputStream.size(), 0);
+		assertTrue(isTransferValid(numberOfBytes, offset));
 	}
 
 	/**
@@ -50,8 +53,11 @@ public class TransferObjectTest {
 	 */
 	@Test
 	public void testTransferWithGreaterOffsetThanInput() {
-		objectTransfer.transfer(120, 500);
+		int numberOfBytes = 120;
+		int offset = 500;
+		objectTransfer.transfer(numberOfBytes, offset);
 		assertEquals(outputStream.size(), 0);
+		assertTrue(isTransferValid(numberOfBytes, offset));
 	}
 
 	/**
@@ -59,8 +65,11 @@ public class TransferObjectTest {
 	 */
 	@Test
 	public void testTransferWithMoreRequiredThanProvided() {
-		objectTransfer.transfer(120, 5);
+		int numberOfBytes = 120;
+		int offset = 5;
+		objectTransfer.transfer(numberOfBytes, offset);
 		assertEquals(outputStream.size(), 45);
+		assertTrue(isTransferValid(numberOfBytes, offset));
 	}
 
 	/**
@@ -87,6 +96,9 @@ public class TransferObjectTest {
 	private boolean isTransferValid(int numberOfBytes, int offset) {
 		byte[] byteArray = outputStream.toByteArray();
 		for (int i = 0; i < numberOfBytes; i++) {
+			if (i >= byteArray.length) {
+				break;
+			}
 			if (byteArray[i] != bytes[i + offset]) {
 				return false;
 			}
