@@ -1,6 +1,6 @@
 package com.sirma.itt.javacourse.collections;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains a list of elements and separates them on pages using the page size that is provided in
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class PageBean {
 
 	private int pageSize;
-	private ArrayList<Integer> elements;
+	private List<?> elements;
 	private int currentPage;
 
 	/**
@@ -22,7 +22,7 @@ public class PageBean {
 	 * @param input
 	 *            the elements to be added to the bean.
 	 */
-	public PageBean(int pageSize, ArrayList<Integer> input) {
+	public PageBean(int pageSize, List<?> input) {
 		currentPage = -1;
 		this.pageSize = pageSize;
 		elements = input;
@@ -33,8 +33,8 @@ public class PageBean {
 	 * 
 	 * @return a list of the next elements.
 	 */
-	public ArrayList<Integer> next() {
-		if (currentPage * pageSize >= elements.size()) {
+	public List<?> next() {
+		if (!hasNext()) {
 			return getElements();
 		}
 		currentPage++;
@@ -47,17 +47,16 @@ public class PageBean {
 	 * 
 	 * @return a list of the next elements.
 	 */
-	private ArrayList<Integer> getElements() {
-		ArrayList<Integer> result = new ArrayList<Integer>();
-		int toBeAdded = 0;
+	private List<?> getElements() {
+		int startIndex = currentPage * pageSize;
+		int endIndex = startIndex;
 		for (int i = 0; i < pageSize; i++) {
 			if (currentPage * pageSize + i >= elements.size()) {
-				return result;
+				break;
 			}
-			toBeAdded = elements.get(currentPage * pageSize + i);
-			result.add(toBeAdded);
+			endIndex++;
 		}
-		return result;
+		return elements.subList(startIndex, endIndex);
 	}
 
 	/**
@@ -65,14 +64,13 @@ public class PageBean {
 	 * 
 	 * @return a list of the previous elements.
 	 */
-	public ArrayList<Integer> previous() {
-		if (currentPage == 0) {
-			System.out.println("You're already at the start of the list");
+	public List<?> previous() {
+		if (currentPage <= 0) {
+			throw new IndexOutOfBoundsException("You are already at the first page");
 		} else {
 			currentPage--;
 			return getElements();
 		}
-		return getElements();
 
 	}
 
@@ -82,7 +80,7 @@ public class PageBean {
 	 * @return true if there is a next page.
 	 */
 	public boolean hasNext() {
-		if (currentPage + pageSize <= elements.size()) {
+		if ((currentPage + 1) * pageSize <= elements.size()) {
 			return true;
 		}
 		return false;
@@ -94,7 +92,7 @@ public class PageBean {
 	 * @return true if there is a previous page.
 	 */
 	public boolean hasPrevious() {
-		if (currentPage - pageSize <= 0) {
+		if (currentPage <= 0) {
 			return false;
 		}
 		return true;
@@ -105,7 +103,7 @@ public class PageBean {
 	 * 
 	 * @return the elements on the first page.
 	 */
-	public ArrayList<Integer> firstPage() {
+	public List<?> firstPage() {
 		currentPage = 0;
 		return getElements();
 	}
@@ -115,7 +113,7 @@ public class PageBean {
 	 * 
 	 * @return the elements on the last page.
 	 */
-	public ArrayList<Integer> lastPage() {
+	public List<?> lastPage() {
 		if ((elements.size() % pageSize) == 0) {
 			currentPage = elements.size() / pageSize - 1;
 		} else {
