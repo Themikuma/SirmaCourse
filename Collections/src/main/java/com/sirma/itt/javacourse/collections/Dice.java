@@ -109,13 +109,10 @@ public class Dice {
 	 * Rolls the dice and adds the current roll to one of the lists that represent the rolls.
 	 */
 	public void rollDice() {
-		int firstDice = 0;
-		int secondDice = 0;
-		int position;
 		Random r = new Random();
-		firstDice = r.nextInt(6) + 1;
-		secondDice = r.nextInt(6) + 1;
-		position = getPosition(firstDice, secondDice);
+		int firstDice = r.nextInt(6) + 1;
+		int secondDice = r.nextInt(6) + 1;
+		int position = getPosition(firstDice, secondDice);
 		occurances.get(position).add(currentRoll);
 		currentRoll++;
 	}
