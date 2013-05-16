@@ -29,7 +29,7 @@ public final class RunPageBean {
 		for (int i = 0; i < 31; i++) {
 			input.add(i);
 		}
-		PageBean bean = new PageBean(pageSize, input);
+		PageBean<Integer> bean = new PageBean<Integer>(pageSize, input);
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while (c != '.') {
 			try {

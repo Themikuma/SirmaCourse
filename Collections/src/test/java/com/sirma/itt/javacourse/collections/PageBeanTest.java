@@ -15,10 +15,10 @@ import org.junit.Test;
  * 
  * @author gdimitrov
  */
-public class TestPageBean {
+public class PageBeanTest {
 
 	private ArrayList<Integer> input;
-	private PageBean bean;
+	private PageBean<Integer> bean;
 
 	/**
 	 * Sets up the tests with the same list to page.
@@ -30,7 +30,7 @@ public class TestPageBean {
 		for (int i = 0; i < 31; i++) {
 			input.add(i);
 		}
-		bean = new PageBean(pageSize, input);
+		bean = new PageBean<Integer>(pageSize, input);
 	}
 
 	/**

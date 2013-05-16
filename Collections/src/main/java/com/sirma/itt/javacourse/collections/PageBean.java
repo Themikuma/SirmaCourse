@@ -6,12 +6,14 @@ import java.util.List;
  * Contains a list of elements and separates them on pages using the page size that is provided in
  * the constructor.
  * 
+ * @param <T>
+ *            The type of the elements in the list.
  * @author gdimitrov
  */
-public class PageBean {
+public class PageBean<T> {
 
 	private int pageSize;
-	private List<?> elements;
+	private List<T> elements;
 	private int currentPage;
 
 	/**
@@ -22,7 +24,7 @@ public class PageBean {
 	 * @param input
 	 *            the elements to be added to the bean.
 	 */
-	public PageBean(int pageSize, List<?> input) {
+	public PageBean(int pageSize, List<T> input) {
 		currentPage = -1;
 		this.pageSize = pageSize;
 		elements = input;
@@ -33,7 +35,7 @@ public class PageBean {
 	 * 
 	 * @return a list of the next elements.
 	 */
-	public List<?> next() {
+	public List<T> next() {
 		if (!hasNext()) {
 			return getElements();
 		}
@@ -47,7 +49,7 @@ public class PageBean {
 	 * 
 	 * @return a list of the next elements.
 	 */
-	private List<?> getElements() {
+	private List<T> getElements() {
 		int startIndex = currentPage * pageSize;
 		int endIndex = startIndex;
 		for (int i = 0; i < pageSize; i++) {
@@ -64,7 +66,7 @@ public class PageBean {
 	 * 
 	 * @return a list of the previous elements.
 	 */
-	public List<?> previous() {
+	public List<T> previous() {
 		if (currentPage <= 0) {
 			throw new IndexOutOfBoundsException("You are already at the first page");
 		} else {
@@ -103,7 +105,7 @@ public class PageBean {
 	 * 
 	 * @return the elements on the first page.
 	 */
-	public List<?> firstPage() {
+	public List<T> firstPage() {
 		currentPage = 0;
 		return getElements();
 	}
@@ -113,7 +115,7 @@ public class PageBean {
 	 * 
 	 * @return the elements on the last page.
 	 */
-	public List<?> lastPage() {
+	public List<T> lastPage() {
 		if ((elements.size() % pageSize) == 0) {
 			currentPage = elements.size() / pageSize - 1;
 		} else {

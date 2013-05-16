@@ -1,7 +1,7 @@
 package com.sirma.itt.javacourse.collections;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -10,98 +10,34 @@ import java.util.Random;
  * @author gdimitrov
  */
 public class Dice {
-	private List<ArrayList<Integer>> occurances;
 	private int currentRoll;
+	private HashMap<String, ArrayList<Integer>> occurances;
+
+	/**
+	 * Getter method for occurances.
+	 * 
+	 * @return the occurances
+	 */
+	public HashMap<String, ArrayList<Integer>> getOccurances() {
+		return occurances;
+	}
+
+	private int sides;
 
 	/**
 	 * Creates 21 new arrays for all the positionally irrelevant combinations of two six sided dice.
-	 */
-	public Dice() {
-		occurances = new ArrayList<ArrayList<Integer>>();
-		currentRoll = 1;
-		for (int i = 0; i < 21; i++) {
-			occurances.add(new ArrayList<Integer>());
-		}
-	}
-
-	/**
-	 * Gets the position of the combination of dice. The combinations start at 1,1 and end with 6,6
-	 * and are positionally irrelevant.
 	 * 
-	 * @param firstDice
-	 *            the roll of the first dice
-	 * @param secondDice
-	 *            the roll of the second dice
-	 * @return the position in which to insert the current roll.
+	 * @param sides
+	 *            - how many sides the dice has.
 	 */
-	private int getPosition(int firstDice, int secondDice) {
-		int actualFirstDice = 0;
-		int actualSecondDice = 0;
-		if (firstDice > secondDice) {
-			actualFirstDice = secondDice;
-			actualSecondDice = firstDice;
-		} else {
-			actualFirstDice = firstDice;
-			actualSecondDice = secondDice;
-		}
-		switch (actualFirstDice) {
-			case 1:
-				switch (actualSecondDice) {
-					case 1:
-						return 0;
-					case 2:
-						return 1;
-					case 3:
-						return 2;
-					case 4:
-						return 3;
-					case 5:
-						return 4;
-					default:
-						return 5;
-				}
-			case 2:
-				switch (actualSecondDice) {
-					case 2:
-						return 6;
-					case 3:
-						return 7;
-					case 4:
-						return 8;
-					case 5:
-						return 9;
-					default:
-						return 10;
-				}
-			case 3:
-				switch (actualSecondDice) {
-					case 3:
-						return 11;
-					case 4:
-						return 12;
-					case 5:
-						return 13;
-					default:
-						return 14;
-				}
-			case 4:
-				switch (actualSecondDice) {
-					case 4:
-						return 15;
-					case 5:
-						return 16;
-					default:
-						return 17;
-				}
-			case 5:
-				switch (actualSecondDice) {
-					case 5:
-						return 18;
-					default:
-						return 19;
-				}
-			default:
-				return 20;
+	public Dice(int sides) {
+		occurances = new HashMap<>();
+		currentRoll = 1;
+		this.sides = sides;
+		for (int i = 1; i < sides + 1; i++) {
+			for (int j = 1; j < sides + 1; j++) {
+				occurances.put(i + "," + j, new ArrayList<Integer>());
+			}
 		}
 	}
 
@@ -110,24 +46,26 @@ public class Dice {
 	 */
 	public void rollDice() {
 		Random r = new Random();
-		int firstDice = r.nextInt(6) + 1;
-		int secondDice = r.nextInt(6) + 1;
-		int position = getPosition(firstDice, secondDice);
-		occurances.get(position).add(currentRoll);
+		int firstDice = r.nextInt(sides) + 1;
+		int secondDice = r.nextInt(sides) + 1;
+		ArrayList<Integer> list = new ArrayList<>();
+		list = occurances.get(firstDice + "," + secondDice);
+		list.add(currentRoll);
+		occurances.remove(firstDice + "," + secondDice);
+		occurances.put(firstDice + "," + secondDice, list);
 		currentRoll++;
 	}
 
 	/**
-	 * Finds the occurrences of the given combination of dice.
+	 * Shows all the results for the rolls of the dice.
 	 * 
-	 * @param firstDice
-	 *            the first dice to check.
-	 * @param secondDice
-	 *            the second dice to check.
-	 * @return a string containing the rolls on which the combination occurred.
+	 * @return returns the set of combinations with the rolls on which they occurred.
 	 */
-	public String showResults(int firstDice, int secondDice) {
-		int position = getPosition(firstDice, secondDice);
-		return occurances.get(position).toString();
+	public String showResults() {
+		StringBuilder result = new StringBuilder();
+		for (String key : occurances.keySet()) {
+			result.append(key + "=" + occurances.get(key) + "\n");
+		}
+		return result.toString();
 	}
 }

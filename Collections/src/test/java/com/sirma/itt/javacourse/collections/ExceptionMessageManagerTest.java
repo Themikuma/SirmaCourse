@@ -14,7 +14,7 @@ import org.junit.Test;
  * 
  * @author gdimitrov
  */
-public class TestExceptionMessageManager {
+public class ExceptionMessageManagerTest {
 	private ExceptionMessageManager manager;
 
 	/**
