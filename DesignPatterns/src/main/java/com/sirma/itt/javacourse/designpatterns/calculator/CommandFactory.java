@@ -26,6 +26,12 @@ public final class CommandFactory {
 				return new SumCommand();
 			case 1:
 				return new SubtractCommand();
+			case 2:
+				return new MultiplyCommand();
+			case 3:
+				return new DivisionCommand();
+			case 4:
+				return new PowerCommand();
 			default:
 				break;
 		}

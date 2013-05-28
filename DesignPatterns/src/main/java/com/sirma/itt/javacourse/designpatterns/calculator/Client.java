@@ -18,9 +18,14 @@ public class Client {
 		Command command = null;
 		if (expression.contains("+")) {
 			command = CommandFactory.createInstance(0);
-		}
-		if (expression.contains("-")) {
+		} else if (expression.contains("-")) {
 			command = CommandFactory.createInstance(1);
+		} else if (expression.contains("*")) {
+			command = CommandFactory.createInstance(2);
+		} else if (expression.contains("/")) {
+			command = CommandFactory.createInstance(3);
+		} else if (expression.contains("^")) {
+			command = CommandFactory.createInstance(4);
 		}
 		return command.execute(expression);
 	}

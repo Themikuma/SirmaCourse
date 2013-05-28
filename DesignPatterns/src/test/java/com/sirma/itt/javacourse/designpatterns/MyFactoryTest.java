@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.sirma.itt.javacourse.designpatterns.factory.MyFactory;
+
 /**
  * Test the class implementing the Factory design pattern.
  * 

@@ -6,6 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sirma.itt.javacourse.designpatterns.pool.ObjectPool;
+import com.sirma.itt.javacourse.designpatterns.pool.PooledClass;
+
 /**
  * Tests the ObjectPool design pattern implementation.
  * 
@@ -40,9 +43,9 @@ public class ObjectPoolTest {
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testAcquireByGettingMoreThanMaxObjects() {
-		PooledClass object = pool.acquire();
+		pool.acquire();
 		for (int i = 0; i < SIZE; i++) {
-			object = pool.acquire();
+			pool.acquire();
 		}
 	}
 

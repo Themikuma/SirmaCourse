@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.sirma.itt.javacourse.designpatterns.singleton.Singleton;
+
 /**
  * Tests the implementation of the Singleton design pattern.
  * 
