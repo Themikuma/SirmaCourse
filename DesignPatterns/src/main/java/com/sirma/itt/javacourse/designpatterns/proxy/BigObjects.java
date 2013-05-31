@@ -1,11 +1,11 @@
 package com.sirma.itt.javacourse.designpatterns.proxy;
 
 /**
- * The actual class.
+ * A class that creates big, bulky objects. It needs a proxy.
  * 
  * @author gdimitrov
  */
-public class Proxy {
+public class BigObjects {
 	private String field1;
 	private String field2;
 
@@ -18,7 +18,7 @@ public class Proxy {
 	 * @param field2
 	 *            the value of the second field
 	 */
-	public Proxy(String field1, String field2) {
+	public BigObjects(String field1, String field2) {
 		this.field1 = field1;
 		this.field2 = field2;
 	}

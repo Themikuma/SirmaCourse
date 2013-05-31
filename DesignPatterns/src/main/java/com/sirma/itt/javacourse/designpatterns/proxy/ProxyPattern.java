@@ -6,5 +6,4 @@ package com.sirma.itt.javacourse.designpatterns.proxy;
  * @author gdimitrov
  */
 public interface ProxyPattern {
-
 }
