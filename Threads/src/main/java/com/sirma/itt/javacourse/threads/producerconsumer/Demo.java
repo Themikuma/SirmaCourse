@@ -20,18 +20,18 @@ public final class Demo {
 	 *             Thrown when the thread is occupied and is interrupted.
 	 */
 	public static void main(String[] args) throws InterruptedException {
-		Warehouse.setProducts(0);
-		Thread producerThread = new Thread(new Producer());
-		Thread consumerThread = new Thread(new Consumer());
-		producerThread.start();
-		consumerThread.start();
-		while (true) {
-			if (Warehouse.getProducts() > 15) {
-				consumerThread.run();
-			}
-			if (Warehouse.getProducts() < 75) {
-				producerThread.run();
-			}
-		}
+		Warehouse warehouse = new Warehouse();
+		Producer factoryOne = new Producer(90, warehouse);
+		Producer factoryTwo = new Producer(100, warehouse);
+		Thread productionOne = new Thread(factoryOne);
+		Thread productionTwo = new Thread(factoryTwo);
+		Consumer consumerOne = new Consumer(100, warehouse);
+		Consumer consumerTwo = new Consumer(60, warehouse);
+		Thread consumptionOne = new Thread(consumerOne);
+		Thread consumptionTwo = new Thread(consumerTwo);
+		productionOne.start();
+		productionTwo.start();
+		consumptionOne.start();
+		consumptionTwo.start();
 	}
 }

@@ -3,16 +3,9 @@ package com.sirma.itt.javacourse.threads.producerconsumer;
 /**
  * @author gdimitrov
  */
-public final class Warehouse {
+public class Warehouse {
 
-	/**
-	 * Private constructor for utility classes.
-	 */
-	private Warehouse() {
-
-	}
-
-	private static int products;
+	private int products;
 
 	/**
 	 * Setter method for products.
@@ -20,8 +13,8 @@ public final class Warehouse {
 	 * @param products
 	 *            the products to set
 	 */
-	public static void setProducts(int products) {
-		Warehouse.products = products;
+	public void setProducts(int products) {
+		this.products = products;
 	}
 
 	/**
@@ -29,22 +22,46 @@ public final class Warehouse {
 	 * 
 	 * @return the products
 	 */
-	public static int getProducts() {
+	public int getProducts() {
 		return products;
 	}
 
 	/**
 	 * Adds a product to the warehouse.
 	 */
-	public static void addProduct() {
+	public synchronized void addProduct() {
 		products++;
+		System.out.println("Created a product " + products + " remaining");
+		if (products >= 98) {
+			try {
+				System.out.println("Producer is waiting for consumption");
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if (products > 10 && products < 100) {
+			notifyAll();
+		}
 	}
 
 	/**
 	 * Consumes a product from the warehouse.
 	 */
-	public static void removeProduct() {
+	public synchronized void removeProduct() {
 		products--;
+		System.out.println("Took a product " + products + " remaining");
+		if (products <= 5) {
+			try {
+				System.out.println("Consumer is waiting for production");
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if (products < 90 && products > 10) {
+			notifyAll();
+		}
 	}
 
 }

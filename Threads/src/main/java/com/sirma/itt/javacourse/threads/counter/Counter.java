@@ -8,7 +8,7 @@ package com.sirma.itt.javacourse.threads.counter;
 public class Counter implements Runnable {
 
 	private int current;
-	private boolean run;
+	private volatile boolean run;
 
 	/**
 	 * Sets the current count to 0.

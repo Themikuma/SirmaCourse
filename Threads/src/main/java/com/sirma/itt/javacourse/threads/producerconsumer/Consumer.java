@@ -7,14 +7,47 @@ package com.sirma.itt.javacourse.threads.producerconsumer;
  */
 public class Consumer implements Runnable {
 
+	private boolean run;
+	private long consumptionTime;
+	private Warehouse warehouse;
+
+	/**
+	 * Creates a consumer and tells it to start getting products.
+	 * 
+	 * @param consumptionTime
+	 *            the time it takes for one product to be produced in miliseconds.
+	 * @param warehouse
+	 *            the warehouse to use for consumption.
+	 */
+	public Consumer(long consumptionTime, Warehouse warehouse) {
+		run = true;
+		this.consumptionTime = consumptionTime;
+		this.warehouse = warehouse;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void run() {
-		while (Warehouse.getProducts() > 0) {
-			Warehouse.removeProduct();
+		while (run) {
+			int previousProducts = warehouse.getProducts();
+			warehouse.removeProduct();
+			if (previousProducts <= warehouse.getProducts()) {
+				consumptionTime = (long) (Math.random() * 3000);
+			}
+			try {
+				Thread.sleep(consumptionTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		System.out.println("Out of products.");
+	}
+
+	/**
+	 * Stops the consumer from consuming more products.
+	 */
+	public void stop() {
+		run = false;
 	}
 }
