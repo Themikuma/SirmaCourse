@@ -1,7 +1,8 @@
 package com.sirma.itt.javacourse.threads.timeouthashtable;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * This is a timeout hash table. When an element isn't used for a period of time it's automatically
@@ -11,19 +12,26 @@ import java.util.Hashtable;
  */
 public class TimeoutHashtable implements Runnable {
 
-	private Hashtable<String, Object> items;
-	private Hashtable<String, Integer> times;
+	private HashMap<String, Object> items;
+	private HashMap<String, Integer> times;
 	private volatile boolean run;
 	private final int patience;
+	private final int refreshRate;
 
 	/**
 	 * Creates an empty TimeoutHashTable.
+	 * 
+	 * @param refreshRate
+	 *            the refresh rate of the hash table.
+	 * @param patience
+	 *            the time to wait until removing an item from the hash table.
 	 */
-	public TimeoutHashtable() {
-		items = new Hashtable<>();
-		times = new Hashtable<>();
+	public TimeoutHashtable(int refreshRate, int patience) {
+		items = new HashMap<>();
+		times = new HashMap<>();
 		run = true;
-		patience = 1000;
+		this.patience = patience;
+		this.refreshRate = refreshRate;
 	}
 
 	/**
@@ -42,7 +50,7 @@ public class TimeoutHashtable implements Runnable {
 	 * @param value
 	 *            the value of the item.
 	 */
-	public void put(String key, Object value) {
+	public synchronized void put(String key, Object value) {
 		if (items.containsKey(key)) {
 			items.remove(key);
 			times.remove(key);
@@ -59,7 +67,7 @@ public class TimeoutHashtable implements Runnable {
 	 * @return the value to which the specified key is mapped, or null if this map contains no
 	 *         mapping for the key
 	 */
-	public Object get(String key) {
+	public synchronized Object get(String key) {
 		if (items.containsKey(key)) {
 			times.remove(key);
 			times.put(key, 0);
@@ -75,7 +83,7 @@ public class TimeoutHashtable implements Runnable {
 	 * @return the previous value associated with key, or null if there was no mapping for key. (A
 	 *         null return can also indicate that the map previously associated null with key.)
 	 */
-	public Object remove(String key) {
+	public synchronized Object remove(String key) {
 		times.remove(key);
 		return items.remove(key);
 	}
@@ -86,7 +94,7 @@ public class TimeoutHashtable implements Runnable {
 		while (run) {
 			refresh();
 			try {
-				Thread.sleep(100);
+				Thread.sleep(refreshRate);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -98,18 +106,19 @@ public class TimeoutHashtable implements Runnable {
 	/**
 	 * Refreshes the time spent for each item in the hash table and removes the ones who expired.
 	 */
-	private void refresh() {
+	private synchronized void refresh() {
 		int time;
 		String key = null;
-		Enumeration<String> keys = times.keys();
-		while (keys.hasMoreElements()) {
-			key = keys.nextElement();
+		Set<String> keySet = items.keySet();
+		Iterator<String> iterator = keySet.iterator();
+		while (iterator.hasNext()) {
+			key = iterator.next();
 			time = times.get(key);
-			time += 100;
+			time += refreshRate;
 			times.remove(key);
-			if (time + 100 >= patience) {
+			if (time >= patience) {
 				items.remove(key);
-				continue;
+				break;
 			}
 			times.put(key, time);
 		}

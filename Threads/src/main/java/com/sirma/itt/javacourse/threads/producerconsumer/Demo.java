@@ -20,7 +20,7 @@ public final class Demo {
 	 *             Thrown when the thread is occupied and is interrupted.
 	 */
 	public static void main(String[] args) throws InterruptedException {
-		Warehouse warehouse = new Warehouse();
+		Warehouse warehouse = new Warehouse(100);
 		Producer factoryOne = new Producer(90, warehouse);
 		Producer factoryTwo = new Producer(100, warehouse);
 		Thread productionOne = new Thread(factoryOne);

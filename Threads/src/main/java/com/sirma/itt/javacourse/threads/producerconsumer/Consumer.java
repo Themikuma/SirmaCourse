@@ -33,6 +33,9 @@ public class Consumer implements Runnable {
 		while (run) {
 			int previousProducts = warehouse.getProducts();
 			warehouse.removeProduct();
+			// Checks if the warehouse was empty when the last product was consumed. If the
+			// warehouse was empty the consumer changes the speed at which it consumes products, the
+			// point being to better demonstrate the way the solution works.
 			if (previousProducts <= warehouse.getProducts()) {
 				consumptionTime = (long) (Math.random() * 3000);
 			}

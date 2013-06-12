@@ -56,6 +56,10 @@ public final class RunObjectList {
 				list.addElement(new Object());
 				list.addElement(new Object());
 				list.addElement(new Object());
+				list.addElement(new Object());
+				list.addElement(new Object());
+				list.addElement(new Object());
+				list.addElement(new Object());
 			}
 		});
 

@@ -6,15 +6,16 @@ package com.sirma.itt.javacourse.threads.producerconsumer;
 public class Warehouse {
 
 	private int products;
+	private final int maxProducts;
 
 	/**
-	 * Setter method for products.
+	 * Creates a warehouse that can store a given number of products.
 	 * 
-	 * @param products
-	 *            the products to set
+	 * @param maxProducts
+	 *            the maximum amount of products to be stored.
 	 */
-	public void setProducts(int products) {
-		this.products = products;
+	public Warehouse(int maxProducts) {
+		this.maxProducts = maxProducts;
 	}
 
 	/**
@@ -30,9 +31,7 @@ public class Warehouse {
 	 * Adds a product to the warehouse.
 	 */
 	public synchronized void addProduct() {
-		products++;
-		System.out.println("Created a product " + products + " remaining");
-		if (products >= 98) {
+		if (products >= maxProducts) {
 			try {
 				System.out.println("Producer is waiting for consumption");
 				wait();
@@ -40,7 +39,10 @@ public class Warehouse {
 				e.printStackTrace();
 			}
 		}
-		if (products > 10 && products < 100) {
+		products++;
+		System.out.println(Thread.currentThread().getName() + " created a product " + products
+				+ " remaining");
+		if (products > 10 && products < maxProducts) {
 			notifyAll();
 		}
 	}
@@ -49,9 +51,7 @@ public class Warehouse {
 	 * Consumes a product from the warehouse.
 	 */
 	public synchronized void removeProduct() {
-		products--;
-		System.out.println("Took a product " + products + " remaining");
-		if (products <= 5) {
+		if (products <= 0) {
 			try {
 				System.out.println("Consumer is waiting for production");
 				wait();
@@ -59,7 +59,10 @@ public class Warehouse {
 				e.printStackTrace();
 			}
 		}
-		if (products < 90 && products > 10) {
+		products--;
+		System.out.println(Thread.currentThread().getName() + " took a product " + products
+				+ " remaining");
+		if (products < maxProducts - 10 && products > 10) {
 			notifyAll();
 		}
 	}

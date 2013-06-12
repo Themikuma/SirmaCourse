@@ -21,15 +21,19 @@ public final class Demo {
 	 *             if any thread has interrupted the current thread
 	 */
 	public static void main(String[] args) throws InterruptedException {
-		TimeoutHashtable table = new TimeoutHashtable();
+		TimeoutHashtable table = new TimeoutHashtable(10, 1000);
 		Thread t1 = new Thread(table);
-		table.put("one", "oneone");
-		table.put("two", "twotwo");
 		t1.start();
+		table.put("3", "tri");
+		table.put("one", "oneone");
 		Thread.sleep(500);
+		table.put("two", "twotwo");
+		table.remove("one");
+		// table.get("3");
 		Thread.sleep(700);
+		table.get("two");
 		table.stop();
-		Object result = table.get("two");
+		Object result = table.get("3");
 		System.out.println(result);
 	}
 

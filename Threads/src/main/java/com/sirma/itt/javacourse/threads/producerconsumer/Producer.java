@@ -33,6 +33,9 @@ public class Producer implements Runnable {
 		while (run) {
 			int previousProducts = warehouse.getProducts();
 			warehouse.addProduct();
+			// Checks if the warehouse was full when the last product was produced. If the warehouse
+			// was full the producer changes the speed at which it creates products, the point being
+			// to better demonstrate the way the solution works.
 			if (previousProducts >= warehouse.getProducts()) {
 				productionTime = (long) (Math.random() * 3000);
 			}
