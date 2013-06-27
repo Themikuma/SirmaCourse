@@ -1,13 +1,15 @@
 package com.sirma.itt.javacourse.networkingandgui.transmiter;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  * Creates the window that holds the GUI for the server.
@@ -20,10 +22,9 @@ public class ServerGUI extends JFrame implements ActionListener {
 	 * Comment for serialVersionUID.
 	 */
 	private static final long serialVersionUID = -4016819477611948502L;
-
-	private JTextArea log;
-	private JButton stop;
 	private Server server;
+	private JTextField message;
+	private JTextArea log;
 
 	/**
 	 * Getter method for log.
@@ -44,10 +45,7 @@ public class ServerGUI extends JFrame implements ActionListener {
 	 */
 	public ServerGUI(int width, int height) {
 		initComponents(width, height);
-		Random random = new Random();
-		server = new Server(random.nextInt(20) + 7000, log);
-		Thread serverThread = new Thread(server);
-		serverThread.start();
+		initServer();
 	}
 
 	/**
@@ -60,23 +58,36 @@ public class ServerGUI extends JFrame implements ActionListener {
 	 */
 	private void initComponents(int width, int height) {
 		setSize(width, height);
-		stop = new JButton();
 		log = new JTextArea();
-		stop.setText("Stop");
-		stop.addActionListener(this);
-		stop.setEnabled(true);
+		log.setEditable(false);
+		JPanel contentPane = new JPanel(new GridLayout(2, 1, 5, 5));
+		JButton send = new JButton("Send");
+		send.addActionListener(this);
+		message = new JTextField();
+		contentPane.add(message);
+		contentPane.add(send);
 
 		setTitle("Server");
 		setSize(width, height);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().add(log, BorderLayout.CENTER);
-		getContentPane().add(stop, BorderLayout.SOUTH);
+		getContentPane().add(contentPane, BorderLayout.SOUTH);
 		setVisible(true);
+	}
+
+	/**
+	 * Initialises the server.
+	 */
+	private void initServer() {
+		server = new Server(log);
+		Thread serverThread = new Thread(server);
+		serverThread.start();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		server.stop();
+		server.setMessage(message.getText());
+		message.setText("");
 	}
 }

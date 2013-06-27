@@ -1,6 +1,6 @@
 package com.sirma.itt.javacourse.networkingandgui.transmiter;
 
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author gdimitrov
  */
 public class Channel {
-	private ArrayList<PrintWriter> clients;
+	private ArrayList<OutputStream> clients;
 
 	/**
 	 * Creates a new broadcast channel.
@@ -23,18 +23,33 @@ public class Channel {
 	 * 
 	 * @return the clients
 	 */
-	public ArrayList<PrintWriter> getClients() {
+	public ArrayList<OutputStream> getClients() {
 		return clients;
 	}
 
 	/**
-	 * Adds the input stream for the current client to the clients of this channel.
+	 * Adds the output stream for the current client to the clients of this channel.
 	 * 
 	 * @param client
 	 *            the stream to add.
 	 */
-	public void addClient(PrintWriter client) {
+	public void addClient(OutputStream client) {
 		clients.add(client);
+	}
+
+	/**
+	 * Removes the client's stream from the clients listening to this channel.
+	 * 
+	 * @param client
+	 *            - the client to be removed.
+	 * @return true if the stream was found and removed.
+	 */
+	public boolean removeClient(OutputStream client) {
+		if (clients.contains(client)) {
+			clients.remove(client);
+			return true;
+		}
+		return false;
 	}
 
 }

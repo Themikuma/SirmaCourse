@@ -71,7 +71,7 @@ public class ServerGUI extends JFrame {
 	 */
 	private void initServer() {
 		Random random = new Random();
-		int port = random.nextInt(2) + 7000;
+		int port = random.nextInt(20) + 7000;
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(port);

@@ -67,15 +67,6 @@ public class Client implements Runnable {
 		}
 	}
 
-	/**
-	 * Creates a client that uses a server to communicate.
-	 * 
-	 * @param args
-	 *            array of command-line arguments passed to this method.
-	 */
-	public static void main(String[] args) {
-	}
-
 	@Override
 	public void run() {
 		connectClient();

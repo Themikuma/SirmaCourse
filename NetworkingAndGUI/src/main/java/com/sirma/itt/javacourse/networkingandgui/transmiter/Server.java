@@ -1,90 +1,131 @@
 package com.sirma.itt.javacourse.networkingandgui.transmiter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JTextArea;
 
 /**
+ * Accepts connections and sends them to the servers.
+ * 
  * @author gdimitrov
  */
 public class Server implements Runnable {
 
-	private int port;
-	private ArrayList<PrintWriter> clients;
 	private JTextArea log;
-	private ServerSocket serverSocket;
-	private volatile boolean run;
+	private ArrayList<Channel> channels;
+	private String message;
 
 	/**
-	 * Creates a server that starts listening on the given port.
+	 * Creates a connection that accepts clients.
 	 * 
-	 * @param port
-	 *            the port on which to listen.
 	 * @param log
-	 *            the log in which to log the data.
+	 *            the log for the server.
 	 */
-	public Server(int port, JTextArea log) {
+	public Server(JTextArea log) {
 		this.log = log;
-		this.port = port;
-		clients = new ArrayList<>();
-		run = true;
+		channels = new ArrayList<>();
+		channels.add(new Channel());
+		channels.add(new Channel());
+		channels.add(new Channel());
 	}
 
 	/**
-	 * Runs the server until told otherwise by the client.
+	 * Setter method for message.
+	 * 
+	 * @param message
+	 *            the message to set
 	 */
-	public void acceptConnection() {
+	public void setMessage(String message) {
+		this.message = message;
+		broadcast();
+	}
+
+	/**
+	 * Broadcasts the message to all the channels interested in it.
+	 */
+	private void broadcast() {
+		log.append("Broadcasting: " + message + System.lineSeparator());
+		ArrayList<Channel> broadcast = new ArrayList<>();
+		boolean cSharp = message.toLowerCase().contains("c#");
+		boolean java = message.toLowerCase().contains("java");
+		if (cSharp) {
+			broadcast.add(channels.get(0));
+		}
+		if (java) {
+			broadcast.add(channels.get(1));
+		}
+		if (!cSharp && !java) {
+			broadcast.add(channels.get(2));
+		}
+		ArrayList<OutputStream> recievers = new ArrayList<>();
+		for (Channel channel : broadcast) {
+			for (OutputStream outputStream : channel.getClients()) {
+				if (!recievers.contains(outputStream)) {
+					recievers.add(outputStream);
+				}
+			}
+		}
+		for (OutputStream outputStream : recievers) {
+			PrintWriter out = new PrintWriter(outputStream, true);
+			out.println(message);
+		}
+	}
+
+	/**
+	 * Accepts connections from clients.
+	 */
+	private void acceptConnection() {
+		Random random = new Random();
+		int port = random.nextInt(2) + 7000;
+		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(port);
+			log.append("Listening on port: " + port + System.lineSeparator());
 		} catch (IOException e) {
-			log.insert("Could not listen on port: " + port + System.lineSeparator(), 0);
+			log.append("Could not listen on port: " + port + System.lineSeparator());
 		}
-
-		log.insert("Waiting for connection....." + System.lineSeparator(), 0);
-		int i = 0;
-		while (run) {
-			i++;
-			Socket clientSocket;
+		while (true) {
 			try {
-				clientSocket = serverSocket.accept();
-				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-				out.println("You're client number " + i);
-				for (PrintWriter client : clients) {
-					client.println("Client number " + i + " joined our ranks");
+				Socket clientSocket = serverSocket.accept();
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+						clientSocket.getInputStream()));
+				log.append("Someone connected" + System.lineSeparator());
+				String connect = in.readLine();
+				boolean cSharp = connect.toLowerCase().contains("c#");
+				boolean java = connect.toLowerCase().contains("java");
+				OutputStream out = clientSocket.getOutputStream();
+				if (cSharp) {
+					channels.get(0).addClient(out);
 				}
-				clients.add(out);
+				if (java) {
+					channels.get(1).addClient(out);
+				}
+				if ((!cSharp && !java) || connect.contains("offtopic")) {
+					channels.get(2).addClient(out);
+				}
 			} catch (IOException e) {
-				log.append("Server was stopped");
+				e.printStackTrace();
+				log.append("There was an error with starting up the server"
+						+ System.lineSeparator());
 				break;
 			}
 		}
-		try {
-			serverSocket.close();
-		} catch (IOException e) {
-			log.insert("Coudldn't close the streams" + System.lineSeparator(), 0);
-		}
 	}
 
 	/**
-	 * Stops the server.
+	 * {@inheritDoc}
 	 */
-	public void stop() {
-		run = false;
-		if (serverSocket != null) {
-			try {
-				serverSocket.close();
-			} catch (IOException e) {
-				log.insert("Couldn't close the server socket" + System.lineSeparator(), 0);
-			}
-		}
-	}
-
 	@Override
 	public void run() {
 		acceptConnection();
 	}
+
 }

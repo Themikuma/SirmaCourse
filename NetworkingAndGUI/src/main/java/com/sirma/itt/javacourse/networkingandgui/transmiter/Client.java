@@ -3,43 +3,69 @@ package com.sirma.itt.javacourse.networkingandgui.transmiter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 import javax.swing.JTextArea;
 
 /**
- * The client for the client info application.
+ * The client sends messages and recieves the reversed messages.
  * 
  * @author gdimitrov
  */
 public class Client implements Runnable {
 
-	private JTextArea log;
+	private JTextArea messageLog;
+	private volatile boolean run;
+	private String subscriptions;
+	private Socket socket;
 
 	/**
 	 * Creates a client and sets the log in which it writes.
 	 * 
-	 * @param log
+	 * @param messageLog
 	 *            the log to write to.
 	 */
-	public Client(JTextArea log) {
-		this.log = log;
+	public Client(JTextArea messageLog) {
+		this.messageLog = messageLog;
+		run = true;
+		socket = null;
+	}
+
+	/**
+	 * Stops the server.
+	 */
+	public void stop() {
+		run = false;
+		try {
+			if (socket != null) {
+				socket.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Setter method for subscriptions.
+	 * 
+	 * @param subscriptions
+	 *            the subscriptions to set
+	 */
+	public void setSubscriptions(String subscriptions) {
+		this.subscriptions = subscriptions;
 	}
 
 	/**
 	 * Runs the client communication with the server.
 	 */
 	public void connectClient() {
-		log.append("Searching for an open port " + System.lineSeparator());
-
-		Socket socket = null;
-		BufferedReader in = null;
-
+		BufferedReader in;
+		messageLog.append("Looking for server..." + System.lineSeparator());
 		for (int i = 7000; i < 7020; i++) {
 			try {
 				socket = new Socket("localhost", i);
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				break;
 			} catch (UnknownHostException e) {
 				continue;
@@ -48,22 +74,25 @@ public class Client implements Runnable {
 			}
 		}
 		if (socket == null) {
-			log.append("Couldn't find an open port. Shutting down" + System.lineSeparator());
+			messageLog.append("No server found. Closing");
 			return;
 		}
-		log.append("Connected" + System.lineSeparator());
-		while (true) {
-			try {
-				log.append(in.readLine() + System.lineSeparator());
-			} catch (IOException e) {
-				break;
-			}
+		try {
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			messageLog.append("Connected to " + socket.getPort() + System.lineSeparator());
+			out.println(subscriptions);
+		} catch (IOException e) {
 		}
 		try {
-			in.close();
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			while (run) {
+				messageLog.append(in.readLine() + System.lineSeparator());
+			}
+		} catch (IOException e) {
+		}
+		try {
 			socket.close();
 		} catch (IOException e) {
-			log.append("Coudldn't close the streams" + System.lineSeparator());
 		}
 	}
 
