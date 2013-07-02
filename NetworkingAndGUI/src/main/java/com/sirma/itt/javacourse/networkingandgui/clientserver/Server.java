@@ -59,7 +59,7 @@ public class Server implements Runnable {
 				serverSocket.close();
 				clientSocket = null;
 			} catch (IOException e) {
-				log.insert("Couldn't close the server socket" + System.lineSeparator(), 0);
+				log.append("Couldn't close the server socket" + System.lineSeparator());
 			}
 		}
 	}
@@ -67,25 +67,25 @@ public class Server implements Runnable {
 	/**
 	 * Runs the server until told otherwise by the client.
 	 */
-	public void runServer() {
+	private void runServer() {
 
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			log.insert("Could not listen on port: " + port + System.lineSeparator(), 0);
+			log.append("Could not listen on port: " + port + System.lineSeparator());
 		}
 
-		log.insert("Waiting for connection....." + System.lineSeparator(), 0);
+		log.append("Waiting for connection..." + System.lineSeparator());
 
 		while (run) {
 			try {
 				clientSocket = serverSocket.accept();
 			} catch (IOException e) {
-				log.insert("The server has been stopped." + System.lineSeparator(), 0);
+				log.append("The server has been stopped." + System.lineSeparator());
 			}
 			if (clientSocket != null) {
-				log.insert(clientSocket.getInetAddress() + " has succesfully connected on port "
-						+ clientSocket.getLocalPort() + System.lineSeparator(), 0);
+				log.append(clientSocket.getInetAddress() + " has succesfully connected on port "
+						+ clientSocket.getLocalPort() + System.lineSeparator());
 			}
 		}
 		try {
@@ -94,7 +94,7 @@ public class Server implements Runnable {
 			}
 			serverSocket.close();
 		} catch (IOException e) {
-			log.insert("Coudldn't close the streams" + System.lineSeparator(), 0);
+			log.append("Coudldn't close the streams" + System.lineSeparator());
 		}
 	}
 

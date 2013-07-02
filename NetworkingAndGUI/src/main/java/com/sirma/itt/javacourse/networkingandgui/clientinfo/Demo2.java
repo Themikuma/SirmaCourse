@@ -18,6 +18,7 @@ public final class Demo2 {
 	 *             if the thread is interrupted.
 	 */
 	public static void main(String[] args) throws InterruptedException {
+		ServerGUI server = new ServerGUI(300, 300);
 		ClientGUI client = new ClientGUI(200, 300);
 		ClientGUI client2 = new ClientGUI(300, 300);
 		ClientGUI client3 = new ClientGUI(300, 300);

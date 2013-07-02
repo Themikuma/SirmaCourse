@@ -23,9 +23,7 @@ public class Client {
 				socket = new Socket("localhost", i);
 				break;
 			} catch (UnknownHostException e) {
-				continue;
 			} catch (IOException e) {
-				continue;
 			}
 		}
 		if (socket == null) {

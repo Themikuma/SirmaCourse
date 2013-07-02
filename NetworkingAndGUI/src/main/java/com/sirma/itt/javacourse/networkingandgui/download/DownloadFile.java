@@ -21,6 +21,8 @@ public class DownloadFile implements Runnable {
 
 	private String url;
 	private Downloader downloader;
+	private int contentLength;
+	private int transferred;
 
 	/**
 	 * Creates a file downloader using the URL given to download a file.
@@ -36,12 +38,26 @@ public class DownloadFile implements Runnable {
 	}
 
 	/**
+	 * @return the contentLength
+	 */
+	public int getContentLength() {
+		return contentLength;
+	}
+
+	/**
+	 * @return the transferred
+	 */
+	public int getTransferred() {
+		return transferred;
+	}
+
+	/**
 	 * Downloads a file from the given url.
 	 * 
 	 * @param url
 	 *            the url of the file.
 	 */
-	public void downloadFile(String url) {
+	public void downloadFile() {
 		try {
 			URL downloadURL = new URL(url);
 			String[] splitURL = url.split("[/]");
@@ -52,12 +68,12 @@ public class DownloadFile implements Runnable {
 			URLConnection connection = downloadURL.openConnection();
 			InputStream input = downloadURL.openStream();
 			BufferedInputStream in = new BufferedInputStream(input);
-			int contentLength = connection.getContentLength();
+			contentLength = connection.getContentLength();
 			downloader.getProgress().setMaximum(contentLength);
 			int step = 1024 * 10;
 			int read;
 			byte[] buffer = new byte[step];
-			int transferred = 0;
+			transferred = 0;
 			try {
 				while ((read = in.read(buffer)) > 0) {
 					transferred += read;
@@ -69,8 +85,6 @@ public class DownloadFile implements Runnable {
 			} catch (IOException e) {
 				throw new RuntimeException("General I/O exception", e);
 			}
-			System.out.println(connection.getContentLength());
-			System.out.println(transferred);
 		} catch (MalformedURLException e) {
 			downloader.getResult().setText("Invalid URL");
 			return;
@@ -83,6 +97,6 @@ public class DownloadFile implements Runnable {
 
 	@Override
 	public void run() {
-		downloadFile(url);
+		downloadFile();
 	}
 }
