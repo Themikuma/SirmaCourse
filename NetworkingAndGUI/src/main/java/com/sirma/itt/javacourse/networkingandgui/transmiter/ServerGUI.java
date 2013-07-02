@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -80,14 +81,16 @@ public class ServerGUI extends JFrame implements ActionListener {
 	 * Initialises the server.
 	 */
 	private void initServer() {
-		server = new Server(log);
+		Random random = new Random();
+		int port = random.nextInt(20) + 7000;
+		server = new Server(port, log);
 		Thread serverThread = new Thread(server);
 		serverThread.start();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		server.setMessage(message.getText());
+		server.sendMessage(message.getText());
 		message.setText("");
 	}
 }

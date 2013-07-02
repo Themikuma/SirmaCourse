@@ -54,7 +54,7 @@ public class Server implements Runnable {
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 				out.println("You're client number " + i);
 				for (PrintWriter client : clients) {
-					client.println("Client number " + i + " joined our ranks");
+					client.println("Client number " + i + " joined us");
 				}
 				clients.add(out);
 			} catch (IOException e) {

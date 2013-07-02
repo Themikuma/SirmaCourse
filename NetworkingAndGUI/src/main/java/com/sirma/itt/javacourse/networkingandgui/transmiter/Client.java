@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 import javax.swing.JTextArea;
 
 /**
- * The client sends messages and recieves the reversed messages.
+ * The client subscribes for channels and then recieves broadcasts from the server.
  * 
  * @author gdimitrov
  */
@@ -20,6 +20,16 @@ public class Client implements Runnable {
 	private volatile boolean run;
 	private String subscriptions;
 	private Socket socket;
+	private String serverResponse;
+
+	/**
+	 * Getter method for serverResponse.
+	 * 
+	 * @return the serverResponse
+	 */
+	public String getServerResponse() {
+		return serverResponse;
+	}
 
 	/**
 	 * Creates a client and sets the log in which it writes.
@@ -34,7 +44,7 @@ public class Client implements Runnable {
 	}
 
 	/**
-	 * Stops the server.
+	 * Stops the client.
 	 */
 	public void stop() {
 		run = false;
@@ -68,9 +78,7 @@ public class Client implements Runnable {
 				socket = new Socket("localhost", i);
 				break;
 			} catch (UnknownHostException e) {
-				continue;
 			} catch (IOException e) {
-				continue;
 			}
 		}
 		if (socket == null) {
@@ -86,7 +94,8 @@ public class Client implements Runnable {
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while (run) {
-				messageLog.append(in.readLine() + System.lineSeparator());
+				serverResponse = in.readLine();
+				messageLog.append(serverResponse + System.lineSeparator());
 			}
 		} catch (IOException e) {
 		}
@@ -94,15 +103,6 @@ public class Client implements Runnable {
 			socket.close();
 		} catch (IOException e) {
 		}
-	}
-
-	/**
-	 * Creates a client that uses a server to communicate.
-	 * 
-	 * @param args
-	 *            array of command-line arguments passed to this method.
-	 */
-	public static void main(String[] args) {
 	}
 
 	@Override

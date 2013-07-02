@@ -20,6 +20,8 @@ public class Client implements Runnable {
 	private Socket socket;
 	private String message;
 	private BufferedReader in;
+	private PrintWriter out;
+	private String serverResponse;
 
 	/**
 	 * Creates a client and sets the log in which it writes.
@@ -32,12 +34,12 @@ public class Client implements Runnable {
 	}
 
 	/**
-	 * Setter method for message.
+	 * Changes the message and notifies the client to send it.
 	 * 
 	 * @param message
 	 *            the message to set
 	 */
-	public void setMessage(String message) {
+	public void sendMessage(String message) {
 		this.message = message;
 		synchronized (this) {
 			notifyAll();
@@ -53,9 +55,7 @@ public class Client implements Runnable {
 				socket = new Socket("localhost", i);
 				break;
 			} catch (UnknownHostException e) {
-				continue;
 			} catch (IOException e) {
-				continue;
 			}
 		}
 		if (socket == null) {
@@ -64,6 +64,7 @@ public class Client implements Runnable {
 		}
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new PrintWriter(socket.getOutputStream(), true);
 			response.setText(in.readLine());
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -75,7 +76,7 @@ public class Client implements Runnable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				communicate(message);
+				communicate();
 				if (".".equals(message)) {
 					response.setText("Disconnected from the server");
 					break;
@@ -84,37 +85,35 @@ public class Client implements Runnable {
 		}
 		try {
 			socket.close();
+			in.close();
+			out.close();
 		} catch (IOException e) {
 		}
 	}
 
 	/**
 	 * Communicates with the server.
-	 * 
-	 * @param message
-	 *            the message the server sent.
 	 */
-	private void communicate(String message) {
-		PrintWriter out = null;
+	private void communicate() {
 		try {
-			out = new PrintWriter(socket.getOutputStream(), true);
 			if (message == null) {
 				return;
 			}
 			out.println(message);
-			response.setText("The reverse of " + message + " is " + in.readLine());
+			serverResponse = in.readLine();
+			response.setText("The reverse of " + message + " is " + serverResponse);
 		} catch (IOException e) {
 			response.setText("The server has stopped working");
 		}
 	}
 
 	/**
-	 * Creates a client that uses a server to communicate.
+	 * Getter method for serverResponse.
 	 * 
-	 * @param args
-	 *            array of command-line arguments passed to this method.
+	 * @return the serverResponse
 	 */
-	public static void main(String[] args) {
+	public String getServerResponse() {
+		return serverResponse;
 	}
 
 	@Override

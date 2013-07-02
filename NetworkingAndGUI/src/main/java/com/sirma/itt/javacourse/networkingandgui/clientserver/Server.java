@@ -73,6 +73,7 @@ public class Server implements Runnable {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
 			log.append("Could not listen on port: " + port + System.lineSeparator());
+			return;
 		}
 
 		log.append("Waiting for connection..." + System.lineSeparator());

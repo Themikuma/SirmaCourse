@@ -14,10 +14,7 @@ public class Client {
 	 * Runs the client communication with the server.
 	 */
 	public void runClient() {
-		System.out.println("Searching for an open port ");
-
 		Socket socket = null;
-
 		for (int i = 7000; i < 7020; i++) {
 			try {
 				socket = new Socket("localhost", i);
@@ -30,7 +27,6 @@ public class Client {
 			System.out.println("Couldn't find an open port. Shutting down");
 			return;
 		}
-		System.out.println("Connected");
 		try {
 			socket.close();
 		} catch (IOException e) {

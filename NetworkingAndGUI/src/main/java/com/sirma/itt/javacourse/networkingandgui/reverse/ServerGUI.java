@@ -1,12 +1,10 @@
 package com.sirma.itt.javacourse.networkingandgui.reverse;
 
 import java.awt.BorderLayout;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
@@ -22,7 +20,6 @@ public class ServerGUI extends JFrame {
 	private static final long serialVersionUID = -4016819477611948502L;
 
 	private JTextArea log;
-	private Server server;
 
 	/**
 	 * Getter method for log.
@@ -57,12 +54,14 @@ public class ServerGUI extends JFrame {
 	private void initComponents(int width, int height) {
 		setSize(width, height);
 		log = new JTextArea();
+		log.setEditable(false);
+		JScrollPane pane = new JScrollPane(log);
 
 		setTitle("Server");
 		setSize(width, height);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().add(log, BorderLayout.CENTER);
+		getContentPane().add(pane, BorderLayout.CENTER);
 		setVisible(true);
 	}
 
@@ -72,27 +71,9 @@ public class ServerGUI extends JFrame {
 	private void initServer() {
 		Random random = new Random();
 		int port = random.nextInt(20) + 7000;
-		ServerSocket serverSocket = null;
-		try {
-			serverSocket = new ServerSocket(port);
-			log.append("Listening on port: " + port + System.lineSeparator());
-		} catch (IOException e) {
-			log.append("Could not listen on port: " + port + System.lineSeparator());
-		}
-		while (true) {
-			try {
-				Socket clientSocket = serverSocket.accept();
-				server = new Server(log, clientSocket);
-				log.append("Got a new connection" + System.lineSeparator());
-				Thread serverThread = new Thread(server);
-				serverThread.start();
-			} catch (IOException e) {
-				e.printStackTrace();
-				log.append("There was an error with starting up the server"
-						+ System.lineSeparator());
-				break;
-			}
-		}
+		ConnectionHandler handler = new ConnectionHandler(port, log);
+		Thread connectionThread = new Thread(handler);
+		connectionThread.start();
 	}
 
 }

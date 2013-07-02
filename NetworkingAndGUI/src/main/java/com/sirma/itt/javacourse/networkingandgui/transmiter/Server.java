@@ -8,12 +8,11 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.JTextArea;
 
 /**
- * Accepts connections and sends them to the servers.
+ * Accepts clients that subscribe to channels. Each member can be subscribed to multiple channels.
  * 
  * @author gdimitrov
  */
@@ -22,15 +21,19 @@ public class Server implements Runnable {
 	private JTextArea log;
 	private ArrayList<Channel> channels;
 	private String message;
+	private int port;
 
 	/**
 	 * Creates a connection that accepts clients.
 	 * 
+	 * @param port
+	 *            the port on which to accept connections.
 	 * @param log
 	 *            the log for the server.
 	 */
-	public Server(JTextArea log) {
+	public Server(int port, JTextArea log) {
 		this.log = log;
+		this.port = port;
 		channels = new ArrayList<>();
 		channels.add(new Channel());
 		channels.add(new Channel());
@@ -43,7 +46,7 @@ public class Server implements Runnable {
 	 * @param message
 	 *            the message to set
 	 */
-	public void setMessage(String message) {
+	public void sendMessage(String message) {
 		this.message = message;
 		broadcast();
 	}
@@ -83,8 +86,6 @@ public class Server implements Runnable {
 	 * Accepts connections from clients.
 	 */
 	private void acceptConnection() {
-		Random random = new Random();
-		int port = random.nextInt(2) + 7000;
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(port);

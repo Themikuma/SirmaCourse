@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 /**
@@ -74,10 +75,11 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		send.setEnabled(true);
 		message = new JTextField();
 		response = new JTextField();
+		JScrollPane responsePane = new JScrollPane(response);
 		response.setEditable(false);
-		Panel textPane = new Panel(new GridLayout(2, 1, 5, 5));
-		textPane.add(response);
-		textPane.add(message);
+		Panel messagePane = new Panel(new GridLayout(2, 1, 5, 0));
+		messagePane.add(message);
+		messagePane.add(send);
 		message.addKeyListener(this);
 
 		addWindowListener(this);
@@ -85,14 +87,14 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		setSize(width, height);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		getContentPane().add(textPane, BorderLayout.CENTER);
-		getContentPane().add(send, BorderLayout.SOUTH);
+		getContentPane().add(responsePane, BorderLayout.CENTER);
+		getContentPane().add(messagePane, BorderLayout.SOUTH);
 		setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		client.setMessage(message.getText());
+		client.sendMessage(message.getText());
 		states.add(Originator.createMemento(message.getText()));
 		currentState++;
 		message.setText("");
@@ -106,7 +108,7 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		client.setMessage(".");
+		client.sendMessage(".");
 		dispose();
 	}
 
@@ -161,7 +163,7 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 				message.setText(Originator.getState(states.get(currentState)));
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			client.setMessage(message.getText());
+			client.sendMessage(message.getText());
 			states.add(Originator.createMemento(message.getText()));
 			currentState++;
 			message.setText("");

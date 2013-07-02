@@ -42,9 +42,7 @@ public class Client implements Runnable {
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				break;
 			} catch (UnknownHostException e) {
-				continue;
 			} catch (IOException e) {
-				continue;
 			}
 		}
 		if (socket == null) {
