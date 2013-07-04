@@ -71,7 +71,7 @@ public class ServerGUI extends JFrame {
 	private void initServer() {
 		Random random = new Random();
 		int port = random.nextInt(20) + 7000;
-		ConnectionHandler handler = new ConnectionHandler(port, log);
+		Server handler = new Server(port, log);
 		Thread connectionThread = new Thread(handler);
 		connectionThread.start();
 	}

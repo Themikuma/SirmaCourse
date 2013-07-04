@@ -1,16 +1,13 @@
 /**
  * 
  */
-package com.sirma.itt.javacourse.networkingandgui;
+package com.sirma.itt.javacourse.networkingandgui.clientinfo;
 
 import static org.junit.Assert.assertEquals;
 
 import javax.swing.JTextArea;
 
 import org.junit.Test;
-
-import com.sirma.itt.javacourse.networkingandgui.clientinfo.Client;
-import com.sirma.itt.javacourse.networkingandgui.clientinfo.Server;
 
 /**
  * Tests the client info task.

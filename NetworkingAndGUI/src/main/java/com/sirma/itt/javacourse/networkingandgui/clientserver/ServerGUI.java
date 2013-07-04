@@ -84,7 +84,7 @@ public class ServerGUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == start && !server.isRun()) {
+		if (e.getSource() == start && !server.isRunning()) {
 			Random random = new Random();
 			server = new Server(random.nextInt(20) + 7000, log);
 			server.start();

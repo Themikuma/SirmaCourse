@@ -2,6 +2,7 @@ package com.sirma.itt.javacourse.networkingandgui.transmiter;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Holds the clients which recieve the broadcasts on this channel.
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * @author gdimitrov
  */
 public class Channel {
-	private ArrayList<OutputStream> clients;
+	private List<OutputStream> clients;
 
 	/**
 	 * Creates a new broadcast channel.
@@ -23,7 +24,7 @@ public class Channel {
 	 * 
 	 * @return the clients
 	 */
-	public ArrayList<OutputStream> getClients() {
+	public Iterable<OutputStream> getClients() {
 		return clients;
 	}
 

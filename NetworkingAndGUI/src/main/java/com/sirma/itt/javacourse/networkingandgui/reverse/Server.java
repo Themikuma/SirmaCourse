@@ -1,74 +1,78 @@
 package com.sirma.itt.javacourse.networkingandgui.reverse;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.swing.JTextArea;
 
 /**
- * The server recieves messages and sends back the reversed messages.
+ * Handles each connection by giving it a new server thread.
  * 
  * @author gdimitrov
  */
 public class Server implements Runnable {
 
 	private JTextArea log;
-	private Socket clientSocket;
-	private static final String SEPARATOR = System.lineSeparator();
+	private int port;
+	private boolean run;
+	private ServerSocket serverSocket = null;
 
 	/**
-	 * Creates a server that starts listening on the given port.
+	 * Creates a connection handler on a given port.
 	 * 
+	 * @param port
+	 *            the port ot connect to.
 	 * @param log
-	 *            the log in which to log the data.
-	 * @param clientSocket
-	 *            the socket that the client uses to communicate with the server.
+	 *            the log to use for loging the results.
 	 */
-	public Server(JTextArea log, Socket clientSocket) {
+	public Server(int port, JTextArea log) {
 		this.log = log;
-		this.clientSocket = clientSocket;
+		this.port = port;
+		run = true;
 	}
 
 	/**
-	 * Runs the server until told otherwise by the client.
+	 * Stops the connection handler from listening for connections and frees up the port that it's
+	 * using.
 	 */
-	public void reverseMessages() {
-		try {
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			out.println("Welcome to the server");
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					clientSocket.getInputStream()));
-			String line = null;
-			StringBuilder reversedLine = null;
-			while (true) {
-				line = in.readLine();
-				reversedLine = new StringBuilder(line);
-				reversedLine = reversedLine.reverse();
-				if (".".equals(line)) {
-					log.append("A client has disconnected" + SEPARATOR);
+	public void stop() {
+		run = false;
+		if (serverSocket != null) {
+			try {
+				serverSocket.close();
+			} catch (IOException e) {
+				log.append("Could not close the server.");
+			}
+		}
+	}
+
+	/**
+	 * Handles a connection from a client, by sending it to a new server thread. Uses a
+	 * {@link JTextArea} provided in the class constructor to log the results.
+	 */
+	private void handleConnection() {
+		try (ServerSocket servSocket = new ServerSocket(port)) {
+			serverSocket = servSocket;
+			log.append("Listening on port: " + port + System.lineSeparator());
+			while (run) {
+				try {
+					Socket clientSocket = serverSocket.accept();
+					ConnectionHandler server = new ConnectionHandler(log, clientSocket);
+					Thread serverThread = new Thread(server);
+					serverThread.start();
+				} catch (IOException e) {
+					log.append("Тhe server was stopped" + System.lineSeparator());
 					break;
 				}
-				log.append("Accepted message: " + line + SEPARATOR);
-				log.append("Sending message: " + reversedLine.toString() + SEPARATOR);
-				out.println(reversedLine.toString());
 			}
-			out.close();
-			in.close();
 		} catch (IOException e) {
-			log.append("A client has disconnected" + SEPARATOR);
-		}
-		try {
-			clientSocket.close();
-		} catch (IOException e) {
-			log.append("Coudldn't close the streams" + SEPARATOR);
+			log.append("Could not listen on port: " + port + System.lineSeparator());
 		}
 	}
 
 	@Override
 	public void run() {
-		reverseMessages();
+		handleConnection();
 	}
 }

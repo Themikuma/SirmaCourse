@@ -17,7 +17,6 @@ public class Server implements Runnable {
 	private volatile boolean run;
 	private JTextArea log;
 	private ServerSocket serverSocket;
-	private Socket clientSocket;
 
 	/**
 	 * Creates a server listening to a specific port.
@@ -38,7 +37,7 @@ public class Server implements Runnable {
 	 * 
 	 * @return the run
 	 */
-	public boolean isRun() {
+	public boolean isRunning() {
 		return run;
 	}
 
@@ -57,7 +56,6 @@ public class Server implements Runnable {
 		if (serverSocket != null) {
 			try {
 				serverSocket.close();
-				clientSocket = null;
 			} catch (IOException e) {
 				log.append("Couldn't close the server socket" + System.lineSeparator());
 			}
@@ -68,34 +66,21 @@ public class Server implements Runnable {
 	 * Runs the server until told otherwise by the client.
 	 */
 	private void runServer() {
-
-		try {
-			serverSocket = new ServerSocket(port);
+		try (ServerSocket servSocket = new ServerSocket(port)) {
+			serverSocket = servSocket;
+			log.append("Waiting for connection..." + System.lineSeparator());
+			while (run) {
+				try (Socket clientSocket = serverSocket.accept()) {
+					log.append(clientSocket.getInetAddress()
+							+ " has succesfully connected on port " + clientSocket.getLocalPort()
+							+ System.lineSeparator());
+				} catch (IOException e) {
+					log.append("The server has been stopped." + System.lineSeparator());
+				}
+			}
 		} catch (IOException e) {
 			log.append("Could not listen on port: " + port + System.lineSeparator());
 			return;
-		}
-
-		log.append("Waiting for connection..." + System.lineSeparator());
-
-		while (run) {
-			try {
-				clientSocket = serverSocket.accept();
-			} catch (IOException e) {
-				log.append("The server has been stopped." + System.lineSeparator());
-			}
-			if (clientSocket != null) {
-				log.append(clientSocket.getInetAddress() + " has succesfully connected on port "
-						+ clientSocket.getLocalPort() + System.lineSeparator());
-			}
-		}
-		try {
-			if (clientSocket != null) {
-				clientSocket.close();
-			}
-			serverSocket.close();
-		} catch (IOException e) {
-			log.append("Coudldn't close the streams" + System.lineSeparator());
 		}
 	}
 

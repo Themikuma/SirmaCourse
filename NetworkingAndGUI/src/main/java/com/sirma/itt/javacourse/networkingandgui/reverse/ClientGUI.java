@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,7 +33,7 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	private JTextField response;
 	private JButton send;
 	private Client client;
-	private ArrayList<Memento> states;
+	private List<MessageState> states;
 	private int currentState;
 
 	/**
@@ -92,12 +93,19 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		setVisible(true);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	/**
+	 * Sends the message to the server.
+	 */
+	private void sendMessage() {
 		client.sendMessage(message.getText());
-		states.add(Originator.createMemento(message.getText()));
+		states.add(StateManager.createMemento(message.getText()));
 		currentState++;
 		message.setText("");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		sendMessage();
 	}
 
 	@Override
@@ -154,19 +162,16 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			if (currentState < states.size()) {
-				message.setText(Originator.getState(states.get(currentState)));
+				message.setText(StateManager.getState(states.get(currentState)));
 				currentState++;
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (currentState > 0) {
 				currentState--;
-				message.setText(Originator.getState(states.get(currentState)));
+				message.setText(StateManager.getState(states.get(currentState)));
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			client.sendMessage(message.getText());
-			states.add(Originator.createMemento(message.getText()));
-			currentState++;
-			message.setText("");
+			sendMessage();
 		}
 
 	}

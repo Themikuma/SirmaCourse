@@ -5,14 +5,14 @@ package com.sirma.itt.javacourse.networkingandgui.reverse;
  * 
  * @author gdimitrov
  */
-public class Memento {
+public class MessageState {
 	private final String state;
 
 	/**
 	 * @param state
 	 *            the state of the object at the given point.
 	 */
-	protected Memento(String state) {
+	protected MessageState(String state) {
 		this.state = state;
 	}
 

@@ -8,6 +8,9 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.JTextArea;
 
@@ -19,7 +22,7 @@ import javax.swing.JTextArea;
 public class Server implements Runnable {
 
 	private JTextArea log;
-	private ArrayList<Channel> channels;
+	private List<Channel> channels;
 	private String message;
 	private int port;
 
@@ -68,12 +71,10 @@ public class Server implements Runnable {
 		if (!cSharp && !java) {
 			broadcast.add(channels.get(2));
 		}
-		ArrayList<OutputStream> recievers = new ArrayList<>();
+		Set<OutputStream> recievers = new HashSet<>();
 		for (Channel channel : broadcast) {
 			for (OutputStream outputStream : channel.getClients()) {
-				if (!recievers.contains(outputStream)) {
-					recievers.add(outputStream);
-				}
+				recievers.add(outputStream);
 			}
 		}
 		for (OutputStream outputStream : recievers) {
@@ -86,15 +87,9 @@ public class Server implements Runnable {
 	 * Accepts connections from clients.
 	 */
 	private void acceptConnection() {
-		ServerSocket serverSocket = null;
-		try {
-			serverSocket = new ServerSocket(port);
+		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			log.append("Listening on port: " + port + System.lineSeparator());
-		} catch (IOException e) {
-			log.append("Could not listen on port: " + port + System.lineSeparator());
-		}
-		while (true) {
-			try {
+			while (true) {
 				Socket clientSocket = serverSocket.accept();
 				BufferedReader in = new BufferedReader(new InputStreamReader(
 						clientSocket.getInputStream()));
@@ -112,12 +107,9 @@ public class Server implements Runnable {
 				if ((!cSharp && !java) || connect.contains("offtopic")) {
 					channels.get(2).addClient(out);
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				log.append("There was an error with starting up the server"
-						+ System.lineSeparator());
-				break;
 			}
+		} catch (IOException e) {
+			log.append("Could not listen on port: " + port + System.lineSeparator());
 		}
 	}
 

@@ -1,4 +1,4 @@
-package com.sirma.itt.javacourse.networkingandgui;
+package com.sirma.itt.javacourse.networkingandgui.reverse;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,9 +6,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.junit.Test;
-
-import com.sirma.itt.javacourse.networkingandgui.reverse.Client;
-import com.sirma.itt.javacourse.networkingandgui.reverse.ConnectionHandler;
 
 /**
  * Tests the message reverse task.
@@ -26,7 +23,7 @@ public class ReverseTest {
 	 */
 	@Test
 	public void testReverseWithOneClient() throws InterruptedException {
-		ConnectionHandler handler = new ConnectionHandler(7000, new JTextArea());
+		Server handler = new Server(7000, new JTextArea());
 		Thread handlerThread = new Thread(handler);
 		handlerThread.start();
 		// Give the server time to start up

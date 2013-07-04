@@ -5,7 +5,7 @@ package com.sirma.itt.javacourse.networkingandgui.reverse;
  * 
  * @author gdimitrov
  */
-public final class Originator extends Memento {
+public final class StateManager extends MessageState {
 
 	/**
 	 * Private constructor for utility class.
@@ -13,7 +13,7 @@ public final class Originator extends Memento {
 	 * @param state
 	 *            the state of the memento.
 	 */
-	private Originator(String state) {
+	private StateManager(String state) {
 		super(state);
 		// TODO Auto-generated constructor stub
 	}
@@ -25,8 +25,8 @@ public final class Originator extends Memento {
 	 *            the current state of the object.
 	 * @return a memento.
 	 */
-	public static Memento createMemento(String state) {
-		return new Memento(state);
+	public static MessageState createMemento(String state) {
+		return new MessageState(state);
 	}
 
 	/**
@@ -36,7 +36,7 @@ public final class Originator extends Memento {
 	 *            the state of the object in a previous time.
 	 * @return a string that shows the state of the object.
 	 */
-	public static String getState(Memento memento) {
+	public static String getState(MessageState memento) {
 		return memento.getState();
 	}
 }

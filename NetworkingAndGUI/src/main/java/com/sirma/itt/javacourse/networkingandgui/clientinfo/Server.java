@@ -35,38 +35,35 @@ public class Server implements Runnable {
 	}
 
 	/**
-	 * Runs the server until told otherwise by the client.
+	 * Runs the server until told otherwise by the GUI.
 	 */
 	public void acceptConnection() {
-		try {
-			serverSocket = new ServerSocket(port);
+		try (ServerSocket servSocket = new ServerSocket(port)) {
+			serverSocket = servSocket;
+			Socket clientSocket = null;
+			int i = 0;
+			while (run) {
+				try {
+					clientSocket = serverSocket.accept();
+					i++;
+					PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+					out.println("You're client number " + i);
+					for (PrintWriter client : clients) {
+						client.println("Client number " + i + " joined us");
+					}
+					clients.add(out);
+				} catch (IOException e) {
+					log.append("Server was stopped");
+				}
+			}
+			if (clientSocket != null) {
+				clientSocket.close();
+			}
 		} catch (IOException e) {
 			log.insert("Could not listen on port: " + port + System.lineSeparator(), 0);
 		}
 
 		log.insert("Waiting for connection....." + System.lineSeparator(), 0);
-		int i = 0;
-		while (run) {
-			i++;
-			Socket clientSocket;
-			try {
-				clientSocket = serverSocket.accept();
-				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-				out.println("You're client number " + i);
-				for (PrintWriter client : clients) {
-					client.println("Client number " + i + " joined us");
-				}
-				clients.add(out);
-			} catch (IOException e) {
-				log.append("Server was stopped");
-				break;
-			}
-		}
-		try {
-			serverSocket.close();
-		} catch (IOException e) {
-			log.insert("Coudldn't close the streams" + System.lineSeparator(), 0);
-		}
 	}
 
 	/**

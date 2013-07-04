@@ -4,9 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.swing.JTextArea;
+
+import com.sirma.itt.javacourse.networkingandgui.util.ServerFinder;
 
 /**
  * The client for the client info application.
@@ -32,36 +33,24 @@ public class Client implements Runnable {
 	 */
 	public void connectClient() {
 		log.append("Searching for an open port " + System.lineSeparator());
-
-		Socket socket = null;
-		BufferedReader in = null;
-
-		for (int i = 7000; i < 7020; i++) {
-			try {
-				socket = new Socket("localhost", i);
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				break;
-			} catch (UnknownHostException e) {
-			} catch (IOException e) {
+		try (Socket socket = ServerFinder.findServer();) {
+			if (socket == null) {
+				log.append("Couldn't find an open port. Shutting down" + System.lineSeparator());
+				return;
 			}
-		}
-		if (socket == null) {
-			log.append("Couldn't find an open port. Shutting down" + System.lineSeparator());
-			return;
-		}
-		log.append("Connected" + System.lineSeparator());
-		while (true) {
-			try {
-				log.append(in.readLine() + System.lineSeparator());
+			try (BufferedReader in = new BufferedReader(new InputStreamReader(
+					socket.getInputStream()));) {
+				log.append("Connected" + System.lineSeparator());
+				while (true) {
+					log.append(in.readLine() + System.lineSeparator());
+
+				}
 			} catch (IOException e) {
-				break;
+				e.printStackTrace();
 			}
-		}
-		try {
-			in.close();
-			socket.close();
 		} catch (IOException e) {
-			log.append("Coudldn't close the streams" + System.lineSeparator());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

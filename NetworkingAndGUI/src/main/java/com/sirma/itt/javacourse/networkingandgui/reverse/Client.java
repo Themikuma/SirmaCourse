@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.swing.JTextField;
+
+import com.sirma.itt.javacourse.networkingandgui.util.ServerFinder;
 
 /**
  * The client sends messages and recieves the reversed messages.
@@ -17,10 +18,7 @@ import javax.swing.JTextField;
 public class Client implements Runnable {
 
 	private JTextField response;
-	private Socket socket;
 	private String message;
-	private BufferedReader in;
-	private PrintWriter out;
 	private String serverResponse;
 
 	/**
@@ -50,60 +48,34 @@ public class Client implements Runnable {
 	 * Runs the client communication with the server.
 	 */
 	public void connectClient() {
-		for (int i = 7000; i < 7020; i++) {
-			try {
-				socket = new Socket("localhost", i);
-				break;
-			} catch (UnknownHostException e) {
-			} catch (IOException e) {
-			}
-		}
-		if (socket == null) {
-			response.setText("No server found. Closing");
-			return;
-		}
-		try {
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			out = new PrintWriter(socket.getOutputStream(), true);
-			response.setText(in.readLine());
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		synchronized (this) {
-			while (true) {
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				communicate();
-				if (".".equals(message)) {
-					response.setText("Disconnected from the server");
-					break;
-				}
-			}
-		}
-		try {
-			socket.close();
-			in.close();
-			out.close();
-		} catch (IOException e) {
-		}
-	}
-
-	/**
-	 * Communicates with the server.
-	 */
-	private void communicate() {
-		try {
-			if (message == null) {
+		try (Socket socket = ServerFinder.findServer()) {
+			if (socket == null) {
+				response.setText("No server found. Closing");
 				return;
 			}
-			out.println(message);
-			serverResponse = in.readLine();
-			response.setText("The reverse of " + message + " is " + serverResponse);
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			response.setText(in.readLine());
+			synchronized (this) {
+				while (true) {
+					wait();
+					if (message == null) {
+						return;
+					}
+					out.println(message);
+					serverResponse = in.readLine();
+					response.setText("The reverse of " + message + " is " + serverResponse);
+					if (".".equals(message)) {
+						response.setText("Disconnected from the server");
+						break;
+					}
+				}
+			}
 		} catch (IOException e) {
-			response.setText("The server has stopped working");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 

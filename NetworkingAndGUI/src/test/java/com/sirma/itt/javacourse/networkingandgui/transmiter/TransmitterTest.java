@@ -1,13 +1,10 @@
-package com.sirma.itt.javacourse.networkingandgui;
+package com.sirma.itt.javacourse.networkingandgui.transmiter;
 
 import static org.junit.Assert.assertEquals;
 
 import javax.swing.JTextArea;
 
 import org.junit.Test;
-
-import com.sirma.itt.javacourse.networkingandgui.transmiter.Client;
-import com.sirma.itt.javacourse.networkingandgui.transmiter.Server;
 
 /**
  * Tests the transmiter task.

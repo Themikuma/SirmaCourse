@@ -19,7 +19,7 @@ import javax.swing.JTextField;
  * 
  * @author gdimitrov
  */
-public class Downloader extends JFrame implements ActionListener {
+public class FileDownloadUI extends JFrame implements ActionListener {
 
 	/**
 	 * Comment for serialVersionUID.
@@ -39,26 +39,8 @@ public class Downloader extends JFrame implements ActionListener {
 	 * @param height
 	 *            the height of the initial window.
 	 */
-	public Downloader(int width, int height) {
+	public FileDownloadUI(int width, int height) {
 		initComponents(width, height);
-	}
-
-	/**
-	 * Getter method for result.
-	 * 
-	 * @return the result
-	 */
-	public JLabel getResult() {
-		return result;
-	}
-
-	/**
-	 * Getter method for progress.
-	 * 
-	 * @return the progress
-	 */
-	public JProgressBar getProgress() {
-		return progress;
 	}
 
 	/**
@@ -98,9 +80,27 @@ public class Downloader extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		DownloadFile dl = new DownloadFile(url.getText(), this);
+		DownloadExecutor dl = new DownloadExecutor(url.getText(), this);
 		Thread t1 = new Thread(dl);
 		t1.start();
 		result.setText("Downloading");
+	}
+
+	/**
+	 * Getter method for result.
+	 * 
+	 * @return the result
+	 */
+	public JLabel getResult() {
+		return result;
+	}
+
+	/**
+	 * Getter method for progress.
+	 * 
+	 * @return the progress
+	 */
+	public JProgressBar getProgress() {
+		return progress;
 	}
 }

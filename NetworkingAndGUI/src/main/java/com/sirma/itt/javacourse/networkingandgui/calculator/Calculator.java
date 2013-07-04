@@ -90,6 +90,9 @@ public class Calculator extends JFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// When an operation is chosen for the first time the calculator takes
+		// the operand and stores it to the expression. If another operation was already chosen
+		// it acts as a "=" operation and performs the previously chosen operation.
 		if ("0".equals(operand.toString())) {
 			operand.delete(0, 1);
 		}
@@ -106,6 +109,7 @@ public class Calculator extends JFrame implements ActionListener {
 		} else if (e.getSource().equals(buttons[6])) {
 			operand.append("9");
 		} else if (e.getSource().equals(buttons[7])) {
+			// This is the "/" operation.
 			if (firstOperand) {
 				firstOperand = false;
 				operand.append("/");
@@ -113,10 +117,7 @@ public class Calculator extends JFrame implements ActionListener {
 				command = CommandFactory.createInstance(3);
 				operand = new StringBuilder(" ");
 			} else {
-				expression += operand;
-				double execute = command.execute(expression);
-				operand = new StringBuilder(Double.toString(execute));
-				firstOperand = true;
+				executeCommand();
 			}
 		} else if (e.getSource().equals(buttons[8])) {
 			operand.append("4");
@@ -125,6 +126,7 @@ public class Calculator extends JFrame implements ActionListener {
 		} else if (e.getSource().equals(buttons[10])) {
 			operand.append("6");
 		} else if (e.getSource().equals(buttons[11])) {
+			// This is the "*" operation.
 			if (firstOperand) {
 				firstOperand = false;
 				operand.append("*");
@@ -132,10 +134,7 @@ public class Calculator extends JFrame implements ActionListener {
 				command = CommandFactory.createInstance(2);
 				operand = new StringBuilder(" ");
 			} else {
-				expression += operand;
-				double execute = command.execute(expression);
-				operand = new StringBuilder(Double.toString(execute));
-				firstOperand = true;
+				executeCommand();
 			}
 		} else if (e.getSource().equals(buttons[12])) {
 			operand.append("1");
@@ -144,6 +143,7 @@ public class Calculator extends JFrame implements ActionListener {
 		} else if (e.getSource().equals(buttons[14])) {
 			operand.append("3");
 		} else if (e.getSource().equals(buttons[15])) {
+			// This is the "-" operation.
 			if (firstOperand) {
 				firstOperand = false;
 				operand.append("-");
@@ -151,16 +151,14 @@ public class Calculator extends JFrame implements ActionListener {
 				command = CommandFactory.createInstance(1);
 				operand = new StringBuilder(" ");
 			} else {
-				expression += operand;
-				double execute = command.execute(expression);
-				operand = new StringBuilder(Double.toString(execute));
-				firstOperand = true;
+				executeCommand();
 			}
 		} else if (e.getSource().equals(buttons[16])) {
 			operand.append("0");
 		} else if (e.getSource().equals(buttons[17])) {
 			operand.append(".");
 		} else if (e.getSource().equals(buttons[18])) {
+			// This is the "+" operation.
 			if (firstOperand) {
 				firstOperand = false;
 				operand.append("+");
@@ -168,10 +166,7 @@ public class Calculator extends JFrame implements ActionListener {
 				command = CommandFactory.createInstance(0);
 				operand = new StringBuilder(" ");
 			} else {
-				expression += operand;
-				double execute = command.execute(expression);
-				operand = new StringBuilder(Double.toString(execute));
-				firstOperand = true;
+				executeCommand();
 			}
 		} else if (e.getSource().equals(buttons[19])) {
 			if (!firstOperand) {

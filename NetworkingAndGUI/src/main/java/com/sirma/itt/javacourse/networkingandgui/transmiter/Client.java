@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.swing.JTextArea;
+
+import com.sirma.itt.javacourse.networkingandgui.util.ServerFinder;
 
 /**
  * The client subscribes for channels and then recieves broadcasts from the server.
@@ -73,35 +74,23 @@ public class Client implements Runnable {
 	public void connectClient() {
 		BufferedReader in;
 		messageLog.append("Looking for server..." + System.lineSeparator());
-		for (int i = 7000; i < 7020; i++) {
-			try {
-				socket = new Socket("localhost", i);
-				break;
-			} catch (UnknownHostException e) {
-			} catch (IOException e) {
+		try (Socket clientSocket = ServerFinder.findServer()) {
+			socket = clientSocket;
+			if (socket == null) {
+				messageLog.append("No server found. Closing");
+				return;
 			}
-		}
-		if (socket == null) {
-			messageLog.append("No server found. Closing");
-			return;
-		}
-		try {
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			messageLog.append("Connected to " + socket.getPort() + System.lineSeparator());
 			out.println(subscriptions);
-		} catch (IOException e) {
-		}
-		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while (run) {
 				serverResponse = in.readLine();
 				messageLog.append(serverResponse + System.lineSeparator());
 			}
 		} catch (IOException e) {
-		}
-		try {
-			socket.close();
-		} catch (IOException e) {
+			messageLog.append("There was an error connecting to the server");
+			return;
 		}
 	}
 
