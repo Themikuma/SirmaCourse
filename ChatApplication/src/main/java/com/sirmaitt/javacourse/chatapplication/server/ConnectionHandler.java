@@ -1,4 +1,4 @@
-package com.sirma.itt.javacourse.networkingandgui.reverse;
+package com.sirmaitt.javacourse.chatapplication.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,21 +27,21 @@ public class ConnectionHandler implements Runnable {
 	 * @param clientSocket
 	 *            the socket that the client uses to communicate with the server.
 	 */
-	public ConnectionHandler(JTextArea log, Socket clientSocke) {
+	public ConnectionHandler(JTextArea log, Socket clientSocket) {
 		this.log = log;
-		clientSocket = clientSocket;
+		this.clientSocket = clientSocket;
 	}
 
 	/**
 	 * Runs the server until told otherwise by the client.
 	 */
-	public void acceptMessages() {
+	public void reverseMessages() {
 		try {
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			out.println("Welcome to the server");
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					clientSocket.getInputStream()));
-			String line = in.readLine();
+			String line = null;
 			StringBuilder reversedLine = null;
 			while (true) {
 				line = in.readLine();
@@ -62,6 +62,6 @@ public class ConnectionHandler implements Runnable {
 
 	@Override
 	public void run() {
-		acceptMessages();
+		reverseMessages();
 	}
 }
