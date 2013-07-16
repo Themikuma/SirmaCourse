@@ -3,8 +3,6 @@ package com.sirmaitt.javacourse.chatapplication.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.swing.JTextArea;
 
@@ -19,7 +17,7 @@ public class Server implements Runnable {
 	private int port;
 	private boolean run;
 	private ServerSocket serverSocket = null;
-	private Set<ClientManager> clients;
+	private ClientManager clients;
 
 	/**
 	 * Creates a connection handler on a given port.
@@ -33,7 +31,7 @@ public class Server implements Runnable {
 		this.log = log;
 		this.port = port;
 		run = true;
-		clients = new HashSet<>();
+		clients = new ClientManager();
 	}
 
 	/**
@@ -61,7 +59,7 @@ public class Server implements Runnable {
 			while (run) {
 				try {
 					Socket clientSocket = serverSocket.accept();
-					ConnectionHandler connection = new ConnectionHandler(log, clientSocket);
+					ConnectionHandler connection = new ConnectionHandler(log, clientSocket, clients);
 					Thread connectionThread = new Thread(connection);
 					connectionThread.start();
 				} catch (IOException e) {

@@ -1,6 +1,5 @@
 package com.sirmaitt.javacourse.chatapplication;
 
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Panel;
@@ -54,7 +53,7 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	 * Initializes a new thread for the client to work on.
 	 */
 	private void initClient() {
-		client = new Client(response);
+		client = new Client(response, "localhost:7007");
 		Thread clientThread = new Thread(client);
 		clientThread.start();
 		states = new ArrayList<>();
@@ -117,7 +116,7 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		client.sendMessage(".");
+		client.sendMessage(".disconnect");
 		dispose();
 	}
 

@@ -9,7 +9,7 @@ import java.net.Socket;
 import javax.swing.JTextField;
 
 /**
- * The client sends messages and recieves the reversed messages.
+ * The client sends messages and recieves messages from other clients.
  * 
  * @author gdimitrov
  */
@@ -18,16 +18,22 @@ public class Client implements Runnable {
 	// TODO: Create a class that separates the GUI elements from the logic.
 	private JTextField response;
 	private String message;
-	private String serverResponse;
+	private volatile boolean run;
+	private PrintWriter out;
+	private String[] address;
 
 	/**
 	 * Creates a client and sets the log in which it writes.
 	 * 
 	 * @param response
 	 *            the log to write to.
+	 * @param address
+	 *            the address of the server given in the form "url:port"
 	 */
-	public Client(JTextField response) {
+	public Client(JTextField response, String address) {
+		this.address = address.split(":");
 		this.response = response;
+		run = true;
 	}
 
 	/**
@@ -38,53 +44,33 @@ public class Client implements Runnable {
 	 */
 	public void sendMessage(String message) {
 		this.message = message;
-		synchronized (this) {
-			notifyAll();
+		out.println(message);
+		if (".disconnect".equals(message)) {
+			run = false;
 		}
 	}
 
 	/**
-	 * Runs the client communication with the server.
+	 * Listens to all the messages sent from the server.
 	 */
-	public void connectClient() {
-		// TODO: Pass a parameter in the form "url:port"
-		try (Socket socket = new Socket("localhost", 7007)) {
+	private void listenToServer() {
+		try (Socket socket = new Socket(address[0], Integer.parseInt(address[1]))) {
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-			response.setText(in.readLine());
-			synchronized (this) {
-				while (true) {
-					wait();
-					if (message == null) {
-						return;
-					}
-					out.println(message);
-					serverResponse = in.readLine();
-					response.setText("The reverse of " + message + " is " + serverResponse);
-					if (".".equals(message)) {
-						response.setText("Disconnected from the server");
-						break;
-					}
+			out = new PrintWriter(socket.getOutputStream(), true);
+			while (run) {
+				response.setText(in.readLine());
+				if (".".equals(message)) {
+					response.setText("Disconnected from the server");
+					break;
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Getter method for serverResponse.
-	 * 
-	 * @return the serverResponse
-	 */
-	public String getServerResponse() {
-		return serverResponse;
 	}
 
 	@Override
 	public void run() {
-		connectClient();
+		listenToServer();
 	}
 }

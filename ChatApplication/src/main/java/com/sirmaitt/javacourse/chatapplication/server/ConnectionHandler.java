@@ -3,13 +3,13 @@ package com.sirmaitt.javacourse.chatapplication.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 import javax.swing.JTextArea;
 
 /**
- * The server recieves messages and sends back the reversed messages.
+ * The server recieves messages and sends them to all the clients. Before a client is allowed to
+ * connect the server checks whether the nickname provided by the client is unique.
  * 
  * @author gdimitrov
  */
@@ -17,6 +17,7 @@ public class ConnectionHandler implements Runnable {
 
 	private JTextArea log;
 	private Socket clientSocket;
+	private ClientManager manager;
 	private static final String SEPARATOR = System.lineSeparator();
 
 	/**
@@ -26,34 +27,42 @@ public class ConnectionHandler implements Runnable {
 	 *            the log in which to log the data.
 	 * @param clientSocket
 	 *            the socket that the client uses to communicate with the server.
+	 * @param manager
+	 *            the client manager used by this instance of the server.
 	 */
-	public ConnectionHandler(JTextArea log, Socket clientSocket) {
+	public ConnectionHandler(JTextArea log, Socket clientSocket, ClientManager manager) {
+		this.manager = manager;
 		this.log = log;
 		this.clientSocket = clientSocket;
 	}
 
 	/**
-	 * Runs the server until told otherwise by the client.
+	 * Accepts ingoing messages from the client, that created this thread and sends these messages
+	 * to all the clients.
 	 */
-	public void reverseMessages() {
+	private void communicate() {
 		try {
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			out.println("Welcome to the server");
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					clientSocket.getInputStream()));
-			String line = null;
-			StringBuilder reversedLine = null;
+			String line = in.readLine();
+			line = line.substring(line.indexOf("_") + 1);
+			Client client = new Client(line, clientSocket.getOutputStream());
+			if (!manager.addClient(client)) {
+				client.sendMessage("Your nickname is already taken");
+				return;
+			}
+			log.append(client.toString() + " has connected");
+			client.sendMessage("Welcome");
+			manager.broadcastMessage("Client <" + line + "> has connected");
+			manager.broadcastMessage(".list_" + manager.getClientNicknames());
 			while (true) {
 				line = in.readLine();
-				reversedLine = new StringBuilder(line);
-				reversedLine = reversedLine.reverse();
-				if (".".equals(line)) {
-					log.append("A client has disconnected" + SEPARATOR);
+				if (".disconnect".equals(line)) {
+					client.sendMessage("Disconnecting");
+					manager.removeClient(client);
 					break;
 				}
-				log.append("Accepted message: " + line + SEPARATOR);
-				log.append("Sending message: " + reversedLine.toString() + SEPARATOR);
-				out.println(reversedLine.toString());
+				manager.broadcastMessage(line);
 			}
 		} catch (IOException e) {
 			log.append("A client has disconnected" + SEPARATOR);
@@ -62,6 +71,6 @@ public class ConnectionHandler implements Runnable {
 
 	@Override
 	public void run() {
-		reverseMessages();
+		communicate();
 	}
 }

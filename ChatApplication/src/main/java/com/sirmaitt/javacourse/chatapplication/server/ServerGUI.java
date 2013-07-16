@@ -1,8 +1,6 @@
 package com.sirmaitt.javacourse.chatapplication.server;
 
-
 import java.awt.BorderLayout;
-import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -70,9 +68,7 @@ public class ServerGUI extends JFrame {
 	 * Initialises the server.
 	 */
 	private void initServer() {
-		Random random = new Random();
-		int port = random.nextInt(20) + 7000;
-		Server handler = new Server(port, log);
+		Server handler = new Server(7007, log);
 		Thread connectionThread = new Thread(handler);
 		connectionThread.start();
 	}

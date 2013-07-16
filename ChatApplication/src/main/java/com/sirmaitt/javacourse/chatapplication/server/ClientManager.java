@@ -11,12 +11,14 @@ import java.util.Set;
  */
 public class ClientManager {
 	private Set<Client> clients;
+	private StringBuilder clientNicknames;
 
 	/**
 	 * Initializes the member variables.
 	 */
 	public ClientManager() {
 		clients = new HashSet<>();
+		clients.add(new Client("admin", System.out));
 	}
 
 	/**
@@ -28,7 +30,10 @@ public class ClientManager {
 	 * @return true if the client was successfully added.
 	 */
 	public boolean addClient(Client client) {
-		return clients.add(client);
+		if (clients.add(client)) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -50,4 +55,29 @@ public class ClientManager {
 		return clients;
 	}
 
+	/**
+	 * Broadcasts a message to all the clients.
+	 * 
+	 * @param message
+	 *            the message to be broadcasted.
+	 */
+	public void broadcastMessage(String message) {
+		for (Client client : clients) {
+			client.sendMessage(message);
+		}
+	}
+
+	/**
+	 * Getter method for clientNicknames.
+	 * 
+	 * @return the clientNicknames
+	 */
+	public StringBuilder getClientNicknames() {
+		clientNicknames = new StringBuilder();
+		for (Client client : clients) {
+			clientNicknames.append(client + "|");
+		}
+		clientNicknames.deleteCharAt(clientNicknames.length() - 1);
+		return clientNicknames;
+	}
 }

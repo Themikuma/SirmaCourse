@@ -23,7 +23,7 @@ public class Client {
 	 */
 	public Client(String nickname, OutputStream out) {
 		this.nickname = nickname;
-		writer = new PrintWriter(out);
+		writer = new PrintWriter(out, true);
 	}
 
 	/**
@@ -39,18 +39,23 @@ public class Client {
 	@Override
 	public boolean equals(Object obj) {
 		Client client = (Client) obj;
-		return nickname.equals(client.nickname);
+		if (client.hashCode() == 0) {
+			return true;
+		}
+		return nickname.toLowerCase().equals(client.nickname.toLowerCase());
 	}
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
+		if (nickname.toLowerCase().contains("admin") || nickname.contains("]")
+				|| nickname.contains("[")) {
+			return 0;
+		}
 		return nickname.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return nickname.toString();
 	}
 }
