@@ -1,5 +1,6 @@
-package com.sirmaitt.javacourse.chatapplication;
+package com.sirmaitt.javacourse.chatapplication.util;
 
+import com.sirmaitt.javacourse.chatapplication.client.ClientGUI;
 
 /**
  * @author gdimitrov
@@ -20,6 +21,6 @@ public final class Demo2 {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		ClientGUI client = new ClientGUI(300, 300);
-		ClientGUI client2 = new ClientGUI(300, 300);
+		ClientGUI client1 = new ClientGUI(300, 300);
 	}
 }

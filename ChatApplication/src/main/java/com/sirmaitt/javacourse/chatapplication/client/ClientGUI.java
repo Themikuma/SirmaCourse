@@ -1,4 +1,4 @@
-package com.sirmaitt.javacourse.chatapplication;
+package com.sirmaitt.javacourse.chatapplication.client;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -13,16 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import com.sirmaitt.javacourse.chatapplication.util.Messages;
 
 /**
  * Creates the window that holds the GUI for the client.
  * 
  * @author gdimitrov
  */
-public class ClientGUI extends JFrame implements ActionListener, WindowListener, KeyListener {
+public class ClientGUI extends JFrame implements ActionListener,
+		WindowListener, KeyListener {
 
 	/**
 	 * Comment for serialVersionUID.
@@ -46,18 +51,49 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	 */
 	public ClientGUI(int width, int height) {
 		initComponents(width, height);
-		initClient();
+		initDialog();
+	}
+
+	private void initDialog() {
+
+		JTextField host = new JTextField("url:port");
+		JTextField nickname = new JTextField("nickname");
+		Object[] msg = { "Host: ", host, "Nickname", nickname };
+
+		JOptionPane op = new JOptionPane(msg, JOptionPane.QUESTION_MESSAGE,
+				JOptionPane.OK_CANCEL_OPTION, null, null);
+		boolean connected = false;
+		while (!connected) {
+			JDialog dialog = op.createDialog(this, "Connect to a server");
+			dialog.setVisible(true);
+			int result = JOptionPane.OK_OPTION;
+			try {
+				result = ((Integer) op.getValue()).intValue();
+			} catch (Exception uninitializedValue) {
+			}
+
+			if (result == JOptionPane.OK_OPTION) {
+				connected = initClient(host.getText(), nickname.getText());
+			} else {
+				dispose();
+				return;
+			}
+		}
 	}
 
 	/**
 	 * Initializes a new thread for the client to work on.
 	 */
-	private void initClient() {
-		client = new Client(response, "localhost:7007");
-		Thread clientThread = new Thread(client);
-		clientThread.start();
-		states = new ArrayList<>();
-		currentState = 0;
+	private boolean initClient(String address, String nickname) {
+		client = new Client(response);
+		if (client.connect(address, nickname)) {
+			Thread clientThread = new Thread(client);
+			clientThread.start();
+			states = new ArrayList<>();
+			currentState = 0;
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -116,7 +152,7 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		client.sendMessage(".disconnect");
+		client.sendMessage(Messages.DISCONNECTED.toString());
 		dispose();
 	}
 

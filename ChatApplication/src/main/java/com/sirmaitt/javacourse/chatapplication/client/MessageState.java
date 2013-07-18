@@ -1,4 +1,4 @@
-package com.sirmaitt.javacourse.chatapplication;
+package com.sirmaitt.javacourse.chatapplication.client;
 
 
 /**

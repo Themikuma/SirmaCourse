@@ -1,7 +1,6 @@
-package com.sirmaitt.javacourse.chatapplication;
+package com.sirmaitt.javacourse.chatapplication.util;
 
 import com.sirmaitt.javacourse.chatapplication.server.ServerGUI;
-
 
 /**
  * @author gdimitrov
