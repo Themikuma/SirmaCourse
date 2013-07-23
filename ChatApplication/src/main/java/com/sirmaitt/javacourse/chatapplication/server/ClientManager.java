@@ -12,13 +12,14 @@ import java.util.Set;
 public class ClientManager {
 	private Set<Client> clients;
 	private StringBuilder clientNicknames;
+	public static final String CLIENT_SEPARATOR = "_";
 
 	/**
 	 * Initializes the member variables.
 	 */
 	public ClientManager() {
 		clients = new HashSet<>();
-		clients.add(new Client("admin", System.out));
+		// clients.add(new Client("admin", System.out));
 	}
 
 	/**
@@ -29,7 +30,7 @@ public class ClientManager {
 	 *            the client to add.
 	 * @return true if the client was successfully added.
 	 */
-	public boolean addClient(Client client) {
+	public synchronized boolean addClient(Client client) {
 		if (clients.add(client)) {
 			return true;
 		}
@@ -42,7 +43,7 @@ public class ClientManager {
 	 * @param client
 	 *            the client to remove.
 	 */
-	public void removeClient(Client client) {
+	public synchronized void removeClient(Client client) {
 		clients.remove(client);
 	}
 
@@ -61,7 +62,7 @@ public class ClientManager {
 	 * @param message
 	 *            the message to be broadcasted.
 	 */
-	public void broadcastMessage(String message) {
+	public synchronized void broadcastMessage(String message) {
 		for (Client client : clients) {
 			client.sendMessage(message);
 		}
@@ -72,10 +73,10 @@ public class ClientManager {
 	 * 
 	 * @return the clientNicknames
 	 */
-	public StringBuilder getClientNicknames() {
+	public synchronized StringBuilder getClientNicknames() {
 		clientNicknames = new StringBuilder();
 		for (Client client : clients) {
-			clientNicknames.append(client + "|");
+			clientNicknames.append(client + CLIENT_SEPARATOR);
 		}
 		clientNicknames.deleteCharAt(clientNicknames.length() - 1);
 		return clientNicknames;

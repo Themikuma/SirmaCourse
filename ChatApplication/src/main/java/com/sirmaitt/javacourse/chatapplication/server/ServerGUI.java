@@ -1,6 +1,8 @@
 package com.sirmaitt.javacourse.chatapplication.server;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -11,7 +13,7 @@ import javax.swing.JTextArea;
  * 
  * @author gdimitrov
  */
-public class ServerGUI extends JFrame {
+public class ServerGUI extends JFrame implements WindowListener {
 
 	/**
 	 * Comment for serialVersionUID.
@@ -19,6 +21,7 @@ public class ServerGUI extends JFrame {
 	private static final long serialVersionUID = -4016819477611948502L;
 
 	private JTextArea log;
+	private Server server;
 
 	/**
 	 * Getter method for log.
@@ -56,6 +59,7 @@ public class ServerGUI extends JFrame {
 		log.setEditable(false);
 		JScrollPane pane = new JScrollPane(log);
 
+		addWindowListener(this);
 		setTitle("Server");
 		setSize(width, height);
 		setLocationRelativeTo(null);
@@ -68,9 +72,39 @@ public class ServerGUI extends JFrame {
 	 * Initialises the server.
 	 */
 	private void initServer() {
-		Server handler = new Server(7007, log);
-		Thread connectionThread = new Thread(handler);
+		server = new Server(7007, log);
+		Thread connectionThread = new Thread(server);
 		connectionThread.start();
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		server.stop();
+		dispose();
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
 	}
 
 }
