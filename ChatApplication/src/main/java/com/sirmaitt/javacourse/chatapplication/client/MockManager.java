@@ -1,4 +1,4 @@
-package com.sirmaitt.javacourse.chatapplication.utility;
+package com.sirmaitt.javacourse.chatapplication.client;
 
 /**
  * @author gdimitrov
@@ -17,6 +17,10 @@ public class MockManager implements Manager {
 	 */
 	@Override
 	public void displayUserList(String message) {
+	}
+
+	@Override
+	public void reconnect() {
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.sirmaitt.javacourse.chatapplication.utility;
+package com.sirmaitt.javacourse.chatapplication.client;
 
 /**
  * A manager that logs the results from the chat in a way.
@@ -22,5 +22,10 @@ public interface Manager {
 	 *            the user list that was recieved from the server.
 	 */
 	void displayUserList(String message);
+
+	/**
+	 * Starts the reconnect procedure when the client disconnects.
+	 */
+	void reconnect();
 
 }

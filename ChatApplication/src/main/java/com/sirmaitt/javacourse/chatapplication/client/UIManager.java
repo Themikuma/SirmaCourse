@@ -1,6 +1,7 @@
-package com.sirmaitt.javacourse.chatapplication.utility;
+package com.sirmaitt.javacourse.chatapplication.client;
 
-import com.sirmaitt.javacourse.chatapplication.client.ClientGUI;
+import javax.swing.text.BadLocationException;
+
 import com.sirmaitt.javacourse.chatapplication.server.ClientManager;
 
 /**
@@ -25,13 +26,27 @@ public class UIManager implements Manager {
 	@Override
 	public void displayMessage(String message) {
 		clientUI.getChatLog().append(message + SEPARATOR);
+		try {
+			clientUI.getChatLog().setCaretPosition(
+					clientUI.getChatLog().getLineStartOffset(
+							clientUI.getChatLog().getLineCount() - 1));
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void displayUserList(String message) {
+		clientUI.getClients().setText("");
 		String[] users = message.split(ClientManager.CLIENT_SEPARATOR);
 		for (String user : users) {
 			clientUI.getClients().append(user + SEPARATOR);
 		}
+	}
+
+	@Override
+	public void reconnect() {
+		clientUI.getChatLog().setText("");
+		clientUI.initDialog();
 	}
 }

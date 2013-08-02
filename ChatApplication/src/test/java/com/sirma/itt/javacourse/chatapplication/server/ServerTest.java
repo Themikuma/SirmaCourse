@@ -5,14 +5,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTextArea;
-
 import org.junit.Test;
 
 import com.sirmaitt.javacourse.chatapplication.client.Client;
+import com.sirmaitt.javacourse.chatapplication.client.Manager;
+import com.sirmaitt.javacourse.chatapplication.client.MockManager;
+import com.sirmaitt.javacourse.chatapplication.server.MockLogManager;
 import com.sirmaitt.javacourse.chatapplication.server.Server;
-import com.sirmaitt.javacourse.chatapplication.utility.Manager;
-import com.sirmaitt.javacourse.chatapplication.utility.MockManager;
 
 /**
  * @author gdimitrov
@@ -25,7 +24,7 @@ public class ServerTest {
 	@Test
 	public void testServerWithManyClients() {
 
-		Server server = new Server(7007, new JTextArea());
+		Server server = new Server(7007, new MockLogManager());
 		Thread connectionThread = new Thread(server);
 		connectionThread.start();
 		Manager manager = new MockManager();

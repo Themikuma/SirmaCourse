@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import com.sirmaitt.javacourse.chatapplication.utility.Manager;
 import com.sirmaitt.javacourse.chatapplication.utility.Messages;
 
 /**
@@ -19,9 +19,7 @@ import com.sirmaitt.javacourse.chatapplication.utility.Messages;
  */
 public class Client implements Runnable {
 
-	// TODO: Create a class that separates the GUI elements from the logic.
 	private final Manager manager;
-	private String message;
 	private volatile boolean run;
 	private PrintWriter out;
 	private BufferedReader in;
@@ -86,8 +84,7 @@ public class Client implements Runnable {
 			manager.displayUserList(message);
 			return false;
 		}
-		// TODO Check for the user list command. Show it in the UI.
-		if (Messages.DISCONNECTED.equals(message)) {
+		if (Messages.DISCONNECTED.toString().equals(serverResponse)) {
 			manager.displayMessage("Disconnected from the server");
 			try {
 				socket.close();
@@ -105,13 +102,22 @@ public class Client implements Runnable {
 	 * 
 	 * @param message
 	 *            the message to set
+	 * @return false if the message was a disconnect message and the connect dialog should be
+	 *         redisplayed.
 	 */
-	public void sendMessage(String message) {
-		this.message = message;
-		out.println(message);
-		if (Messages.DISCONNECTED.toString().equals(message)) {
-			run = false;
+	public boolean sendMessage(String message) {
+		if ("".equals(message)) {
+			return true;
 		}
+		String capitalizedMessage = "";
+		capitalizedMessage += message.toUpperCase().charAt(0);
+		capitalizedMessage += message.substring(1);
+
+		out.println(capitalizedMessage);
+		if (message.equals(Messages.DISCONNECTED.toString())) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -127,6 +133,8 @@ public class Client implements Runnable {
 					manager.displayMessage("[<" + formater.format(Calendar.getInstance().getTime())
 							+ ">]" + serverResponse);
 				}
+			} catch (SocketException e) {
+				return;
 			} catch (IOException e) {
 				// TODO Log the exception.
 				e.printStackTrace();

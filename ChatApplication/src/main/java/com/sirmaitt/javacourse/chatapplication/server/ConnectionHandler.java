@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import javax.swing.JTextArea;
-
 import com.sirmaitt.javacourse.chatapplication.utility.Messages;
+import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
+import com.sirmaitt.javacourse.chatapplication.utility.SystemMessage;
 
 /**
  * The server receives messages and sends them to all the clients. Before a client is allowed to
@@ -17,25 +17,24 @@ import com.sirmaitt.javacourse.chatapplication.utility.Messages;
  */
 public class ConnectionHandler implements Runnable {
 
-	private final JTextArea log;
 	private final Socket clientSocket;
-	private final ClientManager manager;
-	private static final String SEPARATOR = System.lineSeparator();
+	private final LogManager logManager;
+	private final ClientManager clientManager;
 	private static final String SYSTEM = "<SYSTEM>: ";
 
 	/**
 	 * Creates a server that starts listening on the given port.
 	 * 
-	 * @param log
-	 *            the log in which to log the data.
+	 * @param logManager
+	 *            the log manager which is used to log the execution of the server.
 	 * @param clientSocket
 	 *            the socket that the client uses to communicate with the server.
-	 * @param manager
+	 * @param clientManager
 	 *            the client manager used by this instance of the server.
 	 */
-	public ConnectionHandler(JTextArea log, Socket clientSocket, ClientManager manager) {
-		this.manager = manager;
-		this.log = log;
+	public ConnectionHandler(LogManager logManager, Socket clientSocket, ClientManager clientManager) {
+		this.logManager = logManager;
+		this.clientManager = clientManager;
 		this.clientSocket = clientSocket;
 	}
 
@@ -44,37 +43,48 @@ public class ConnectionHandler implements Runnable {
 	 * to all the clients.
 	 */
 	private void communicate() {
+		Client client = null;
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					clientSocket.getInputStream()));
 			String line = in.readLine();
-			Client client = null;
 			if (!line.startsWith(Messages.CONNECTED_.toString())) {
 				client = new Client("admin", clientSocket.getOutputStream());
 			} else {
 				line = line.substring(line.indexOf("_") + 1);
 				client = new Client(line, clientSocket.getOutputStream());
 			}
-			if (!manager.addClient(client)) {
-				client.sendMessage(Messages.ERROR + "your nickname is already taken");
+			if (!clientManager.addClient(client)) {
+				client.sendMessage(Messages.ERROR
+						+ SystemMessage.getMessage("taken", ResourceNames.Messages));
 				return;
 			}
-			log.append(client.toString() + " has connected" + SEPARATOR);
-			manager.broadcastMessage("Client <" + line + "> has connected");
-			client.sendMessage("Welcome");
-			manager.broadcastMessage(Messages.LIST.toString() + manager.getClientNicknames());
+			logManager.logEvent(client.toString()
+					+ SystemMessage.getMessage("connected", ResourceNames.Messages));
+			clientManager.broadcastMessage(client.toString()
+					+ SystemMessage.getMessage("connected", ResourceNames.Messages));
+			client.sendMessage(SystemMessage.getMessage("welcome", ResourceNames.Messages) + client);
+			clientManager.broadcastMessage(Messages.LIST.toString()
+					+ clientManager.getClientNicknames());
 			while (true) {
 				line = in.readLine();
+				if (line == null) {
+					continue;
+				}
 				if (Messages.DISCONNECTED.toString().equals(line)) {
-					client.sendMessage(SYSTEM + "Disconnected");
-					manager.removeClient(client);
-					manager.broadcastMessage(SYSTEM + client + " has disconnected");
+					client.sendMessage(Messages.DISCONNECTED.toString());
+					clientManager.removeClient(client);
+					clientManager.broadcastMessage(SYSTEM + client
+							+ SystemMessage.getMessage("disconnected", ResourceNames.Messages));
+					logManager.logEvent(client
+							+ SystemMessage.getMessage("disconnected", ResourceNames.Messages));
 					break;
 				}
-				manager.broadcastMessage("<" + client + ">: " + line);
+				clientManager.broadcastMessage("<" + client + ">: " + line);
 			}
 		} catch (IOException e) {
-			log.append("A client has disconnected" + SEPARATOR);
+			logManager.logEvent(client
+					+ SystemMessage.getMessage("disconnected", ResourceNames.Messages));
 		}
 	}
 

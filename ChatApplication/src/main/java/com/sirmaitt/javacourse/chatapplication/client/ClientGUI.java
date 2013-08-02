@@ -20,14 +20,12 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.sirmaitt.javacourse.chatapplication.utility.JTextFieldLimit;
 import com.sirmaitt.javacourse.chatapplication.utility.Messages;
-import com.sirmaitt.javacourse.chatapplication.utility.UIManager;
 
 /**
  * Creates the window that holds the GUI for the client.
@@ -48,7 +46,7 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	private Client client;
 	private List<MessageState> states;
 	private int currentState;
-	private JScrollBar vertical;
+	private JLabel error;
 
 	/**
 	 * Creates the server window.
@@ -66,11 +64,12 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	/**
 	 * Creates the dialog that waits for user input.
 	 */
-	private void initDialog() {
-		JTextField host = new JTextField("localhost:7007");
-		JTextField nickname = new JTextField("nickname");
+	public void initDialog() {
+		JTextField host = new JTextField("localhost:7000");
+		JTextField nickname = new JTextField();
 		nickname.setDocument(new JTextFieldLimit(20));
-		JLabel error = new JLabel();
+		nickname.setText("nickname");
+		error = new JLabel("");
 		String address = null;
 		String nick = null;
 		int result;
@@ -142,24 +141,24 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		send.addActionListener(this);
 		send.setEnabled(true);
 		message = new JTextField();
+		message.setDocument(new JTextFieldLimit(200));
 		chatLog = new JTextArea();
 		chatLog.setLineWrap(true);
-		clients = new JTextArea();
+		chatLog.setWrapStyleWord(true);
+		clients = new JTextArea("admin");
 		Panel responsePane = new Panel(new GridBagLayout());
 		JScrollPane responseScroll = new JScrollPane(chatLog);
 		JScrollPane usersScroll = new JScrollPane(clients);
 		GridBagConstraints constraints = new GridBagConstraints();
-		vertical = responseScroll.getVerticalScrollBar();
-		constraints.weightx = 1;
+		constraints.weightx = 0.75;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weighty = 0.5;
 		constraints.gridwidth = 4;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		responsePane.add(responseScroll, constraints);
-		constraints.weightx = 0.5;
+		constraints.weightx = 0.25;
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.weighty = 0.5;
 		constraints.gridwidth = 1;
 		constraints.gridx = 4;
 		constraints.gridy = 0;
@@ -188,7 +187,6 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		states.add(StateManager.createMemento(message.getText()));
 		currentState++;
 		message.setText("");
-		vertical.setValue(vertical.getMaximum());
 	}
 
 	@Override

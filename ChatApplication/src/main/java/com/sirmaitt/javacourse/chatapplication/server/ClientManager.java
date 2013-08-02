@@ -19,7 +19,7 @@ public class ClientManager {
 	 */
 	public ClientManager() {
 		clients = new HashSet<>();
-		// clients.add(new Client("admin", System.out));
+		clients.add(new Client("admin", System.out));
 	}
 
 	/**

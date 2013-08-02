@@ -56,6 +56,6 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return nickname.toString();
+		return nickname.toString() + " ";
 	}
 }
