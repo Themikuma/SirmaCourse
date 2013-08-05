@@ -1,19 +1,21 @@
-package com.sirmaitt.javacourse.chatapplication.utility;
+package com.sirmaitt.javacourse.chatapplication.server;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
 
 /**
  * Gets internatiolized system messages and UI captions for the chat application.
  * 
  * @author gdimitrov
  */
-public final class SystemMessage {
+public final class ServerMessages {
 
 	/**
 	 * Private constructor for utility classes.
 	 */
-	private SystemMessage() {
+	private ServerMessages() {
 	}
 
 	private static Locale currentLocale = Locale.ENGLISH;

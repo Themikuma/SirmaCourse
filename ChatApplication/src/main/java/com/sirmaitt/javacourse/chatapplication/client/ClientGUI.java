@@ -14,18 +14,24 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.sirmaitt.javacourse.chatapplication.utility.JTextFieldLimit;
 import com.sirmaitt.javacourse.chatapplication.utility.Messages;
+import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
 
 /**
  * Creates the window that holds the GUI for the client.
@@ -48,6 +54,16 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	private int currentState;
 	private JLabel error;
 
+	private JMenuBar menubar;
+	private JMenu file;
+	private JMenu languages;
+	private JMenuItem disconnect;
+	private JMenuItem connect;
+	private JMenuItem exit;
+	private JMenuItem en;
+	private JMenuItem bg;
+	private static final Locale BULGARIAN = new Locale("bg");
+
 	/**
 	 * Creates the server window.
 	 * 
@@ -58,7 +74,6 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	 */
 	public ClientGUI(int width, int height) {
 		initComponents(width, height);
-		initDialog();
 	}
 
 	/**
@@ -106,6 +121,19 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	}
 
 	/**
+	 * Refreshes the captions of all the labels using the current language.
+	 */
+	private void refreshCaptions() {
+		file.setText(UICaptions.getMessage("file", ResourceNames.UserInterface));
+		languages.setText(UICaptions.getMessage("lang", ResourceNames.UserInterface));
+		en.setText(UICaptions.getMessage("en", ResourceNames.UserInterface));
+		exit.setText(UICaptions.getMessage("exit", ResourceNames.UserInterface));
+		disconnect.setText(UICaptions.getMessage("disconnect", ResourceNames.UserInterface));
+		connect.setText(UICaptions.getMessage("connect", ResourceNames.UserInterface));
+		bg.setText(UICaptions.getMessage("bg", ResourceNames.UserInterface));
+	}
+
+	/**
 	 * Initializes a new thread for the client to work on.
 	 * 
 	 * @param address
@@ -135,7 +163,6 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	 *            height of the window
 	 */
 	private void initComponents(int width, int height) {
-		setSize(width, height);
 		send = new JButton();
 		send.setText("Send");
 		send.addActionListener(this);
@@ -145,8 +172,8 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		chatLog = new JTextArea();
 		chatLog.setLineWrap(true);
 		chatLog.setWrapStyleWord(true);
-		clients = new JTextArea("admin");
-		Panel responsePane = new Panel(new GridBagLayout());
+		clients = new JTextArea("      ");
+		JPanel responsePane = new JPanel(new GridBagLayout());
 		JScrollPane responseScroll = new JScrollPane(chatLog);
 		JScrollPane usersScroll = new JScrollPane(clients);
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -168,10 +195,12 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		messagePane.add(message);
 		messagePane.add(send);
 		message.addKeyListener(this);
+		initMenu();
 
 		setMinimumSize(new Dimension(300, 300));
 		addWindowListener(this);
 		setTitle("Client");
+		setSize(width, height);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		getContentPane().add(responsePane, BorderLayout.CENTER);
@@ -180,18 +209,79 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	}
 
 	/**
+	 * Creates the navigational menu for the window.
+	 */
+	private void initMenu() {
+		menubar = new JMenuBar();
+		file = new JMenu();
+		file.setMnemonic(KeyEvent.VK_F);
+		languages = new JMenu();
+		languages.setMnemonic(KeyEvent.VK_L);
+		connect = new JMenuItem();
+		connect.setMnemonic(KeyEvent.VK_S);
+		connect.addActionListener(this);
+		disconnect = new JMenuItem();
+		disconnect.setMnemonic(KeyEvent.VK_T);
+		disconnect.addActionListener(this);
+		exit = new JMenuItem();
+		exit.setMnemonic(KeyEvent.VK_X);
+		exit.addActionListener(this);
+		en = new JMenuItem();
+		en.setMnemonic(KeyEvent.VK_E);
+		en.addActionListener(this);
+		bg = new JMenuItem();
+		bg.setMnemonic(KeyEvent.VK_B);
+		bg.addActionListener(this);
+		refreshCaptions();
+
+		file.add(connect);
+		file.add(disconnect);
+		file.add(exit);
+		languages.add(en);
+		languages.add(bg);
+		menubar.add(file);
+		menubar.add(languages);
+		setJMenuBar(menubar);
+
+	}
+
+	/**
 	 * Sends the message to the server.
 	 */
 	private void sendMessage() {
-		client.sendMessage(message.getText());
-		states.add(StateManager.createMemento(message.getText()));
-		currentState++;
-		message.setText("");
+		try {
+			client.sendMessage(message.getText());
+			states.add(StateManager.createMemento(message.getText()));
+			currentState++;
+			message.setText("");
+		} catch (NullPointerException e1) {
+			message.setText("Not connected to a server");
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		sendMessage();
+		if (e.getSource() == send) {
+			sendMessage();
+		}
+		if (e.getSource() == connect) {
+			initDialog();
+		}
+		if (e.getSource() == disconnect) {
+			client.sendMessage(Messages.DISCONNECTED.toString());
+		}
+		if (e.getSource() == exit) {
+			client.sendMessage(Messages.DISCONNECTED.toString());
+			dispose();
+		}
+		if (e.getSource() == en) {
+			UICaptions.setLocale(Locale.ENGLISH);
+			refreshCaptions();
+		}
+		if (e.getSource() == bg) {
+			UICaptions.setLocale(BULGARIAN);
+			refreshCaptions();
+		}
 	}
 
 	@Override
@@ -200,7 +290,10 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		client.sendMessage(Messages.DISCONNECTED.toString());
+		try {
+			client.sendMessage(Messages.DISCONNECTED.toString());
+		} catch (NullPointerException e1) {
+		}
 		dispose();
 	}
 

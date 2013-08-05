@@ -6,7 +6,6 @@ import java.net.Socket;
 
 import com.sirmaitt.javacourse.chatapplication.utility.Messages;
 import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
-import com.sirmaitt.javacourse.chatapplication.utility.SystemMessage;
 
 /**
  * Handles each connection by giving it a new server thread.
@@ -56,7 +55,7 @@ public class Server implements Runnable {
 	private void handleConnection() {
 		try (ServerSocket servSocket = new ServerSocket(port)) {
 			serverSocket = servSocket;
-			logManager.logEvent(SystemMessage.getMessage("start", ResourceNames.Messages));
+			logManager.logEvent(ServerMessages.getMessage("start", ResourceNames.Messages));
 			while (run) {
 				try {
 					Socket clientSocket = serverSocket.accept();
@@ -65,15 +64,15 @@ public class Server implements Runnable {
 					Thread connectionThread = new Thread(connection);
 					connectionThread.start();
 				} catch (IOException e) {
-					logManager.logEvent(SystemMessage.getMessage("stop",
+					logManager.logEvent(ServerMessages.getMessage("stop",
 							ResourceNames.Messages));
 					break;
 				}
 			}
 		} catch (IllegalArgumentException e) {
-			logManager.logEvent(SystemMessage.getMessage("port", ResourceNames.Messages));
+			logManager.logEvent(ServerMessages.getMessage("port", ResourceNames.Messages));
 		} catch (IOException e) {
-			logManager.logEvent(SystemMessage.getMessage("portTaken",
+			logManager.logEvent(ServerMessages.getMessage("portTaken",
 					ResourceNames.Messages));
 		}
 	}

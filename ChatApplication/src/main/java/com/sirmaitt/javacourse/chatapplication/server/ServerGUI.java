@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 
 import com.sirmaitt.javacourse.chatapplication.utility.JTextFieldLimit;
 import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
-import com.sirmaitt.javacourse.chatapplication.utility.SystemMessage;
 
 /**
  * Creates the window that holds the GUI for the server.
@@ -164,7 +163,7 @@ public class ServerGUI extends JFrame implements WindowListener, ActionListener 
 				port = Integer.parseInt(host.getText());
 			} catch (NumberFormatException e) {
 				setEnabled(true);
-				log.append(SystemMessage.getMessage("port", ResourceNames.Messages)
+				log.append(ServerMessages.getMessage("port", ResourceNames.Messages)
 						+ System.lineSeparator());
 				requestFocus();
 				return;
@@ -182,13 +181,13 @@ public class ServerGUI extends JFrame implements WindowListener, ActionListener 
 	 * Refreshes the captions of all the labels using the current language.
 	 */
 	private void refreshCaptions() {
-		file.setText(SystemMessage.getMessage("file", ResourceNames.UserInterface));
-		languages.setText(SystemMessage.getMessage("lang", ResourceNames.UserInterface));
-		en.setText(SystemMessage.getMessage("en", ResourceNames.UserInterface));
-		exit.setText(SystemMessage.getMessage("exit", ResourceNames.UserInterface));
-		stop.setText(SystemMessage.getMessage("stop", ResourceNames.UserInterface));
-		start.setText(SystemMessage.getMessage("start", ResourceNames.UserInterface));
-		bg.setText(SystemMessage.getMessage("bg", ResourceNames.UserInterface));
+		file.setText(ServerMessages.getMessage("file", ResourceNames.UserInterface));
+		languages.setText(ServerMessages.getMessage("lang", ResourceNames.UserInterface));
+		en.setText(ServerMessages.getMessage("en", ResourceNames.UserInterface));
+		exit.setText(ServerMessages.getMessage("exit", ResourceNames.UserInterface));
+		stop.setText(ServerMessages.getMessage("stop", ResourceNames.UserInterface));
+		start.setText(ServerMessages.getMessage("start", ResourceNames.UserInterface));
+		bg.setText(ServerMessages.getMessage("bg", ResourceNames.UserInterface));
 	}
 
 	@Override
@@ -234,11 +233,11 @@ public class ServerGUI extends JFrame implements WindowListener, ActionListener 
 			dispose();
 		}
 		if (e.getSource() == en) {
-			SystemMessage.setLocale(Locale.ENGLISH);
+			ServerMessages.setLocale(Locale.ENGLISH);
 			refreshCaptions();
 		}
 		if (e.getSource() == bg) {
-			SystemMessage.setLocale(BULGARIAN);
+			ServerMessages.setLocale(BULGARIAN);
 			refreshCaptions();
 		}
 	}

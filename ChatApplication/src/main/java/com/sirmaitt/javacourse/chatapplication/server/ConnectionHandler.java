@@ -7,7 +7,6 @@ import java.net.Socket;
 
 import com.sirmaitt.javacourse.chatapplication.utility.Messages;
 import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
-import com.sirmaitt.javacourse.chatapplication.utility.SystemMessage;
 
 /**
  * The server receives messages and sends them to all the clients. Before a client is allowed to
@@ -56,14 +55,14 @@ public class ConnectionHandler implements Runnable {
 			}
 			if (!clientManager.addClient(client)) {
 				client.sendMessage(Messages.ERROR
-						+ SystemMessage.getMessage("taken", ResourceNames.Messages));
+						+ ServerMessages.getMessage("taken", ResourceNames.Messages));
 				return;
 			}
 			logManager.logEvent(client.toString()
-					+ SystemMessage.getMessage("connected", ResourceNames.Messages));
+					+ ServerMessages.getMessage("connected", ResourceNames.Messages));
 			clientManager.broadcastMessage(client.toString()
-					+ SystemMessage.getMessage("connected", ResourceNames.Messages));
-			client.sendMessage(SystemMessage.getMessage("welcome", ResourceNames.Messages) + client);
+					+ ServerMessages.getMessage("connected", ResourceNames.Messages));
+			client.sendMessage(ServerMessages.getMessage("welcome", ResourceNames.Messages) + client);
 			clientManager.broadcastMessage(Messages.LIST.toString()
 					+ clientManager.getClientNicknames());
 			while (true) {
@@ -75,16 +74,16 @@ public class ConnectionHandler implements Runnable {
 					client.sendMessage(Messages.DISCONNECTED.toString());
 					clientManager.removeClient(client);
 					clientManager.broadcastMessage(SYSTEM + client
-							+ SystemMessage.getMessage("disconnected", ResourceNames.Messages));
+							+ ServerMessages.getMessage("disconnected", ResourceNames.Messages));
 					logManager.logEvent(client
-							+ SystemMessage.getMessage("disconnected", ResourceNames.Messages));
+							+ ServerMessages.getMessage("disconnected", ResourceNames.Messages));
 					break;
 				}
 				clientManager.broadcastMessage("<" + client + ">: " + line);
 			}
 		} catch (IOException e) {
 			logManager.logEvent(client
-					+ SystemMessage.getMessage("disconnected", ResourceNames.Messages));
+					+ ServerMessages.getMessage("disconnected", ResourceNames.Messages));
 		}
 	}
 
