@@ -146,11 +146,12 @@ public class ServerGUI extends JFrame implements WindowListener, ActionListener 
 		host.setDocument(new JTextFieldLimit(5));
 		host.setText("7000");
 		int result;
-		Object[] msg = { "Port: ", host };
+		Object[] msg = { ServerResources.getMessage("port", ResourceNames.UserInterface), host };
 		JOptionPane op = new JOptionPane(msg, JOptionPane.QUESTION_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION, null, null);
 		result = JOptionPane.CLOSED_OPTION;
-		JDialog dialog = op.createDialog(this, "Connect to a server");
+		JDialog dialog = op.createDialog(this,
+				ServerResources.getMessage("createServer", ResourceNames.UserInterface));
 		setEnabled(false);
 		dialog.setVisible(true);
 		try {
@@ -163,7 +164,7 @@ public class ServerGUI extends JFrame implements WindowListener, ActionListener 
 				port = Integer.parseInt(host.getText());
 			} catch (NumberFormatException e) {
 				setEnabled(true);
-				log.append(ServerMessages.getMessage("port", ResourceNames.Messages)
+				log.append(ServerResources.getMessage("port", ResourceNames.Errors)
 						+ System.lineSeparator());
 				requestFocus();
 				return;
@@ -181,13 +182,13 @@ public class ServerGUI extends JFrame implements WindowListener, ActionListener 
 	 * Refreshes the captions of all the labels using the current language.
 	 */
 	private void refreshCaptions() {
-		file.setText(ServerMessages.getMessage("file", ResourceNames.UserInterface));
-		languages.setText(ServerMessages.getMessage("lang", ResourceNames.UserInterface));
-		en.setText(ServerMessages.getMessage("en", ResourceNames.UserInterface));
-		exit.setText(ServerMessages.getMessage("exit", ResourceNames.UserInterface));
-		stop.setText(ServerMessages.getMessage("stop", ResourceNames.UserInterface));
-		start.setText(ServerMessages.getMessage("start", ResourceNames.UserInterface));
-		bg.setText(ServerMessages.getMessage("bg", ResourceNames.UserInterface));
+		file.setText(ServerResources.getMessage("file", ResourceNames.UserInterface));
+		languages.setText(ServerResources.getMessage("lang", ResourceNames.UserInterface));
+		en.setText(ServerResources.getMessage("en", ResourceNames.UserInterface));
+		exit.setText(ServerResources.getMessage("exit", ResourceNames.UserInterface));
+		stop.setText(ServerResources.getMessage("stop", ResourceNames.UserInterface));
+		start.setText(ServerResources.getMessage("start", ResourceNames.UserInterface));
+		bg.setText(ServerResources.getMessage("bg", ResourceNames.UserInterface));
 	}
 
 	@Override
@@ -233,11 +234,11 @@ public class ServerGUI extends JFrame implements WindowListener, ActionListener 
 			dispose();
 		}
 		if (e.getSource() == en) {
-			ServerMessages.setLocale(Locale.ENGLISH);
+			ServerResources.setLocale(Locale.ENGLISH);
 			refreshCaptions();
 		}
 		if (e.getSource() == bg) {
-			ServerMessages.setLocale(BULGARIAN);
+			ServerResources.setLocale(BULGARIAN);
 			refreshCaptions();
 		}
 	}

@@ -20,7 +20,9 @@ public class MockManager implements Manager {
 	}
 
 	@Override
-	public void reconnect() {
+	public void displayErrorMessage(String message) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -24,8 +24,10 @@ public interface Manager {
 	void displayUserList(String message);
 
 	/**
-	 * Starts the reconnect procedure when the client disconnects.
+	 * Displays an error message.
+	 * 
+	 * @param message
+	 *            the message to be displayed.
 	 */
-	void reconnect();
-
+	void displayErrorMessage(String message);
 }

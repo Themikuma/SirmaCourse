@@ -1,6 +1,7 @@
 package com.sirmaitt.javacourse.chatapplication.client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -38,7 +37,7 @@ import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
  * 
  * @author gdimitrov
  */
-public class ClientGUI extends JFrame implements ActionListener, WindowListener, KeyListener {
+public class ClientGUI extends JFrame implements ActionListener, KeyListener {
 
 	/**
 	 * Comment for serialVersionUID.
@@ -79,22 +78,26 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	/**
 	 * Creates the dialog that waits for user input.
 	 */
-	public void initDialog() {
+	private void initDialog() {
 		JTextField host = new JTextField("localhost:7000");
 		JTextField nickname = new JTextField();
 		nickname.setDocument(new JTextFieldLimit(20));
 		nickname.setText("nickname");
 		error = new JLabel("");
+		error.setForeground(Color.red);
 		String address = null;
 		String nick = null;
 		int result;
-		Object[] msg = { "Host: ", host, "Nickname", nickname, error };
+		Object[] msg = { ClientResources.getMessage("host", ResourceNames.UserInterface), host,
+				ClientResources.getMessage("nickname", ResourceNames.UserInterface), nickname,
+				error };
 		JOptionPane op = new JOptionPane(msg, JOptionPane.QUESTION_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION, null, null);
 		boolean connected = false;
 		while (!connected) {
 			result = JOptionPane.CLOSED_OPTION;
-			JDialog dialog = op.createDialog(this, "Connect to a server");
+			JDialog dialog = op.createDialog(this,
+					ClientResources.getMessage("connectServer", ResourceNames.UserInterface));
 			setEnabled(false);
 			dialog.setVisible(true);
 			try {
@@ -107,30 +110,34 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 				if (address == null) {
 					address = "";
 				}
-				if (nick == null) {
+				if (nick.contains("[") || nick.contains("]") || (nick == null)) {
+					error.setText(ClientResources.getMessage("nickname_invalid",
+							ResourceNames.Errors));
 					nick = "";
 				}
 				connected = initClient(address, nick);
 				setEnabled(true);
 				requestFocus();
 			} else {
-				dispose();
+				setEnabled(true);
 				return;
 			}
 		}
+		connect.setEnabled(false);
+		disconnect.setEnabled(true);
 	}
 
 	/**
 	 * Refreshes the captions of all the labels using the current language.
 	 */
 	private void refreshCaptions() {
-		file.setText(UICaptions.getMessage("file", ResourceNames.UserInterface));
-		languages.setText(UICaptions.getMessage("lang", ResourceNames.UserInterface));
-		en.setText(UICaptions.getMessage("en", ResourceNames.UserInterface));
-		exit.setText(UICaptions.getMessage("exit", ResourceNames.UserInterface));
-		disconnect.setText(UICaptions.getMessage("disconnect", ResourceNames.UserInterface));
-		connect.setText(UICaptions.getMessage("connect", ResourceNames.UserInterface));
-		bg.setText(UICaptions.getMessage("bg", ResourceNames.UserInterface));
+		file.setText(ClientResources.getMessage("file", ResourceNames.UserInterface));
+		languages.setText(ClientResources.getMessage("lang", ResourceNames.UserInterface));
+		en.setText(ClientResources.getMessage("en", ResourceNames.UserInterface));
+		exit.setText(ClientResources.getMessage("exit", ResourceNames.UserInterface));
+		disconnect.setText(ClientResources.getMessage("disconnect", ResourceNames.UserInterface));
+		connect.setText(ClientResources.getMessage("connect", ResourceNames.UserInterface));
+		bg.setText(ClientResources.getMessage("bg", ResourceNames.UserInterface));
 	}
 
 	/**
@@ -145,7 +152,9 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	private boolean initClient(String address, String nickname) {
 		client = new Client(new UIManager(this));
 		if (client.connect(address, nickname)) {
+			message.setForeground(Color.black);
 			Thread clientThread = new Thread(client);
+			clientThread.setDaemon(true);
 			clientThread.start();
 			states = new ArrayList<>();
 			currentState = 0;
@@ -172,7 +181,8 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		chatLog = new JTextArea();
 		chatLog.setLineWrap(true);
 		chatLog.setWrapStyleWord(true);
-		clients = new JTextArea("      ");
+		clients = new JTextArea("          ");
+		clients.setEditable(false);
 		JPanel responsePane = new JPanel(new GridBagLayout());
 		JScrollPane responseScroll = new JScrollPane(chatLog);
 		JScrollPane usersScroll = new JScrollPane(clients);
@@ -198,7 +208,6 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		initMenu();
 
 		setMinimumSize(new Dimension(300, 300));
-		addWindowListener(this);
 		setTitle("Client");
 		setSize(width, height);
 		setLocationRelativeTo(null);
@@ -218,11 +227,12 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 		languages = new JMenu();
 		languages.setMnemonic(KeyEvent.VK_L);
 		connect = new JMenuItem();
-		connect.setMnemonic(KeyEvent.VK_S);
+		connect.setMnemonic(KeyEvent.VK_C);
 		connect.addActionListener(this);
 		disconnect = new JMenuItem();
 		disconnect.setMnemonic(KeyEvent.VK_T);
 		disconnect.addActionListener(this);
+		disconnect.setEnabled(false);
 		exit = new JMenuItem();
 		exit.setMnemonic(KeyEvent.VK_X);
 		exit.addActionListener(this);
@@ -255,7 +265,8 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 			currentState++;
 			message.setText("");
 		} catch (NullPointerException e1) {
-			message.setText("Not connected to a server");
+			message.setForeground(Color.red);
+			message.setText(ClientResources.getMessage("not_connected", ResourceNames.Errors));
 		}
 	}
 
@@ -268,53 +279,25 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 			initDialog();
 		}
 		if (e.getSource() == disconnect) {
-			client.sendMessage(Messages.DISCONNECTED.toString());
+			if (client != null) {
+				client.sendMessage(Messages.DISCONNECTED.toString());
+				client = null;
+			}
+			disconnect.setEnabled(false);
+			connect.setEnabled(true);
+			clients.setText("");
 		}
 		if (e.getSource() == exit) {
-			client.sendMessage(Messages.DISCONNECTED.toString());
 			dispose();
 		}
 		if (e.getSource() == en) {
-			UICaptions.setLocale(Locale.ENGLISH);
+			ClientResources.setLocale(Locale.ENGLISH);
 			refreshCaptions();
 		}
 		if (e.getSource() == bg) {
-			UICaptions.setLocale(BULGARIAN);
+			ClientResources.setLocale(BULGARIAN);
 			refreshCaptions();
 		}
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		try {
-			client.sendMessage(Messages.DISCONNECTED.toString());
-		} catch (NullPointerException e1) {
-		}
-		dispose();
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
 	}
 
 	@Override
@@ -359,4 +342,14 @@ public class ClientGUI extends JFrame implements ActionListener, WindowListener,
 	public JTextArea getClients() {
 		return clients;
 	}
+
+	/**
+	 * Getter method for error.
+	 * 
+	 * @return the error
+	 */
+	public JLabel getError() {
+		return error;
+	}
+
 }

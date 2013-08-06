@@ -12,7 +12,7 @@ import java.util.Set;
 public class ClientManager {
 	private Set<Client> clients;
 	private StringBuilder clientNicknames;
-	public static final String CLIENT_SEPARATOR = "_";
+	public static final String CLIENT_SEPARATOR = "\0";
 
 	/**
 	 * Initializes the member variables.

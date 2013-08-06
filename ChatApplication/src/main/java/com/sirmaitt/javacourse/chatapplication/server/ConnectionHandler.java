@@ -55,14 +55,15 @@ public class ConnectionHandler implements Runnable {
 			}
 			if (!clientManager.addClient(client)) {
 				client.sendMessage(Messages.ERROR
-						+ ServerMessages.getMessage("taken", ResourceNames.Messages));
+						+ ServerResources.getMessage("taken", ResourceNames.Messages));
 				return;
 			}
 			logManager.logEvent(client.toString()
-					+ ServerMessages.getMessage("connected", ResourceNames.Messages));
+					+ ServerResources.getMessage("connected", ResourceNames.Messages));
 			clientManager.broadcastMessage(client.toString()
-					+ ServerMessages.getMessage("connected", ResourceNames.Messages));
-			client.sendMessage(ServerMessages.getMessage("welcome", ResourceNames.Messages) + client);
+					+ ServerResources.getMessage("connected", ResourceNames.Messages));
+			client.sendMessage(ServerResources.getMessage("welcome", ResourceNames.Messages)
+					+ client);
 			clientManager.broadcastMessage(Messages.LIST.toString()
 					+ clientManager.getClientNicknames());
 			while (true) {
@@ -71,20 +72,32 @@ public class ConnectionHandler implements Runnable {
 					continue;
 				}
 				if (Messages.DISCONNECTED.toString().equals(line)) {
-					client.sendMessage(Messages.DISCONNECTED.toString());
-					clientManager.removeClient(client);
-					clientManager.broadcastMessage(SYSTEM + client
-							+ ServerMessages.getMessage("disconnected", ResourceNames.Messages));
-					logManager.logEvent(client
-							+ ServerMessages.getMessage("disconnected", ResourceNames.Messages));
+					removeClient(client);
 					break;
 				}
 				clientManager.broadcastMessage("<" + client + ">: " + line);
 			}
 		} catch (IOException e) {
-			logManager.logEvent(client
-					+ ServerMessages.getMessage("disconnected", ResourceNames.Messages));
+			removeClient(client);
 		}
+	}
+
+	/**
+	 * Removes the client from the clients list and notifies all the other clients about the change.
+	 * 
+	 * @param client
+	 *            the client to be removed.
+	 */
+	private void removeClient(Client client) {
+		client.sendMessage(Messages.DISCONNECTED.toString());
+		clientManager.removeClient(client);
+		clientManager.broadcastMessage(SYSTEM + client
+				+ ServerResources.getMessage("disconnected", ResourceNames.Messages));
+		clientManager.broadcastMessage(Messages.LIST.toString()
+				+ clientManager.getClientNicknames());
+		logManager.logEvent(client
+				+ ServerResources.getMessage("disconnected", ResourceNames.Messages));
+
 	}
 
 	@Override

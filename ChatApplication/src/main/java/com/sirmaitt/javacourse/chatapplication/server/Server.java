@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.sirmaitt.javacourse.chatapplication.utility.Messages;
 import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
 
 /**
@@ -39,7 +38,6 @@ public class Server implements Runnable {
 	 * Stops the server from listening for connections and frees up the port that it's using.
 	 */
 	public void stop() {
-		clients.broadcastMessage(Messages.DISCONNECTED.toString());
 		run = false;
 		if (serverSocket != null) {
 			try {
@@ -55,7 +53,7 @@ public class Server implements Runnable {
 	private void handleConnection() {
 		try (ServerSocket servSocket = new ServerSocket(port)) {
 			serverSocket = servSocket;
-			logManager.logEvent(ServerMessages.getMessage("start", ResourceNames.Messages));
+			logManager.logEvent(ServerResources.getMessage("start", ResourceNames.Messages));
 			while (run) {
 				try {
 					Socket clientSocket = serverSocket.accept();
@@ -64,16 +62,14 @@ public class Server implements Runnable {
 					Thread connectionThread = new Thread(connection);
 					connectionThread.start();
 				} catch (IOException e) {
-					logManager.logEvent(ServerMessages.getMessage("stop",
-							ResourceNames.Messages));
+					logManager.logEvent(ServerResources.getMessage("stop", ResourceNames.Messages));
 					break;
 				}
 			}
 		} catch (IllegalArgumentException e) {
-			logManager.logEvent(ServerMessages.getMessage("port", ResourceNames.Messages));
+			logManager.logEvent(ServerResources.getMessage("port", ResourceNames.Messages));
 		} catch (IOException e) {
-			logManager.logEvent(ServerMessages.getMessage("portTaken",
-					ResourceNames.Messages));
+			logManager.logEvent(ServerResources.getMessage("portTaken", ResourceNames.Errors));
 		}
 	}
 

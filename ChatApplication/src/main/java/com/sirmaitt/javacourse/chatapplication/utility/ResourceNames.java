@@ -6,5 +6,5 @@ package com.sirmaitt.javacourse.chatapplication.utility;
  * @author gdimitrov
  */
 public enum ResourceNames {
-	Messages, UserInterface;
+	Messages, UserInterface, Errors;
 }

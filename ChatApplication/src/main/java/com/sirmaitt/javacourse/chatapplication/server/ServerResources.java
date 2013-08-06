@@ -1,4 +1,4 @@
-package com.sirmaitt.javacourse.chatapplication.client;
+package com.sirmaitt.javacourse.chatapplication.server;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -6,18 +6,20 @@ import java.util.ResourceBundle;
 import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
 
 /**
- * Returns the internationalized UI captions for the clients.
+ * Gets internatiolized system messages and UI captions for the chat application.
  * 
  * @author gdimitrov
  */
-public final class UICaptions {
+public final class ServerResources {
+
 	/**
 	 * Private constructor for utility classes.
 	 */
-	private UICaptions() {
+	private ServerResources() {
 	}
 
 	private static Locale currentLocale = Locale.ENGLISH;
+	private static ResourceBundle bundle;
 
 	/**
 	 * Sets the locale to be used for getting the messages.
@@ -30,17 +32,16 @@ public final class UICaptions {
 	}
 
 	/**
-	 * Gets a UI caption from the resource bundle using the key provided.
+	 * Gets a message from the resource bundle by using the key provided.
 	 * 
 	 * @param key
 	 *            the key of the message.
 	 * @param resourceName
 	 *            the name of the resource file that contains the message.
-	 * @return the internationalized caption.
+	 * @return the internationalized message.
 	 */
 	public static String getMessage(String key, ResourceNames resourceName) {
-		ResourceBundle bundle = ResourceBundle.getBundle(resourceName.toString(), currentLocale);
+		bundle = ResourceBundle.getBundle(resourceName.toString(), currentLocale);
 		return bundle.getString(key);
 	}
-
 }

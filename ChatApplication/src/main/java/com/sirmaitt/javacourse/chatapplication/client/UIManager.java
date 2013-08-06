@@ -45,8 +45,8 @@ public class UIManager implements Manager {
 	}
 
 	@Override
-	public void reconnect() {
-		clientUI.getChatLog().setText("");
-		clientUI.initDialog();
+	public void displayErrorMessage(String message) {
+		clientUI.getError().setText(message);
 	}
+
 }

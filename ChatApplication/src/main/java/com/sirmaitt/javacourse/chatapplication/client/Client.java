@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.sirmaitt.javacourse.chatapplication.utility.Messages;
+import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
 
 /**
  * The client sends messages and receives messages from other clients.
@@ -56,7 +57,10 @@ public class Client implements Runnable {
 			String serverResponse = in.readLine();
 			return checkResponse(serverResponse);
 		} catch (NumberFormatException e) {
+			String shit = ClientResources.getMessage("port", ResourceNames.Errors);
+			manager.displayErrorMessage(shit);
 		} catch (IOException e) {
+			manager.displayErrorMessage(ClientResources.getMessage("server", ResourceNames.Errors));
 		}
 		return false;
 	}
@@ -74,6 +78,8 @@ public class Client implements Runnable {
 		}
 
 		if (serverResponse.startsWith(Messages.ERROR.toString())) {
+			manager.displayErrorMessage(ClientResources.getMessage("nickname_taken",
+					ResourceNames.Errors));
 			return false;
 		}
 		if (serverResponse.startsWith(Messages.CONNECTED_.toString())) {
@@ -85,12 +91,11 @@ public class Client implements Runnable {
 			return false;
 		}
 		if (Messages.DISCONNECTED.toString().equals(serverResponse)) {
-			manager.displayMessage("Disconnected from the server");
+			manager.displayMessage(ClientResources.getMessage("you_disconnected",
+					ResourceNames.Messages));
 			try {
 				socket.close();
 			} catch (IOException e) {
-				// TODO Log the exception.
-				e.printStackTrace();
 			}
 			return false;
 		}
@@ -136,8 +141,8 @@ public class Client implements Runnable {
 			} catch (SocketException e) {
 				return;
 			} catch (IOException e) {
-				// TODO Log the exception.
-				e.printStackTrace();
+				manager.displayMessage(ClientResources.getMessage("you_disconnected",
+						ResourceNames.Messages));
 			}
 		}
 	}
