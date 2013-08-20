@@ -10,8 +10,8 @@ import java.io.PrintWriter;
  */
 public class Client {
 
-	private String nickname;
-	private PrintWriter writer;
+	private final String nickname;
+	private final PrintWriter writer;
 
 	/**
 	 * Creates a new client.
@@ -48,7 +48,7 @@ public class Client {
 	@Override
 	public int hashCode() {
 		if (nickname.toLowerCase().contains("admin") || nickname.contains("]")
-				|| nickname.contains("[")) {
+				|| nickname.contains("[") || nickname.length() < 4) {
 			return 0;
 		}
 		return nickname.hashCode();

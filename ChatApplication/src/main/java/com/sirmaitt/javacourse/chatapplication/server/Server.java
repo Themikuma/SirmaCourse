@@ -3,6 +3,7 @@ package com.sirmaitt.javacourse.chatapplication.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Calendar;
 
 import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
 
@@ -14,10 +15,10 @@ import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
 public class Server implements Runnable {
 
 	private final LogManager logManager;
-	private int port;
+	private final int port;
 	private boolean run;
 	private ServerSocket serverSocket = null;
-	private ClientManager clients;
+	private final ClientManager clients;
 
 	/**
 	 * Creates a connection handler on a given port.
@@ -35,7 +36,8 @@ public class Server implements Runnable {
 	}
 
 	/**
-	 * Stops the server from listening for connections and frees up the port that it's using.
+	 * Stops the server from listening for connections and frees up the port
+	 * that it's using.
 	 */
 	public void stop() {
 		run = false;
@@ -53,23 +55,32 @@ public class Server implements Runnable {
 	private void handleConnection() {
 		try (ServerSocket servSocket = new ServerSocket(port)) {
 			serverSocket = servSocket;
-			logManager.logEvent(ServerResources.getMessage("start", ResourceNames.Messages));
+			logManager.logEvent(ServerResources.getMessage("start",
+					ResourceNames.Messages));
+			clients.getAdmin()
+					.sendMessage(
+							(ServerResources.getMessage("start",
+									ResourceNames.Messages) + Calendar
+									.getInstance().getTime()));
 			while (run) {
 				try {
 					Socket clientSocket = serverSocket.accept();
-					ConnectionHandler connection = new ConnectionHandler(logManager, clientSocket,
-							clients);
+					ConnectionHandler connection = new ConnectionHandler(
+							logManager, clientSocket, clients);
 					Thread connectionThread = new Thread(connection);
 					connectionThread.start();
 				} catch (IOException e) {
-					logManager.logEvent(ServerResources.getMessage("stop", ResourceNames.Messages));
+					logManager.logEvent(ServerResources.getMessage("stop",
+							ResourceNames.Messages));
 					break;
 				}
 			}
 		} catch (IllegalArgumentException e) {
-			logManager.logEvent(ServerResources.getMessage("port", ResourceNames.Messages));
+			logManager.logEvent(ServerResources.getMessage("port",
+					ResourceNames.Messages));
 		} catch (IOException e) {
-			logManager.logEvent(ServerResources.getMessage("portTaken", ResourceNames.Errors));
+			logManager.logEvent(ServerResources.getMessage("portTaken",
+					ResourceNames.Errors));
 		}
 	}
 
