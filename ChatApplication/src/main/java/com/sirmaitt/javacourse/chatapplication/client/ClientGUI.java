@@ -88,16 +88,18 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener {
 		String address = null;
 		String nick = null;
 		int result;
-		Object[] msg = { ClientResources.getMessage("host", ResourceNames.UserInterface), host,
-				ClientResources.getMessage("nickname", ResourceNames.UserInterface), nickname,
-				error };
+		Object[] msg = {
+				ClientResources.getMessage("host", ResourceNames.UserInterface),
+				host,
+				ClientResources.getMessage("nickname",
+						ResourceNames.UserInterface), nickname, error };
 		JOptionPane op = new JOptionPane(msg, JOptionPane.QUESTION_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION, null, null);
 		boolean connected = false;
 		while (!connected) {
 			result = JOptionPane.CLOSED_OPTION;
-			JDialog dialog = op.createDialog(this,
-					ClientResources.getMessage("connectServer", ResourceNames.UserInterface));
+			JDialog dialog = op.createDialog(this, ClientResources.getMessage(
+					"connectServer", ResourceNames.UserInterface));
 			setEnabled(false);
 			dialog.setVisible(true);
 			try {
@@ -111,8 +113,8 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener {
 					address = "";
 				}
 				if (nick.contains("[") || nick.contains("]") || (nick == null)) {
-					error.setText(ClientResources.getMessage("nickname_invalid",
-							ResourceNames.Errors));
+					error.setText(ClientResources.getMessage(
+							"nickname_invalid", ResourceNames.Errors));
 					nick = "";
 				}
 				connected = initClient(address, nick);
@@ -131,13 +133,20 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener {
 	 * Refreshes the captions of all the labels using the current language.
 	 */
 	private void refreshCaptions() {
-		file.setText(ClientResources.getMessage("file", ResourceNames.UserInterface));
-		languages.setText(ClientResources.getMessage("lang", ResourceNames.UserInterface));
-		en.setText(ClientResources.getMessage("en", ResourceNames.UserInterface));
-		exit.setText(ClientResources.getMessage("exit", ResourceNames.UserInterface));
-		disconnect.setText(ClientResources.getMessage("disconnect", ResourceNames.UserInterface));
-		connect.setText(ClientResources.getMessage("connect", ResourceNames.UserInterface));
-		bg.setText(ClientResources.getMessage("bg", ResourceNames.UserInterface));
+		file.setText(ClientResources.getMessage("file",
+				ResourceNames.UserInterface));
+		languages.setText(ClientResources.getMessage("lang",
+				ResourceNames.UserInterface));
+		en.setText(ClientResources
+				.getMessage("en", ResourceNames.UserInterface));
+		exit.setText(ClientResources.getMessage("exit",
+				ResourceNames.UserInterface));
+		disconnect.setText(ClientResources.getMessage("disconnect",
+				ResourceNames.UserInterface));
+		connect.setText(ClientResources.getMessage("connect",
+				ResourceNames.UserInterface));
+		bg.setText(ClientResources
+				.getMessage("bg", ResourceNames.UserInterface));
 	}
 
 	/**
@@ -156,7 +165,6 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener {
 			Thread clientThread = new Thread(client);
 			clientThread.setDaemon(true);
 			clientThread.start();
-			states = new ArrayList<>();
 			currentState = 0;
 			return true;
 		}
@@ -174,6 +182,7 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener {
 	private void initComponents(int width, int height) {
 		send = new JButton();
 		send.setText("Send");
+		states = new ArrayList<>();
 		send.addActionListener(this);
 		send.setEnabled(true);
 		message = new JTextField();
@@ -266,7 +275,8 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener {
 			message.setText("");
 		} catch (NullPointerException e1) {
 			message.setForeground(Color.red);
-			message.setText(ClientResources.getMessage("not_connected", ResourceNames.Errors));
+			message.setText(ClientResources.getMessage("not_connected",
+					ResourceNames.Errors));
 		}
 	}
 

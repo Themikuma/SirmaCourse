@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Calendar;
 
+import com.sirmaitt.javacourse.chatapplication.utility.Messages;
 import com.sirmaitt.javacourse.chatapplication.utility.ResourceNames;
 
 /**
@@ -72,6 +73,7 @@ public class Server implements Runnable {
 				} catch (IOException e) {
 					logManager.logEvent(ServerResources.getMessage("stop",
 							ResourceNames.Messages));
+					clients.broadcastMessage(Messages.DISCONNECTED.toString());
 					break;
 				}
 			}
