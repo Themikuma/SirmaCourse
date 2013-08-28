@@ -14,6 +14,7 @@ import javax.swing.text.BadLocationException;
 public class UILogManager implements LogManager {
 	private ServerGUI serverUI;
 	private static final String SEPARATOR = System.lineSeparator();
+	private final DateFormat formater = new SimpleDateFormat("HH:mm:ss");
 
 	/**
 	 * Creates a UIManager using the UI of the client that invoked the creation.
@@ -27,7 +28,6 @@ public class UILogManager implements LogManager {
 
 	@Override
 	public void logEvent(String message) {
-		DateFormat formater = new SimpleDateFormat("HH:mm:ss");
 		serverUI.getLog()
 				.append("<" + formater.format(Calendar.getInstance().getTime()) + ">" + message
 						+ SEPARATOR);

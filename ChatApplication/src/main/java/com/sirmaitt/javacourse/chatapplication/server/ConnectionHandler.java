@@ -58,6 +58,8 @@ public class ConnectionHandler implements Runnable {
 						+ ServerResources.getMessage("taken", ResourceNames.Messages));
 				return;
 			}
+			// If the code got this far, the client has been accepted. First everyone gets the
+			// message that someone has connected. The client expects the "connected" message
 			logManager.logEvent(client.toString()
 					+ ServerResources.getMessage("connected", ResourceNames.Messages));
 			clientManager.broadcastMessage(client.toString()
@@ -78,7 +80,9 @@ public class ConnectionHandler implements Runnable {
 				clientManager.broadcastMessage("<" + client + ">: " + line);
 			}
 		} catch (IOException e) {
-			removeClient(client);
+			if (client != null) {
+				removeClient(client);
+			}
 		}
 	}
 

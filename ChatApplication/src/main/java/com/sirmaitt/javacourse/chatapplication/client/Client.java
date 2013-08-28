@@ -38,12 +38,10 @@ public class Client implements Runnable {
 	}
 
 	/**
-	 * Connects the client to the server and returns if the connection was
-	 * successful.
+	 * Connects the client to the server and returns if the connection was successful.
 	 * 
 	 * @param address
-	 *            the address of the server. Should be given in format
-	 *            "url:port"
+	 *            the address of the server. Should be given in format "url:port"
 	 * @param nickname
 	 *            the nickname of the user connecting.
 	 * @return true if the connection was successful.
@@ -53,19 +51,15 @@ public class Client implements Runnable {
 		String port = address.substring(address.indexOf(":") + 1);
 		try {
 			socket = new Socket(host, Integer.parseInt(port));
-			in = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
 			sendMessage(Messages.CONNECTED_ + nickname);
 			String serverResponse = in.readLine();
 			return checkResponse(serverResponse);
 		} catch (NumberFormatException e) {
-			String shit = ClientResources.getMessage("port",
-					ResourceNames.Errors);
-			manager.displayErrorMessage(shit);
+			manager.displayErrorMessage(ClientResources.getMessage("port", ResourceNames.Errors));
 		} catch (IOException e) {
-			manager.displayErrorMessage(ClientResources.getMessage("server",
-					ResourceNames.Errors));
+			manager.displayErrorMessage(ClientResources.getMessage("server", ResourceNames.Errors));
 		}
 		return false;
 	}
@@ -75,8 +69,7 @@ public class Client implements Runnable {
 	 * 
 	 * @param serverResponse
 	 *            the response to be checked.
-	 * @return true if the server approved the connecting client or the response
-	 *         wasn't a command.
+	 * @return true if the server approved the connecting client or the response wasn't a command.
 	 */
 	public boolean checkResponse(String serverResponse) {
 		if (!serverResponse.startsWith(".")) {
@@ -84,25 +77,21 @@ public class Client implements Runnable {
 		}
 
 		if (serverResponse.startsWith(Messages.ERROR.toString())) {
-			manager.displayErrorMessage(ClientResources.getMessage(
-					"nickname_taken", ResourceNames.Errors));
+			manager.displayErrorMessage(ClientResources.getMessage("nickname_taken",
+					ResourceNames.Errors));
 			return false;
 		}
-		if (serverResponse.startsWith(Messages.CONNECTED_.toString())) {
-			return true;
-		}
 		if (serverResponse.startsWith(Messages.LIST.toString())) {
-			String message = serverResponse.substring(Messages.LIST.toString()
-					.length());
-			manager.displayUserList(message);
+			manager.displayUserList(serverResponse.substring(Messages.LIST.toString().length()));
 			return false;
 		}
 		if (Messages.DISCONNECTED.toString().equals(serverResponse)) {
-			manager.displayMessage(ClientResources.getMessage(
-					"you_disconnected", ResourceNames.Messages));
+			manager.displayMessage(ClientResources.getMessage("you_disconnected",
+					ResourceNames.Messages));
 			try {
 				socket.close();
 			} catch (IOException e) {
+			} catch (NullPointerException e) {
 			}
 			return false;
 		}
@@ -114,8 +103,8 @@ public class Client implements Runnable {
 	 * 
 	 * @param message
 	 *            the message to set
-	 * @return false if the message was a disconnect message and the connect
-	 *         dialog should be redisplayed.
+	 * @return false if the message was a disconnect message and the connect dialog should be
+	 *         redisplayed.
 	 */
 	public boolean sendMessage(String message) {
 		if ("".equals(message)) {
@@ -142,15 +131,14 @@ public class Client implements Runnable {
 			try {
 				serverResponse = in.readLine();
 				if (checkResponse(serverResponse)) {
-					manager.displayMessage("[<"
-							+ formater.format(Calendar.getInstance().getTime())
+					manager.displayMessage("[<" + formater.format(Calendar.getInstance().getTime())
 							+ ">]" + serverResponse);
 				}
 			} catch (SocketException e) {
 				return;
 			} catch (IOException e) {
-				manager.displayMessage(ClientResources.getMessage(
-						"you_disconnected", ResourceNames.Messages));
+				manager.displayMessage(ClientResources.getMessage("you_disconnected",
+						ResourceNames.Messages));
 			}
 		}
 	}

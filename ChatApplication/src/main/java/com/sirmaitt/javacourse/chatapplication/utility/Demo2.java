@@ -16,10 +16,8 @@ public final class Demo2 {
 	/**
 	 * @param args
 	 *            array of command-line arguments passed to this metod.
-	 * @throws InterruptedException
-	 *             if the thread is interrupted.
 	 */
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 		ClientGUI client1 = new ClientGUI(300, 300);
 	}
 }

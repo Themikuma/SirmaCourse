@@ -1,5 +1,7 @@
 package com.sirmaitt.javacourse.chatapplication.client;
 
+import com.sirmaitt.javacourse.chatapplication.utility.Messages;
+
 /**
  * @author gdimitrov
  */
@@ -11,7 +13,7 @@ public class MockManager implements Manager {
 	 */
 	@Override
 	public void displayMessage(String message) {
-		result = "disconnect";
+		result = message;
 	}
 
 	/**
@@ -19,12 +21,12 @@ public class MockManager implements Manager {
 	 */
 	@Override
 	public void displayUserList(String message) {
-		result = "userList";
+		result = Messages.LIST.toString();
 	}
 
 	@Override
 	public void displayErrorMessage(String message) {
-		result = "error";
+		result = message;
 	}
 
 	/**
